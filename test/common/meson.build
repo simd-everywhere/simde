@@ -1,3 +1,5 @@
+fs = import('fs')
+
 simde_test_common_tests = [
   'common'
 ]
@@ -7,7 +9,7 @@ foreach name : simde_test_common_tests
   foreach lang : ['c', 'cpp']
     source_file = name + '.c'
     if lang == 'cpp'
-      source_file = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
+      source_file = fs.copyfile(name + '.c', name + '.cpp')
     endif
     simde_test_common_sources += source_file
 

@@ -8,7 +8,7 @@ ld = 'llvm-ld-9'
 #exe_wrapper = ['sde64', '-clx', '--']
 exe_wrapper = ['sde64', '-icl', '--']
 
-[properties]
+[built-in options]
 #c_args = ['-march=cascadelake', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 #cpp_args = ['-march=cascadelake', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 c_args = ['-march=icelake-server', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

@@ -7,9 +7,11 @@ objcopy = 'i686-linux-gnu-objcopy'
 ld = 'i686-linux-gnu-ld'
 exe_wrapper = ['qemu-i386-static', '-L', '/usr/i686-linux-gnu']
 
-[properties]
+[built-in options]
 c_args = ['-Wextra', '-Werror', '-O2']
 cpp_args = ['-Wextra', '-Werror', '-O2']
+
+[properties]
 needs_exe_wrapper = true
 
 [host_machine]

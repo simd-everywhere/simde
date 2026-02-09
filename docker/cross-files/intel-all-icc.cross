@@ -7,7 +7,7 @@ objcopy = 'objcopy'
 ld = 'ld'
 exe_wrapper = ['sde64', '-tgl', '--']
 
-[properties]
+[built-in options]
 c_args = ['-march=tigerlake', '-Wextra', '-wd13200', '-wd13203', '-wd16219', '-diag-disable=10441', '-Werror']
 c_link_args = ['-diag-disable=10441']
 cpp_args = ['-march=tigerlake', '-Wextra', '-wd13200', '-wd13203', '-wd16219', '-diag-disable=10441', '-Werror']

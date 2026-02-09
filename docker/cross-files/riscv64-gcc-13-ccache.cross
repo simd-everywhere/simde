@@ -7,7 +7,7 @@ objcopy = 'riscv64-linux-gnu-objcopy'
 ld = 'riscv64-linux-gnu-ld'
 exe_wrapper = ['qemu-riscv64-static', '-L', '/usr/riscv64-linux-gnu/']
 
-[properties]
+[built-in options]
 c_args   = ['-Wextra', '-Werror']
 cpp_args = ['-Wextra', '-Werror']
 

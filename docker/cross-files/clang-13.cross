@@ -6,6 +6,6 @@ strip = 'llvm-strip-13'
 objcopy = 'llvm-objcopy-13'
 ld = 'llvm-ld-13'
 
-[properties]
+[built-in options]
 c_args = ['-march=native','-Weverything', '-fno-lax-vector-conversions', '-Werror']
 cpp_args = ['-march=native', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

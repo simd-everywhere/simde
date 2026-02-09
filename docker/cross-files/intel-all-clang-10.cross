@@ -8,7 +8,7 @@ ld = 'llvm-ld-10'
 #exe_wrapper = ['sde64', '-clx', '--']
 exe_wrapper = ['sde64', '-tgl', '--']
 
-[properties]
+[built-in options]
 #c_args = ['-march=cascadelake', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 #cpp_args = ['-march=cascadelake', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 c_args = ['-march=tigerlake', '-Weverything', '-fno-lax-vector-conversions', '-Werror']

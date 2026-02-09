@@ -7,7 +7,7 @@ objcopy = 'llvm-objcopy-13'
 ld = 'llvm-ld-13'
 exe_wrapper = ['qemu-arm-static', '-L', '/usr/arm-linux-gnueabihf']
 
-[properties]
+[built-in options]
 c_args = ['--target=arm-linux-gnueabihf', '-march=armv7-a', '-mfpu=neon', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 cpp_args = ['--target=arm-linux-gnueabihf', '-march=armv7-a', '-mfpu=neon', '-isystem=/usr/arm-linux-gnueabihf/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 c_link_args = ['--target=arm-linux-gnueabihf']

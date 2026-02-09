@@ -7,7 +7,7 @@ objcopy = 'objcopy'
 ld = 'ld'
 exe_wrapper = ['sde64', '-tgl', '--']
 
-[properties]
+[built-in options]
 c_args = ['-march=tigerlake', '-Wextra', '-Werror']
 cpp_args = ['-march=tigerlake', '-Wextra', '-Werror']
 

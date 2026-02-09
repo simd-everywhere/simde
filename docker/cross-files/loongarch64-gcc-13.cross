@@ -7,7 +7,7 @@ objcopy = 'loongarch64-unknown-linux-gnu-objcopy'
 ld = 'loongarch64-unknown-linux-gnu-ld'
 exe_wrapper = ['qemu-loongarch64-static', '-L', '/opt/cross-tools/target/usr']
 
-[properties]
+[built-in options]
 c_args = ['-march=loongarch64', '-Wextra', '-Werror']
 cpp_args = ['-march=loongarch64', '-Wextra', '-Werror']
 

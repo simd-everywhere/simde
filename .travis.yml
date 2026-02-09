@@ -37,7 +37,7 @@ before_install:
 - cat /proc/meminfo
 
 install:
-- pip3 install meson==0.55.1
+- pip3 install meson==1.3.2
 
 script:
 - meson setup build -Db_coverage=true

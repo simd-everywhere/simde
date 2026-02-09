@@ -12,6 +12,8 @@ exe_wrapper = ['v8']
 
 [properties]
 skip_sanity_check = true
+
+[built-in options]
 c_args = ['-sMEMORY64', '-Weverything', '-Wno-experimental', '-Werror', '-fno-lax-vector-conversions', '-O2', '-msimd128', '-mrelaxed-simd', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']
 cpp_args = ['-sMEMORY64', '-Weverything', '-Wno-experimental', '-Werror', '-fno-lax-vector-conversions', '-O2', '-msimd128', '-mrelaxed-simd', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']
 c_link_args = ['-sMEMORY64', '-Wno-experimental', '-s', 'ENVIRONMENT=shell']

@@ -7,7 +7,7 @@ objcopy = 'llvm-objcopy-13'
 ld = 'llvm-ld-13'
 exe_wrapper = ['qemu-aarch64-static', '-L', '/usr/aarch64-linux-gnu']
 
-[properties]
+[built-in options]
 c_args        = ['--target=aarch64-linux-gnu', '-march=armv8-a+simd+crypto+crc', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
 cpp_args      = ['--target=aarch64-linux-gnu', '-march=armv8-a+simd+crypto+crc', '-isystem=/usr/aarch64-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Wextra', '-Werror', '-g', '-O2', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-Wdate-time', '-D_FORTIFY_SOURCE=2']
 c_link_args   = ['--target=aarch64-linux-gnu', '-Wl,-z,relro', '-Wl,-z,now']

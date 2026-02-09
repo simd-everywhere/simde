@@ -24,7 +24,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo apt-get update && sudo apt-get install -y --no-install-recommends ninja-build
-        pipx install meson==0.55.1
+        pipx install meson==1.3.2
     - run: |
         meson setup build --prefix "$PWD/install" -Dtests=false
         meson install -C build --quiet
@@ -141,7 +141,7 @@ jobs:
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-15 /usr/bin/gcc
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
-        pipx install meson==0.55.1
+        pipx install meson==1.3.2
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -186,7 +186,7 @@ jobs:
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-15 /usr/bin/gcc
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
-        pipx install meson==0.55.1
+        pipx install meson==1.3.2
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -220,7 +220,7 @@ jobs:
       run: |
         sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends ninja-build pipx ccache
-        pipx install meson==0.55.1
+        pipx install meson==1.3.2
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -270,7 +270,7 @@ jobs:
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-15 /usr/bin/gcc
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
-        pipx install meson==0.55.1
+        pipx install meson==1.3.2
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -311,7 +311,7 @@ jobs:
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-15 /usr/bin/gcc
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
-        pipx install meson==0.55.1
+        pipx install meson==1.3.2
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -436,7 +436,7 @@ jobs:
           ccache gcc-${{ case(matrix.gcc == '', matrix.version, format('{0}-{1}', matrix.version, matrix.gcc)) }} \
           g++-${{ case(matrix.gcc == '', matrix.version, format('{0}-{1}', matrix.version, matrix.gcc)) }}
         sudo apt-get -y purge g++ gcc
-        pipx install meson==0.64
+        pipx install meson==1.3.2
     - if: ${{ matrix.version == '15' }}
       run: sudo apt-get satisfy -y 'binutils (>= 2.45)'
     - name: ccache
@@ -519,7 +519,7 @@ jobs:
           gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
           g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} binfmt-support \
           qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
-        pipx install meson==0.55.1
+        pipx install meson==1.3.2
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1.2
       with:
@@ -747,10 +747,12 @@ jobs:
         - version: "14"
           distro: ubuntu-24.04-arm
           arch_flags: -march=armv8-a+fp+aes+sha2
+          plain: true
           # grep Features < /proc/cpuinfo | head -n 1 | awk '-F: ' '{print $2}' | sed 's/asimd //;s/evtstrm //;s/pmull //;s/sha1 //;s/crc32 //;s/atomics //;s/fphp //;s/asimd.. //g;s/cpuid //;s/asimd... //g;s/jscvt //;s/fcma //;s/lrcpc //;s/dcpop //;s/sm3 //;s/sha512 //;s/uscat //;s/ilrcpc //;s/pac. //g;s/dcpodp //;s/sveaes //;s/svebitperm //;s/svesha3 //;s/svesm4 //;s/flagm2 //;s/frint //;s/svei8mm //;s/svebf16 //' | tr ' ' '+'
         - version: "14"
           distro: ubuntu-24.04-arm
           arch_flags: -ffast-math -march=armv8-a+fp+aes+sha2
+          plain: true
         - version: "15"
           distro: ubuntu-24.04
         - version: "15"
@@ -930,7 +932,7 @@ jobs:
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
         sudo apt-get -y --no-install-recommends install ninja-build pipx \
           clang-${{ matrix.version }} ccache ${{ matrix.pkg }}
-        pipx install meson==0.55.1
+        pipx install meson==1.3.2
         sudo rm /usr/bin/gcc /usr/bin/g++ /usr/bin/cc /usr/bin/c++
         sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/cc
         sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/c++
@@ -1029,7 +1031,7 @@ jobs:
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
-      run: sudo apt-get install -y --no-install-recommends ninja-build pipx && pipx install meson==0.64
+      run: sudo apt-get install -y --no-install-recommends ninja-build pipx && pipx install meson==1.3.2
     - name: Install ICC
       run: |
         # download the key to system keyring

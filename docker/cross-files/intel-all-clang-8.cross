@@ -7,7 +7,7 @@ objcopy = 'llvm-objcopy-8'
 ld = 'llvm-ld-8'
 exe_wrapper = ['sde64', '-clx', '--']
 
-[properties]
+[built-in options]
 c_args = ['-march=skylake-avx512', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 cpp_args = ['-march=skylake-avx512', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 

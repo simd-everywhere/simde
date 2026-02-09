@@ -7,7 +7,7 @@ objcopy = 'mips64el-linux-gnuabi64-objcopy'
 ld = 'mips64el-linux-gnuabi64-ld'
 exe_wrapper = ['qemu-mips64el-static', '-cpu', 'Loongson-3A4000', '-L', '/usr/mips64el-linux-gnuabi64']
 
-[properties]
+[built-in options]
 c_args = ['-march=loongson3a', '-Wextra', '-Werror']
 cpp_args = ['-march=loongson3a', '-Wextra', '-Werror']
 

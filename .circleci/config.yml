@@ -24,7 +24,7 @@ jobs:
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: pipx install meson==0.55.1
+      - run: pipx install meson==1.3.2
       - run: ./test/native-aliases.sh
       - run: |
           export PATH=/usr/lib/ccache:${PATH}
@@ -64,7 +64,7 @@ jobs:
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: pipx install meson==0.55.1
+      - run: pipx install meson==1.3.2
       - run: |
           export PATH=/usr/lib/ccache:${PATH}
           CC="ccache gcc" CXX="ccache g++" /root/.local/bin/meson setup build
@@ -103,7 +103,7 @@ jobs:
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: pipx install meson==0.55.1
+      - run: pipx install meson==1.3.2
       - run: |
           export PATH=/usr/lib/ccache:${PATH}
           CC="ccache gcc" CXX="ccache g++" /root/.local/bin/meson setup build
@@ -140,7 +140,7 @@ jobs:
             ccache --set-config=compression=true
             ccache -p
             ccache -z
-      - run: pipx install meson==0.55.1
+      - run: pipx install meson==1.3.2
       - run: |
           export PATH=/usr/lib/ccache:${PATH}
           CFLAGS="-Wno-unsafe-buffer-usage" CXXFLAGS="-Wno-unsafe-buffer-usage" CC="ccache clang" CXX="ccache clang++" /root/.local/bin/meson setup build
@@ -171,7 +171,7 @@ jobs:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
-      - run: pipx install meson==0.55.1
+      - run: pipx install meson==1.3.2
       - run:
           command: |
             ccache --set-config=max_size='500M'
@@ -208,7 +208,7 @@ jobs:
           name: System Information
           command: cat /proc/cpuinfo /proc/meminfo
       - run: dpkg --add-architecture i386
-      - run: pipx install meson==0.55.1
+      - run: pipx install meson==1.3.2
       - run:
           command: |
             ccache --set-config=max_size='500M'

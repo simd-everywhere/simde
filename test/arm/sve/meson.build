@@ -1,10 +1,12 @@
+fs = import('fs')
+
 simde_test_arm_sve_sources = []
 foreach name : simde_sve_families
   if (name != 'cnt') and (name != 'ld1') and (name != 'st1') and (name != 'ptest') and (name != 'ptrue') and (name != 'whilelt') and (name != 'reinterpret')
     foreach lang : ['c', 'cpp']
       source_file = name + '.c'
       if lang == 'cpp'
-        source_file = configure_file(input: name + '.c', output: name + '.cpp', copy: true)
+        source_file = fs.copyfile(name + '.c', name + '.cpp')
       endif
       simde_test_arm_sve_sources += source_file
 

@@ -6,7 +6,7 @@ strip = 'llvm-strip-11'
 objcopy = 'llvm-objcopy-11'
 ld = 'llvm-ld-11'
 
-[properties]
+[built-in options]
 c_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-march=x86', '-mattr=prescott', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 cpp_args = ['--target=i686-linux-gnu', '-isystem=/usr/i686-linux-gnu/include', '-march=x86', '-mattr=prescott', '-Weverything', '-fno-lax-vector-conversions', '-Werror']
 c_link_args = ['--target=i686-linux-gnu']

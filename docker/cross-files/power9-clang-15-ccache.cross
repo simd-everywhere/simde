@@ -7,7 +7,7 @@ objcopy = 'llvm-objcopy-15'
 ld = 'llvm-ld-15'
 exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power9', '-L', '/usr/powerpc64le-linux-gnu/']
 
-[properties]
+[built-in options]
 c_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power9', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-deprecated-altivec-src-compat']
 cpp_args = ['--target=powerpc64le-linux-gnu', '-mcpu=power9', '-isystem=/usr/powerpc64le-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-deprecated-altivec-src-compat']
 c_link_args = ['--target=powerpc64le-linux-gnu']
