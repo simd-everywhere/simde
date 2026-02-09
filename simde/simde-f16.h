@@ -175,20 +175,29 @@ SIMDE_DEFINE_CONVERSION_FUNCTION_(simde_uint16_as_float16, simde_float16,      u
   #endif
 #endif
 
+#define SIMDE_F16_ROUND_TO_NEAREST 0x00
+#define SIMDE_F16_ROUND_TO_NEG_INF 0x01
+#define SIMDE_F16_ROUND_TO_POS_INF 0x02
+#define SIMDE_F16_ROUND_TO_ZERO    0x03
+
 /* Conversion -- convert between single-precision and half-precision
  * floats. */
 static HEDLEY_ALWAYS_INLINE HEDLEY_CONST
 simde_float16
-simde_float16_from_float32 (simde_float32 value) {
+simde_x_float16_from_float32 (simde_float32 value, int round) {
   simde_float16 res;
 
-  #if \
-      (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16) || \
+  #if (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FLOAT16) || \
       (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16)
+  if (round == SIMDE_F16_ROUND_TO_NEAREST) {
     res = HEDLEY_STATIC_CAST(simde_float16, value);
+  } else
   #elif (SIMDE_FLOAT16_API == SIMDE_FLOAT16_API_FP16_NO_ABI)
+  if (round == SIMDE_F16_ROUND_TO_NEAREST) {
     res.value = HEDLEY_STATIC_CAST(__fp16, value);
-  #else
+  } else
+  #endif
+  {
     /* This code is CC0, based heavily on code by Fabian Giesen. */
     uint32_t f32u = simde_float32_as_uint32(value);
     static const uint32_t f32u_infty = UINT32_C(255) << 23;
@@ -206,23 +215,59 @@ simde_float16_from_float32 (simde_float32 value) {
     * operands are below 0x80000000 (we clear the sign bit). */
 
     if (f32u > f16u_max) { /* result is Inf or NaN (all exponent bits set) */
-      f16u = (f32u > f32u_infty) ?  UINT32_C(0x7e00) : UINT32_C(0x7c00); /* NaN->qNaN and Inf->Inf */
+      f16u = (f32u  > f32u_infty) ? UINT32_C(0x7e00) : /* NaN->qNaN */
+             (f32u == f32u_infty) ? UINT32_C(0x7c00) : /* Inf->Inf */
+             (round == SIMDE_F16_ROUND_TO_ZERO) ||
+             (round == SIMDE_F16_ROUND_TO_NEG_INF && !sign) ||
+             (round == SIMDE_F16_ROUND_TO_POS_INF &&  sign) ?
+              UINT32_C(0x7bff) : /* max f16 */
+              UINT32_C(0x7c00);
     } else { /* (De)normalized number or zero */
       if (f32u < (UINT32_C(113) << 23)) { /* resulting FP16 is subnormal or zero */
-        /* use a magic value to align our 10 mantissa bits at the bottom of
-        * the float. as long as FP addition is round-to-nearest-even this
-        * just works. */
-        f32u = simde_float32_as_uint32(simde_uint32_as_float32(f32u) + simde_uint32_as_float32(denorm_magic));
+        if (round == SIMDE_F16_ROUND_TO_NEAREST) {
+          /* use a magic value to align our 10 mantissa bits at the bottom of
+           * the float. as long as FP addition is round-to-nearest-even this
+           * just works. */
+          f32u = simde_float32_as_uint32(simde_uint32_as_float32(f32u) + simde_uint32_as_float32(denorm_magic));
 
-        /* and one integer subtract of the bias later, we have our final float! */
-        f16u = HEDLEY_STATIC_CAST(uint16_t, f32u - denorm_magic);
+          /* and one integer subtract of the bias later, we have our final float! */
+          f16u = HEDLEY_STATIC_CAST(uint16_t, f32u - denorm_magic);
+        } else {
+          if (f32u == 0) {
+            f16u = 0;
+          } else if (f32u < (UINT32_C(103) << 23)) { /* resulting FP16 is min or zero */
+            f16u = (round == SIMDE_F16_ROUND_TO_NEG_INF && sign) ||
+                   (round == SIMDE_F16_ROUND_TO_POS_INF && !sign) ? 1 : 0;
+          } else { /* exp is in 103..112 */
+            int32_t shift = 14 + (112 - (f32u >> 23)); /* how many bits to drop */
+            uint32_t mant = (f32u & 0x7fffff) | 0x800000; /* implicit one */
+            uint32_t dropped = mant & ((UINT32_C(1) << shift) - 1);
+            f16u = HEDLEY_STATIC_CAST(uint16_t, mant >> shift);
+            f16u += (round == SIMDE_F16_ROUND_TO_NEG_INF && dropped && sign) ||
+                    (round == SIMDE_F16_ROUND_TO_POS_INF && dropped && !sign) ? 1 : 0;
+          }
+        }
       } else {
         uint32_t mant_odd = (f32u >> 13) & 1;
+        uint32_t dropped = f32u & UINT32_C(0x1fff);
 
         /* update exponent, rounding bias part 1 */
-        f32u += (HEDLEY_STATIC_CAST(uint32_t, 15 - 127) << 23) + UINT32_C(0xfff);
+        f32u += (HEDLEY_STATIC_CAST(uint32_t, 15 - 127) << 23);
+
         /* rounding bias part 2 */
-        f32u += mant_odd;
+        switch (round) {
+        case SIMDE_F16_ROUND_TO_NEAREST:
+          f32u += UINT32_C(0xfff) + mant_odd;
+          break;
+        case SIMDE_F16_ROUND_TO_NEG_INF:
+          if (dropped && sign) f32u += UINT32_C(0x2000);
+          break;
+        case SIMDE_F16_ROUND_TO_POS_INF:
+          if (dropped && !sign) f32u += UINT32_C(0x2000);
+          break;
+        case SIMDE_F16_ROUND_TO_ZERO: break;
+        }
+
         /* take the bits! */
         f16u = HEDLEY_STATIC_CAST(uint16_t, f32u >> 13);
       }
@@ -230,10 +275,12 @@ simde_float16_from_float32 (simde_float32 value) {
 
     f16u |= sign >> 16;
     res = simde_uint16_as_float16(f16u);
-  #endif
+  }
 
   return res;
 }
+
+#define simde_float16_from_float32(x) simde_x_float16_from_float32(x, SIMDE_F16_ROUND_TO_NEAREST)
 
 static HEDLEY_ALWAYS_INLINE HEDLEY_CONST
 simde_float32
