@@ -401,7 +401,14 @@ simde_mm_fixupimm_ss (simde__m128 a, simde__m128 b, simde__m128i c, int imm8)
 
   switch (((c_.i32[0] >> (select << 2)) & 15)) {
     case 0:
-      b_.f32[0] =  a_.f32[0];
+      #if defined(SIMDE_BUG_GCC_121064)
+      {
+         simde_float32 tmp = a_.f32[0];
+         simde_memcpy(&b_.f32[0], &tmp, sizeof(tmp));
+      }
+      #else
+         b_.f32[0] = a_.f32[0];
+      #endif
       break;
     case 2:
       b_.f32[0] =  SIMDE_MATH_NANF;
