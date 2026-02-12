@@ -1508,6 +1508,7 @@ test_simde_mm_roundscale_round_sd (SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm_roundscale_round_sd(a, b, INT32_C(          84), INT32_C(           8));
   simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[4].r), 1);
 
+  #if !defined(SIMDE_FAST_MATH)
   a = simde_mm_loadu_pd(test_vec[5].a);
   b = simde_mm_loadu_pd(test_vec[5].b);
   r = simde_mm_roundscale_round_sd(a, b, INT32_C(         240), INT32_C(           4));
@@ -1517,6 +1518,7 @@ test_simde_mm_roundscale_round_sd (SIMDE_MUNIT_TEST_ARGS) {
   b = simde_mm_loadu_pd(test_vec[6].b);
   r = simde_mm_roundscale_round_sd(a, b, INT32_C(          33), INT32_C(           8));
   simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[6].r), 1);
+  #endif
 
   a = simde_mm_loadu_pd(test_vec[7].a);
   b = simde_mm_loadu_pd(test_vec[7].b);
