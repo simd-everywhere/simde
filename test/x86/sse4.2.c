@@ -1535,7 +1535,7 @@ test_simde_mm_cmpestra(SIMDE_MUNIT_TEST_ARGS) {
     simde__m128i b;
     int lb;
     int r;
-  } test_vec[8] = {
+  } test_vec_c[] = {
     { simde_mm_set_epi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C( 100), INT8_C(  99), INT8_C(  98), INT8_C(  97)),
       4,
       simde_mm_set_epi8(INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C( 121), INT8_C(  99), INT8_C( 120), INT8_C(  97)),
@@ -1577,11 +1577,87 @@ test_simde_mm_cmpestra(SIMDE_MUNIT_TEST_ARGS) {
       16,
       1 },
   };
-
-  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
-    int r = simde_mm_cmpestra(test_vec[i].a, test_vec[i].la, test_vec[i].b, test_vec[i].lb, SIMDE_SIDD_UBYTE_OPS | SIMDE_SIDD_CMP_EQUAL_ANY);
-    simde_assert_equal_i(r, test_vec[i].r);
+  const struct {
+    uint8_t a[16];
+    int la;
+    uint8_t b[16];
+    int lb;
+    int r;
+  } test_vecu[] = {
+    { { UINT8_C(  20), UINT8_C(  10), UINT8_C(  33), UINT8_C(  56), UINT8_C(  78), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0) },
+      INT8_C(   3),
+      { UINT8_C(  20), UINT8_C(  10), UINT8_C(  34), UINT8_C(  98), UINT8_C(127), UINT8_C(  20), UINT8_C(  10), UINT8_C(  32), UINT8_C(  20), UINT8_C(  10), UINT8_C(  32), UINT8_C(  11), UINT8_C(   3), UINT8_C(  20), UINT8_C(  10), UINT8_C(  31) },
+      INT8_C(  17),
+      INT8_C(   1) },
+    { { UINT8_C(  20), UINT8_C( 127), UINT8_C(   0), UINT8_C(  45), UINT8_C(  77), UINT8_C(   1), UINT8_C(  34), UINT8_C(  43), UINT8_C( 109), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0) },
+      INT8_C(   9),
+      { UINT8_C(   2), UINT8_C( 127), UINT8_C(   0), UINT8_C(  54), UINT8_C(   6), UINT8_C(  43), UINT8_C(  12), UINT8_C( 110), UINT8_C( 100), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0) },
+      INT8_C(  20),
+      INT8_C(   0) },
+    { { UINT8_C(  22), UINT8_C(  33), UINT8_C(  90), UINT8_C(   1), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0), UINT8_C(   0) },
+      INT8_C(   4),
+      { UINT8_C(  22), UINT8_C(  33), UINT8_C(  90), UINT8_C(   1), UINT8_C(   1), UINT8_C(   5), UINT8_C(   4), UINT8_C(   7), UINT8_C(  98), UINT8_C(  34), UINT8_C(   1), UINT8_C(  12), UINT8_C(  13), UINT8_C(  14), UINT8_C(  15), UINT8_C(  16) },
+      INT8_C(  11),
+      INT8_C(   0) },
+  };
+  const struct {
+    int8_t a[16];
+    int la;
+    int8_t b[16];
+    int lb;
+    int r;
+  } test_veci[] = {
+    { { INT8_C(  45), INT8_C( -94), INT8_C(  38), INT8_C( -11), INT8_C(  84), INT8_C(-123), INT8_C( -43), INT8_C( -49), INT8_C(  25), INT8_C( -55), INT8_C(-121), INT8_C(  -6), INT8_C(  57), INT8_C( 108), INT8_C( -55), INT8_C(  69) },
+      INT8_C(  23),
+      { INT8_C( -26), INT8_C( -61), INT8_C( -21), INT8_C( -96), INT8_C(  48), INT8_C(-122), INT8_C(  95), INT8_C( -56), INT8_C(  29), INT8_C( -55), INT8_C(-121), INT8_C(  -6), INT8_C(  57), INT8_C( 108), INT8_C( -55), INT8_C(  69) },
+      INT8_C(  28),
+      INT8_C(   0) },
+    { { INT8_C( -12), INT8_C(  -8), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(  0), INT8_C(   0) },
+      INT8_C(   2),
+      { INT8_C( -12), INT8_C(   7), INT8_C( -12), INT8_C(   8), INT8_C( -13), INT8_C(  45), INT8_C( -12), INT8_C(   8), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(  0), INT8_C(   0) },
+      INT8_C(   8),
+      INT8_C(   0) },
+    { { INT8_C(-100), INT8_C(-127), INT8_C(  56), INT8_C(  78), INT8_C(  21), INT8_C(  -1), INT8_C(   9), INT8_C( 127), INT8_C(  45), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0), INT8_C(   0) },
+      INT8_C(  10),
+      { INT8_C( 100), INT8_C( 126), INT8_C(  30), INT8_C(  65), INT8_C(  87), INT8_C(  54), INT8_C(  80), INT8_C(  81), INT8_C( -98), INT8_C(-101), INT8_C(  90), INT8_C(   1), INT8_C(   5), INT8_C(  60), INT8_C( -77), INT8_C( -65) },
+      INT8_C(  20),
+      INT8_C(   1) },
+  };
+  simde__m128i a, b;
+  int r;
+  for (size_t i = 0 ; i < (sizeof(test_vec_c) / sizeof(test_vec_c[0])); i++) {
+    r = simde_mm_cmpestra(test_vec_c[i].a, test_vec_c[i].la, test_vec_c[i].b, test_vec_c[i].lb, SIMDE_SIDD_UBYTE_OPS | SIMDE_SIDD_CMP_EQUAL_ANY);
+    simde_assert_equal_i32(r, test_vec_c[i].r);
   }
+  a = simde_x_mm_loadu_epu8(test_vecu[0].a);
+  b = simde_x_mm_loadu_epu8(test_vecu[0].b);
+  r = simde_mm_cmpestra(a, test_vecu[0].la, b, test_vecu[0].lb, SIMDE_SIDD_UBYTE_OPS | SIMDE_SIDD_CMP_EQUAL_ORDERED | SIMDE_SIDD_MOST_SIGNIFICANT);
+  simde_assert_equal_i32(r, test_vecu[0].r);
+
+  a = simde_x_mm_loadu_epu8(test_vecu[1].a);
+  b = simde_x_mm_loadu_epu8(test_vecu[1].b);
+  r = simde_mm_cmpestra(a, test_vecu[1].la, b, test_vecu[1].lb, SIMDE_SIDD_UBYTE_OPS | SIMDE_SIDD_CMP_EQUAL_EACH | SIMDE_SIDD_LEAST_SIGNIFICANT | SIMDE_SIDD_NEGATIVE_POLARITY);
+  simde_assert_equal_i32(r, test_vecu[1].r);
+
+  a = simde_x_mm_loadu_epu8(test_vecu[2].a);
+  b = simde_x_mm_loadu_epu8(test_vecu[2].b);
+  r = simde_mm_cmpestra(a, test_vecu[2].la, b, test_vec_c[2].lb, SIMDE_SIDD_UBYTE_OPS | SIMDE_SIDD_CMP_EQUAL_ANY | SIMDE_SIDD_LEAST_SIGNIFICANT | SIMDE_SIDD_MASKED_NEGATIVE_POLARITY);
+  simde_assert_equal_i32(r, test_vec_c[2].r);
+
+  a = simde_mm_loadu_epi8(test_veci[0].a);
+  b = simde_mm_loadu_epi8(test_veci[0].b);
+  r = simde_mm_cmpestra(a, test_veci[0].la, b, test_veci[0].lb, SIMDE_SIDD_SBYTE_OPS | SIMDE_SIDD_CMP_RANGES | SIMDE_SIDD_LEAST_SIGNIFICANT);
+  simde_assert_equal_i32(r, test_veci[0].r);
+
+  a = simde_mm_loadu_epi8(test_veci[1].a);
+  b = simde_mm_loadu_epi8(test_veci[1].b);
+  r = simde_mm_cmpestra(a, test_veci[1].la, b, test_veci[1].lb, SIMDE_SIDD_SBYTE_OPS | SIMDE_SIDD_CMP_EQUAL_ORDERED | SIMDE_SIDD_MOST_SIGNIFICANT | SIMDE_SIDD_NEGATIVE_POLARITY);
+  simde_assert_equal_i32(r, test_veci[1].r);
+
+  a = simde_mm_loadu_epi8(test_veci[2].a);
+  b = simde_mm_loadu_epi8(test_veci[2].b);
+  r = simde_mm_cmpestra(a, test_veci[2].la, b, test_veci[2].lb, SIMDE_SIDD_SBYTE_OPS | SIMDE_SIDD_CMP_EQUAL_ANY | SIMDE_SIDD_LEAST_SIGNIFICANT);
+  simde_assert_equal_i32(r, test_veci[2].r);
   return 0;
 }
 
