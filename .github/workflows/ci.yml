@@ -447,8 +447,8 @@ jobs:
     - name: add ccache to the build path
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        sudo ln -s /usr/bin/${CCBIN} /usr/bin/gcc
-        sudo ln -s /usr/bin/${CXXBIN} /usr/bin/g++
+        sudo ln -s "/usr/bin/${CCBIN}" /usr/bin/gcc
+        sudo ln -s "/usr/bin/${CXXBIN}" /usr/bin/g++
     - name: Configure
       run: meson setup build || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build

@@ -319,8 +319,8 @@ jobs:
         sudo apt-get -y --no-install-recommends install ccache ninja-build \
           binfmt-support qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross
         sudo apt-get install -y ${{ github.event.client_payload.extra }} \
-          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu$ \
-          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu$ \
+          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
+          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
           libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
         pipx install meson==1.3.2
     # - name: ccache
