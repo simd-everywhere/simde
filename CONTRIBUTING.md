@@ -3,6 +3,10 @@
 First off, if you're even reading this, thank you!  There is a lot of
 work to do, and any help is appreciated.
 
+Note that we cannot accept contributions written by [LLM](https://en.wikipedia.org/wiki/Large_language_model)s.
+You are welcome to use LLMs privately for inspiration, but legally we cannot
+accept their output.
+
 If you haven't already, please read the
 [README](https://github.com/simd-everywhere/simde/blob/master/README.md).  The
 [wiki](https://github.com/simd-everywhere/simde/wiki) also has some good
