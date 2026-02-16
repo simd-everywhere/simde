@@ -1,10 +1,10 @@
 #define SIMDE_TEST_ARM_SVE_INSN and
 
 #include "test-sve.h"
-#include "../../../simde/arm/sve/and.h"
+#include <simde/arm/sve/and.h>
 
-#include "../../../simde/arm/sve/cmplt.h"
-#include "../../../simde/arm/sve/dup.h"
+#include <simde/arm/sve/cmplt.h>
+#include <simde/arm/sve/dup.h>
 
 static int
 test_simde_svand_s8_z (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN cale
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/cale.h"
+#include <simde/arm/neon/cale.h>
 
 static int
 test_simde_vcaleh_f16 (SIMDE_MUNIT_TEST_ARGS) {

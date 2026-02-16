@@ -2,7 +2,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN mull_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/mull_lane.h"
+#include <simde/arm/neon/mull_lane.h>
 
 static int
 test_simde_vmull_lane_s16 (SIMDE_MUNIT_TEST_ARGS) {

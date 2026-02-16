@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN add
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/add.h"
+#include <simde/arm/neon/add.h>
 
 static int
 test_simde_vaddh_f16 (SIMDE_MUNIT_TEST_ARGS) {

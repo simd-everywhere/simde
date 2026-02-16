@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN mlal_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/mlal_lane.h"
+#include <simde/arm/neon/mlal_lane.h>
 
 static int
 test_simde_vmlal_lane_s16 (SIMDE_MUNIT_TEST_ARGS) {

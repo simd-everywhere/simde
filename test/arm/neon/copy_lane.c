@@ -1,8 +1,8 @@
 #define SIMDE_TEST_ARM_NEON_INSN copy_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/copy_lane.h"
-#include "../../../simde/arm/neon/reinterpret.h"
+#include <simde/arm/neon/copy_lane.h>
+#include <simde/arm/neon/reinterpret.h>
 
 static int
 test_simde_vcopy_lane_s8 (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,7 +1,7 @@
 #define SIMDE_TEST_MIPS_MSA_INSN madd
 
 #include "test-msa.h"
-#include "../../../simde/mips/msa/madd.h"
+#include <simde/mips/msa/madd.h>
 
 static int
 test_simde_fmadd_w (SIMDE_MUNIT_TEST_ARGS) {

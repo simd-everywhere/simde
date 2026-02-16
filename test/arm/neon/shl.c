@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN shl
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/shl.h"
+#include <simde/arm/neon/shl.h>
 
 static int
 test_simde_vshl_s8 (SIMDE_MUNIT_TEST_ARGS) {

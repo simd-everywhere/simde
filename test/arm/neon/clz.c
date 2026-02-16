@@ -1,12 +1,12 @@
 #define SIMDE_TEST_ARM_NEON_INSN clz
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/clz.h"
-#include "../../../simde/arm/neon/and.h"
-#include "../../../simde/arm/neon/dup_n.h"
-#include "../../../simde/arm/neon/neg.h"
-#include "../../../simde/arm/neon/set_lane.h"
-#include "../../../simde/arm/neon/shl.h"
+#include <simde/arm/neon/clz.h>
+#include <simde/arm/neon/and.h>
+#include <simde/arm/neon/dup_n.h>
+#include <simde/arm/neon/neg.h>
+#include <simde/arm/neon/set_lane.h>
+#include <simde/arm/neon/shl.h>
 
 static int
 test_simde_x_vclzb_s8 (SIMDE_MUNIT_TEST_ARGS) {

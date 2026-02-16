@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN cmla_rot270
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/cmla_rot270.h"
+#include <simde/arm/neon/cmla_rot270.h>
 
 static int
 test_simde_vcmla_rot270_f16 (SIMDE_MUNIT_TEST_ARGS) {

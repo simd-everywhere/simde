@@ -2,8 +2,8 @@
 
 #include "test-neon.h"
 
-#include "../../../simde/arm/neon/qabs.h"
-#include "../../../simde/arm/neon/set_lane.h"
+#include <simde/arm/neon/qabs.h>
+#include <simde/arm/neon/set_lane.h>
 
 static int
 test_simde_vqabsb_s8 (SIMDE_MUNIT_TEST_ARGS) {

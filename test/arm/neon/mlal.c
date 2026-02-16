@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN mlal
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/mlal.h"
+#include <simde/arm/neon/mlal.h>
 
 static int
 test_simde_vmlal_s8 (SIMDE_MUNIT_TEST_ARGS) {

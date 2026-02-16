@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN cmla
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/cmla.h"
+#include <simde/arm/neon/cmla.h>
 
 static int
 test_simde_vcmla_f16 (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN bsl
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/bsl.h"
+#include <simde/arm/neon/bsl.h>
 
 static int
 test_simde_vbsl_f16 (SIMDE_MUNIT_TEST_ARGS) {

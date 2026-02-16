@@ -1,11 +1,11 @@
 #define SIMDE_TEST_ARM_NEON_INSN qmovun_high
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/and.h"
-#include "../../../simde/arm/neon/dup_n.h"
-#include "../../../simde/arm/neon/neg.h"
-#include "../../../simde/arm/neon/qmovun_high.h"
-#include "../../../simde/arm/neon/shl.h"
+#include <simde/arm/neon/and.h>
+#include <simde/arm/neon/dup_n.h>
+#include <simde/arm/neon/neg.h>
+#include <simde/arm/neon/qmovun_high.h>
+#include <simde/arm/neon/shl.h>
 
 
 static int

@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN fma
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/fma.h"
+#include <simde/arm/neon/fma.h>
 
 static int
 test_simde_vfma_f32 (SIMDE_MUNIT_TEST_ARGS) {

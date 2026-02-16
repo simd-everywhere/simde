@@ -22,7 +22,7 @@
  */
 
 #define SIMDE_TEST_WASM_RELAXED_SIMD_INSN max
-#include "../../../simde/wasm/relaxed-simd.h"
+#include <simde/wasm/relaxed-simd.h>
 #include "test-relaxed-simd.h"
 
 static int

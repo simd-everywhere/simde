@@ -2,8 +2,8 @@
 #define SIMDE_TEST_ARM_NEON_TEST_NEON_H
 
 #include "../../test.h"
-#include "../../../simde/arm/neon/ld1.h"
-#include "../../../simde/arm/neon/st1.h"
+#include <simde/arm/neon/ld1.h>
+#include <simde/arm/neon/st1.h>
 
 
 HEDLEY_DIAGNOSTIC_PUSH

@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN uzp1
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/uzp1.h"
+#include <simde/arm/neon/uzp1.h>
 
 static int
 test_simde_vuzp1_f16 (SIMDE_MUNIT_TEST_ARGS) {

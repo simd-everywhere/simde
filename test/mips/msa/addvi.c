@@ -1,7 +1,7 @@
 #define SIMDE_TEST_MIPS_MSA_INSN addvi
 
 #include "test-msa.h"
-#include "../../../simde/mips/msa/addvi.h"
+#include <simde/mips/msa/addvi.h>
 
 static int
 test_simde_addvi_b (SIMDE_MUNIT_TEST_ARGS) {

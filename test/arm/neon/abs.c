@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN abs
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/abs.h"
+#include <simde/arm/neon/abs.h>
 
 static int
 test_simde_vabsh_f16 (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,8 +1,8 @@
 #define SIMDE_TEST_ARM_NEON_INSN cmla_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/cmla_lane.h"
-#include "../../../simde/arm/neon/dup_n.h"
+#include <simde/arm/neon/cmla_lane.h>
+#include <simde/arm/neon/dup_n.h>
 
 static int
 test_simde_vcmla_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN abdl_high
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/abdl_high.h"
+#include <simde/arm/neon/abdl_high.h>
 
 static int
 test_simde_vabdl_high_s8 (SIMDE_MUNIT_TEST_ARGS) {

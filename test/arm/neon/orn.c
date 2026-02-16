@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN orn
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/orn.h"
+#include <simde/arm/neon/orn.h>
 
 static int
 test_simde_vorn_s8 (SIMDE_MUNIT_TEST_ARGS) {

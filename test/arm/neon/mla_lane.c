@@ -2,7 +2,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN mla_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/mla_lane.h"
+#include <simde/arm/neon/mla_lane.h>
 
 SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 

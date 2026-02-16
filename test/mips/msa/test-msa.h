@@ -1,7 +1,7 @@
 #if !defined(SIMDE_TEST_MIPS_TEST_MSA_H)
 #define SIMDE_TEST_MIPS_TEST_MSA_H
 
-#include "../../../simde/mips/msa.h"
+#include <simde/mips/msa.h>
 #include "../../test.h"
 
 #if !defined(SIMDE_TEST_BARE)

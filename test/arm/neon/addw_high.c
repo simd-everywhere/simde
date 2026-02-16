@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN addw_high
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/addw_high.h"
+#include <simde/arm/neon/addw_high.h>
 
 static int
 test_simde_vaddw_high_s8 (SIMDE_MUNIT_TEST_ARGS) {

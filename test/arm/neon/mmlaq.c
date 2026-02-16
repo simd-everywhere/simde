@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN mmlaq
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/mmlaq.h"
+#include <simde/arm/neon/mmlaq.h>
 
 static int
 test_simde_vmmlaq_s32 (SIMDE_MUNIT_TEST_ARGS) {

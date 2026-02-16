@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN get_high
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/get_high.h"
+#include <simde/arm/neon/get_high.h>
 
 static int
 test_simde_vget_high_f16 (SIMDE_MUNIT_TEST_ARGS) {

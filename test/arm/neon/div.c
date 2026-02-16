@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN div
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/div.h"
+#include <simde/arm/neon/div.h>
 
 static int
 test_simde_vdivh_f16 (SIMDE_MUNIT_TEST_ARGS) {

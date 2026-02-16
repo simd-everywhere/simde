@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN eor
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/eor.h"
+#include <simde/arm/neon/eor.h>
 
 static int
 test_simde_veor_s8 (SIMDE_MUNIT_TEST_ARGS) {

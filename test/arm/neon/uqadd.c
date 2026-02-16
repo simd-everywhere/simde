@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN uqadd
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/uqadd.h"
+#include <simde/arm/neon/uqadd.h>
 
 static int
 test_simde_vuqaddb_s8 (SIMDE_MUNIT_TEST_ARGS) {

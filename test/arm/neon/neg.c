@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN neg
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/neg.h"
+#include <simde/arm/neon/neg.h>
 
 static int
 test_simde_vnegh_f16 (SIMDE_MUNIT_TEST_ARGS) {

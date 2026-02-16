@@ -1,8 +1,8 @@
 #define SIMDE_TEST_ARM_NEON_INSN mul_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/mul_lane.h"
-#include "../../../simde/arm/neon/dup_n.h"
+#include <simde/arm/neon/mul_lane.h>
+#include <simde/arm/neon/dup_n.h>
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_

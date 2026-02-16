@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN abal_high
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/abal_high.h"
+#include <simde/arm/neon/abal_high.h>
 
 /* https://community.intel.com/t5/Intel-C-Compiler/ICC-generates-incorrect-code/td-p/1199261 */
 #if defined(HEDLEY_INTEL_VERSION)
