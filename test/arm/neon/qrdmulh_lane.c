@@ -2,7 +2,7 @@
 
 #include "test/test.h"
 #include "test-neon.h"
-#include "../../../simde/arm/neon/qrdmulh_lane.h"
+#include <simde/arm/neon/qrdmulh_lane.h>
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_

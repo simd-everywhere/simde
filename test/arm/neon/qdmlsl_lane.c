@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN qdmlsl_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/qdmlsl_lane.h"
+#include <simde/arm/neon/qdmlsl_lane.h>
 
 SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_
 

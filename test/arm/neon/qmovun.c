@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN qmovun
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/qmovun.h"
+#include <simde/arm/neon/qmovun.h>
 
 static int
 test_simde_vqmovun_s16 (SIMDE_MUNIT_TEST_ARGS) {

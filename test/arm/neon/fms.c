@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN fms
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/fms.h"
+#include <simde/arm/neon/fms.h>
 
 static int
 test_simde_vfms_f32 (SIMDE_MUNIT_TEST_ARGS) {

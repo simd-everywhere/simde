@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN mulx
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/mulx.h"
+#include <simde/arm/neon/mulx.h>
 
 static int
 test_simde_vmulxh_f16 (SIMDE_MUNIT_TEST_ARGS) {

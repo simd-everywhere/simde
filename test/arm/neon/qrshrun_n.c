@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN qrshrun_n
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/qrshrun_n.h"
+#include <simde/arm/neon/qrshrun_n.h>
 
 static int
 test_simde_vqrshrunh_n_s16 (SIMDE_MUNIT_TEST_ARGS) {

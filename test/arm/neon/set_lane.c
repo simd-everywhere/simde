@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN set_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/set_lane.h"
+#include <simde/arm/neon/set_lane.h>
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_

@@ -2,7 +2,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN rsqrte
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/rsqrte.h"
+#include <simde/arm/neon/rsqrte.h>
 
 static int
 test_simde_vrsqrteh_f16 (SIMDE_MUNIT_TEST_ARGS) {

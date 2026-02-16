@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN ceq
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/ceq.h"
+#include <simde/arm/neon/ceq.h>
 
 static int
 test_simde_vceqs_f32 (SIMDE_MUNIT_TEST_ARGS) {

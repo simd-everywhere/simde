@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN movn
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/movn.h"
+#include <simde/arm/neon/movn.h>
 
 static int
 test_simde_vmovn_s16 (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,8 +1,8 @@
 #define SIMDE_TEST_ARM_NEON_INSN aes
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/aes.h"
-#include "../../../simde/x86/aes.h"
+#include <simde/arm/neon/aes.h>
+#include <simde/x86/aes.h>
 
 static int
 test_simde_vaeseq_u8(SIMDE_MUNIT_TEST_ARGS) {

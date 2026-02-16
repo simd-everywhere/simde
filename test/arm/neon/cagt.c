@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN cagt
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/cagt.h"
+#include <simde/arm/neon/cagt.h>
 
 static int
 test_simde_vcagth_f16 (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN cadd_rot270
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/cadd_rot270.h"
+#include <simde/arm/neon/cadd_rot270.h>
 
 static int
 test_simde_vcadd_rot270_f16 (SIMDE_MUNIT_TEST_ARGS) {

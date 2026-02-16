@@ -1,8 +1,8 @@
 #define SIMDE_TEST_ARM_NEON_INSN cmla_rot90_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/cmla_rot90_lane.h"
-#include "../../../simde/arm/neon/dup_n.h"
+#include <simde/arm/neon/cmla_rot90_lane.h>
+#include <simde/arm/neon/dup_n.h>
 
 static int
 test_simde_vcmla_rot90_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {

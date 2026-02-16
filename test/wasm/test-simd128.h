@@ -1,7 +1,7 @@
 #if !defined(SIMDE_TEST_WASM_TEST_SIMD128_H)
 #define SIMDE_TEST_WASM_TEST_SIMD128_H
 
-#include "../../simde/wasm/simd128.h"
+#include <simde/wasm/simd128.h>
 #include "../test.h"
 
 HEDLEY_DIAGNOSTIC_PUSH

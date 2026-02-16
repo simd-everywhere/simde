@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN and
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/and.h"
+#include <simde/arm/neon/and.h>
 
 static int
 test_simde_vand_s8 (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,7 +1,7 @@
 #include "test/test.h"
 #define SIMDE_TEST_ARM_NEON_INSN st1q_x2
 #include "test-neon.h"
-#include "../../../simde/arm/neon/st1q_x2.h"
+#include <simde/arm/neon/st1q_x2.h>
 
 #if !defined(SIMDE_BUG_INTEL_857088)
 

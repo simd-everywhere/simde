@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN cvtp
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/cvtp.h"
+#include <simde/arm/neon/cvtp.h>
 
 /* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
  * https://github.com/simd-everywhere/simde/issues/1099

@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN padal
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/padal.h"
+#include <simde/arm/neon/padal.h>
 
 static int
 test_simde_vpadal_s8 (SIMDE_MUNIT_TEST_ARGS) {

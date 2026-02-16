@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN cvtn
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/cvtn.h"
+#include <simde/arm/neon/cvtn.h>
 
 static int
 test_simde_vcvtnq_s32_f32 (SIMDE_MUNIT_TEST_ARGS) {

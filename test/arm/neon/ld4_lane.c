@@ -1,8 +1,8 @@
 #define SIMDE_TEST_ARM_NEON_INSN ld4_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/ld4_lane.h"
-#include "../../../simde/arm/neon/ld1.h"
+#include <simde/arm/neon/ld4_lane.h>
+#include <simde/arm/neon/ld1.h>
 
 #if !defined(SIMDE_BUG_INTEL_857088)
 

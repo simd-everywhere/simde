@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN sha256
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/sha256.h"
+#include <simde/arm/neon/sha256.h>
 
 static int
 test_simde_vsha256hq_u32(SIMDE_MUNIT_TEST_ARGS) {

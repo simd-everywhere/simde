@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN recpe
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/recpe.h"
+#include <simde/arm/neon/recpe.h>
 
 static int
 test_simde_vrecpeh_f16 (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN usdot
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/usdot.h"
+#include <simde/arm/neon/usdot.h>
 
 
 static int

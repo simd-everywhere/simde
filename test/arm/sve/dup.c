@@ -1,8 +1,8 @@
 #define SIMDE_TEST_ARM_SVE_INSN dup
 
 #include "test-sve.h"
-#include "../../../simde/arm/sve/dup.h"
-#include "../../../simde/arm/sve/cmplt.h"
+#include <simde/arm/sve/dup.h>
+#include <simde/arm/sve/cmplt.h>
 
 static int
 test_simde_svdup_n_s8 (SIMDE_MUNIT_TEST_ARGS) {

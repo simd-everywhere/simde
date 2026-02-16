@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN sm4
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/sm4.h"
+#include <simde/arm/neon/sm4.h>
 
 static int
 test_simde_vsm4eq_u32(SIMDE_MUNIT_TEST_ARGS) {

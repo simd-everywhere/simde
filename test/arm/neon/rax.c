@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN rax
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/rax.h"
+#include <simde/arm/neon/rax.h>
 
 static int
 test_simde_vrax1q_u64(SIMDE_MUNIT_TEST_ARGS) {

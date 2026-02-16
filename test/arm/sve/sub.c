@@ -1,9 +1,9 @@
 #define SIMDE_TEST_ARM_SVE_INSN sub
 
 #include "test-sve.h"
-#include "../../../simde/arm/sve/sub.h"
+#include <simde/arm/sve/sub.h>
 
-#include "../../../simde/arm/sve/cmplt.h"
+#include <simde/arm/sve/cmplt.h>
 
 static int
 test_simde_svsub_s8_z (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,9 +1,9 @@
 #define SIMDE_TEST_ARM_NEON_INSN ld2_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/ld2_lane.h"
-#include "../../../simde/arm/neon/ld1.h"
-#include "../../../simde/arm/neon/ld2.h"
+#include <simde/arm/neon/ld2_lane.h>
+#include <simde/arm/neon/ld1.h>
+#include <simde/arm/neon/ld2.h>
 
 static int
 test_simde_vld2_lane_s8 (SIMDE_MUNIT_TEST_ARGS) {

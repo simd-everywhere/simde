@@ -1,8 +1,8 @@
 #define SIMDE_TEST_ARM_NEON_INSN sm3
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/sm3.h"
-#include "../../../simde/arm/neon/dup_n.h"
+#include <simde/arm/neon/sm3.h>
+#include <simde/arm/neon/dup_n.h>
 
 static int
 test_simde_vsm3ss1q_u32(SIMDE_MUNIT_TEST_ARGS) {

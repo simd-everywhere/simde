@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN rsubhn_high
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/rsubhn_high.h"
+#include <simde/arm/neon/rsubhn_high.h>
 
 static int
 test_simde_vrsubhn_high_s16 (SIMDE_MUNIT_TEST_ARGS) {

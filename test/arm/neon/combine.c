@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN combine
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/combine.h"
+#include <simde/arm/neon/combine.h>
 
 static int
 test_simde_vcombine_f16 (SIMDE_MUNIT_TEST_ARGS) {

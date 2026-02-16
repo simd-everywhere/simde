@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN pminnm
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/pminnm.h"
+#include <simde/arm/neon/pminnm.h>
 
 static int
 test_simde_vpminnm_f16 (SIMDE_MUNIT_TEST_ARGS) {

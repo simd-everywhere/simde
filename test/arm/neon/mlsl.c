@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN mlsl
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/mlsl.h"
+#include <simde/arm/neon/mlsl.h>
 
 static int
 test_simde_vmlsl_s8 (SIMDE_MUNIT_TEST_ARGS) {

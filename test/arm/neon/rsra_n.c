@@ -4,9 +4,9 @@
 
 /* Check that both of these work */
 #if defined(__cplusplus)
-  #include "../../../simde/arm/neon/rsra_n.h"
+  #include <simde/arm/neon/rsra_n.h>
 #else
-  #include "../../../simde/arm/neon.h"
+  #include <simde/arm/neon.h>
 #endif
 
 static int

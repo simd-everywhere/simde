@@ -1,8 +1,8 @@
 #define SIMDE_TEST_ARM_NEON_INSN dot_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/dot_lane.h"
-#include "../../../simde/arm/neon/dup_n.h"
+#include <simde/arm/neon/dot_lane.h>
+#include <simde/arm/neon/dup_n.h>
 
 static int
 test_simde_vdot_lane_s32 (SIMDE_MUNIT_TEST_ARGS) {

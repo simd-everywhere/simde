@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN st2_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/st2_lane.h"
+#include <simde/arm/neon/st2_lane.h>
 
 #if !defined(SIMDE_BUG_INTEL_857088)
 

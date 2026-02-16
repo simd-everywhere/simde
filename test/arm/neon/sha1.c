@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN sha1
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/sha1.h"
+#include <simde/arm/neon/sha1.h>
 
 static int
 test_simde_vsha1h_u32(SIMDE_MUNIT_TEST_ARGS) {

@@ -1,9 +1,9 @@
 #define SIMDE_TEST_ARM_NEON_INSN st4
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/st4.h"
-#include "../../../simde/arm/neon/ld4.h"
-#include "../../../simde/arm/neon/get_lane.h"
+#include <simde/arm/neon/st4.h>
+#include <simde/arm/neon/ld4.h>
+#include <simde/arm/neon/get_lane.h>
 
 /* Implementor notes (seanptmaher):
  *

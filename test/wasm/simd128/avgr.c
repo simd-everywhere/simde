@@ -22,7 +22,7 @@
  */
 
 #define SIMDE_TEST_WASM_SIMD128_INSN avgr
-#include "../../../simde/wasm/simd128.h"
+#include <simde/wasm/simd128.h>
 #include "test-simd128.h"
 
 static int

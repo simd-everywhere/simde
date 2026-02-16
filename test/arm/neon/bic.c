@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN bic
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/bic.h"
+#include <simde/arm/neon/bic.h>
 
 static int
 test_simde_vbic_s8 (SIMDE_MUNIT_TEST_ARGS) {

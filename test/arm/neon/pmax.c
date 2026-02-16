@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN pmax
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/pmax.h"
+#include <simde/arm/neon/pmax.h>
 
 static int
 test_simde_vpmax_f16 (SIMDE_MUNIT_TEST_ARGS) {

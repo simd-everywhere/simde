@@ -1,7 +1,7 @@
 #define SIMDE_TEST_MIPS_MSA_INSN and
 
 #include "test-msa.h"
-#include "../../../simde/mips/msa/and.h"
+#include <simde/mips/msa/and.h>
 
 static int
 test_simde_and_v (SIMDE_MUNIT_TEST_ARGS) {

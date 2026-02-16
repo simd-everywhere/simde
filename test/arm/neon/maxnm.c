@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN maxnm
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/maxnm.h"
+#include <simde/arm/neon/maxnm.h>
 
 static int
 test_simde_vmaxnmh_f16 (SIMDE_MUNIT_TEST_ARGS) {

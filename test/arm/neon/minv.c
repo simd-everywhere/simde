@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN minv
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/minv.h"
+#include <simde/arm/neon/minv.h>
 
 static int
 test_simde_vminv_f16 (SIMDE_MUNIT_TEST_ARGS) {

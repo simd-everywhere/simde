@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN padd
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/padd.h"
+#include <simde/arm/neon/padd.h>
 
 static int
 test_simde_vpadd_f16 (SIMDE_MUNIT_TEST_ARGS) {

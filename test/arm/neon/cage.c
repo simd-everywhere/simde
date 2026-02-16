@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN cage
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/cage.h"
+#include <simde/arm/neon/cage.h>
 
 static int
 test_simde_vcageh_f16 (SIMDE_MUNIT_TEST_ARGS) {

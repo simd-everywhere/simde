@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN qdmlsl_high_lane
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/qdmlsl_high_lane.h"
+#include <simde/arm/neon/qdmlsl_high_lane.h>
 
 static int
 test_simde_vqdmlsl_high_lane_s16 (SIMDE_MUNIT_TEST_ARGS) {

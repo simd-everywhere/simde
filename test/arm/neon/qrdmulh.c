@@ -1,7 +1,7 @@
 #define SIMDE_TEST_ARM_NEON_INSN qrdmulh
 
 #include "test-neon.h"
-#include "../../../simde/arm/neon/qrdmulh.h"
+#include <simde/arm/neon/qrdmulh.h>
 
 static int
 test_simde_vqrdmulh_s16 (SIMDE_MUNIT_TEST_ARGS) {
