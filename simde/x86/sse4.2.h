@@ -94,6 +94,162 @@ SIMDE_BEGIN_DECLS_
   #define _SIDD_UNIT_MASK SIMDE_SIDD_UNIT_MASK
 #endif
 
+#if 0 // not yet implemented
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpestra (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  return 0;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpestra(a, la, b, lb, imm8) _mm_cmpestra(a, la, b, lb, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpestra
+  #define _mm_cmpestra(a, la, b, lb, imm8) simde_mm_cmpestra(a, la, b, lb, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpestrc (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  return 0;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpestrc(a, la, b, lb, imm8) _mm_cmpestrc(a, la, b, lb, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpestrc
+  #define _mm_cmpestrc(a, la, b, lb, imm8) simde_mm_cmpestrc(a, la, b, lb, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpestri (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  return 0;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpestri(a, la, b, lb, imm8) _mm_cmpestri(a, la, b, lb, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpestri
+  #define _mm_cmpestri(a, la, b, lb, imm8) simde_mm_cmpestri(a, la, b, lb, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i simde_mm_cmpestrm (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  simde__m128i_private result_ = simde__m128i_to_private(simde_mm_setzero_si128());
+  return simde__m128i_from_private(result_);
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpestrm(a, la, b, lb, imm8) _mm_cmpestrm(a, la, b, lb, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpestrm
+  #define _mm_cmpestrm(a, la, b, lb, imm8) simde_mm_cmpestrm(a, la, b, lb, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpestro (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  return 0;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpestro(a, la, b, lb, imm8) _mm_cmpestro(a, la, b, lb, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpestro
+  #define _mm_cmpestro(a, la, b, lb, imm8) simde_mm_cmpestro(a, la, b, lb, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpistra (simde__m128i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  return 0;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpistra(a, b, imm8) _mm_cmpistra(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpistra
+  #define _mm_cmpistra(a, b, imm8) simde_mm_cmpistra(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpistrc (simde__m128i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  return 0;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpistrc(a, b, imm8) _mm_cmpistrc(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpistrc
+  #define _mm_cmpistrc(a, b, imm8) simde_mm_cmpistrc(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpistri (simde__m128i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  return 0;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpistri(a, b, imm8) _mm_cmpistri(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpistri
+  #define _mm_cmpistri(a, b, imm8) simde_mm_cmpistri(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i simde_mm_cmpistrm (simde__m128i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  simde__m128i_private result_ = simde__m128i_to_private(simde_mm_setzero_si128());
+  return simde__m128i_from_private(result_);
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpistrm(a, b, imm8) _mm_cmpistrm(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpistrm
+  #define _mm_cmpistrm(a, b, imm8) simde_mm_cmpistrm(a, b, imm8)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+int simde_mm_cmpistro (simde__m128i a, simde__m128i b, const int imm8)
+    SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
+  simde__m128i_private a_ = simde__m128i_to_private(a);
+  simde__m128i_private b_ = simde__m128i_to_private(b);
+  return 0;
+}
+#if defined(SIMDE_X86_SSE4_2_NATIVE)
+  #define simde_mm_cmpistro(a, b, imm8) _mm_cmpistro(a, b, imm8)
+#endif
+#if defined(SIMDE_X86_SSE4_2_ENABLE_NATIVE_ALIASES)
+  #undef _mm_cmpistro
+  #define _mm_cmpistro(a, b, imm8) simde_mm_cmpistro(a, b, imm8)
+#endif
+
+#endif // unimplemented functions
+
 SIMDE_FUNCTION_ATTRIBUTES
 int simde_mm_cmpestrs (simde__m128i a, int la, simde__m128i b, int lb, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
