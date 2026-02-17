@@ -1,11 +1,13 @@
-#define SIMDE_TEST_ARM_NEON_INSN qshl
-
-#include "test-neon.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <simde/hedley.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/qshl.h>
-#include <simde/arm/neon/and.h>
-#include <simde/arm/neon/dup_n.h>
-#include <simde/arm/neon/neg.h>
-#include <simde/arm/neon/shl.h>
+
+#define SIMDE_TEST_ARM_NEON_INSN qshl
+#include "../../test.h"
+#include "test-neon.h"
 
 /* Until v12, clang used unsigned parameters on the scalar versions, so
  * when testing we need to disable the -Wsign-conversion to avoid a

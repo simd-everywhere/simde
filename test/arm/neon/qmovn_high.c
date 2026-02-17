@@ -1,12 +1,12 @@
-#define SIMDE_TEST_ARM_NEON_INSN qmovn_high
-
-#include "test-neon.h"
-#include <simde/arm/neon/and.h>
-#include <simde/arm/neon/dup_n.h>
-#include <simde/arm/neon/neg.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/qmovn_high.h>
-#include <simde/arm/neon/shl.h>
 
+#define SIMDE_TEST_ARM_NEON_INSN qmovn_high
+#include "../../test.h"
+#include "test-neon.h"
 
 static int
 test_simde_vqmovn_high_s16 (SIMDE_MUNIT_TEST_ARGS) {

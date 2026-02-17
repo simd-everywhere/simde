@@ -24,11 +24,16 @@
  *   2021      Evan Nemerson <evan@nemerson.com>
  */
 
-#define SIMDE_TEST_X86_AVX512_INSN testn
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <simde/x86/avx512/types.h>
+#include <simde/x86/avx512/loadu.h>
 #include <simde/x86/avx512/testn.h>
+
+#define SIMDE_TEST_X86_AVX512_INSN testn
+#include "../../test.h"
+#include "../test-x86.h"
+#include "test-avx512.h"
 
 static int
 test_simde_mm512_testn_epi64_mask (SIMDE_MUNIT_TEST_ARGS) {

@@ -1,8 +1,12 @@
-#include "simde/simde-constify.h"
-#define SIMDE_TEST_ARM_NEON_INSN mlsl_lane
-
-#include "test-neon.h"
+#include <stdint.h>
+#include <simde/simde-constify.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/mlsl_lane.h>
+
+#define SIMDE_TEST_ARM_NEON_INSN mlsl_lane
+#include "../../test.h"
+#include "test-neon.h"
 
 static int
 test_simde_vmlsl_lane_s16 (SIMDE_MUNIT_TEST_ARGS) {

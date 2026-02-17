@@ -25,12 +25,19 @@
  *   2021      Christopher Moore <moore@free.fr>
  */
 
-#define SIMDE_TEST_X86_AVX512_INSN ternarylogic
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
-#include <simde/x86/avx512/ternarylogic.h>
+#include <stdint.h>
+#include <simde/x86/sse2.h>
+#include <simde/x86/avx.h>
+#include <simde/x86/avx512/types.h>
+#include <simde/x86/avx512/loadu.h>
 #include <simde/x86/avx512/setzero.h>
+#include <simde/x86/avx512/ternarylogic.h>
+
+#define SIMDE_TEST_X86_AVX512_INSN ternarylogic
+#include "../../test.h"
+#include "../test-avx.h"
+#include "../test-sse2.h"
+#include "test-avx512.h"
 
 static int
 test_simde_mm_ternarylogic_epi32_1 (SIMDE_MUNIT_TEST_ARGS) {

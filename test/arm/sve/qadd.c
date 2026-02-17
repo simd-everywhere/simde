@@ -1,9 +1,14 @@
-#define SIMDE_TEST_ARM_SVE_INSN qadd
-
-#include "test-sve.h"
+#include <stdint.h>
+#include <simde/hedley.h>
+#include <simde/arm/sve/types.h>
+#include <simde/arm/sve/cnt.h>
+#include <simde/arm/sve/ptest.h>
+#include <simde/arm/sve/ptrue.h>
 #include <simde/arm/sve/qadd.h>
 
-#include <simde/arm/sve/cmplt.h>
+#define SIMDE_TEST_ARM_SVE_INSN qadd
+#include "../../test.h"
+#include "test-sve.h"
 
 static int
 test_simde_svqadd_s8 (SIMDE_MUNIT_TEST_ARGS) {

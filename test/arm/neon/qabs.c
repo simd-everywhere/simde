@@ -1,9 +1,12 @@
-#define SIMDE_TEST_ARM_NEON_INSN qabs
-
-#include "test-neon.h"
-
+#include <stddef.h>
+#include <stdint.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/qabs.h>
-#include <simde/arm/neon/set_lane.h>
+
+#define SIMDE_TEST_ARM_NEON_INSN qabs
+#include "../../test.h"
+#include "test-neon.h"
 
 static int
 test_simde_vqabsb_s8 (SIMDE_MUNIT_TEST_ARGS) {

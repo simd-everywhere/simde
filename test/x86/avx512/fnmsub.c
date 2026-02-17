@@ -25,11 +25,15 @@
  *   2020      kitegi <kitegi@users.noreply.github.com>
  */
 
-#define SIMDE_TEST_X86_AVX512_INSN fnmsub
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
+#include <stddef.h>
+#include <simde/simde-common.h>
+#include <simde/x86/avx512/types.h>
+#include <simde/x86/avx512/loadu.h>
 #include <simde/x86/avx512/fnmsub.h>
+
+#define SIMDE_TEST_X86_AVX512_INSN fnmsub
+#include "../../test.h"
+#include "test-avx512.h"
 
 static int
 test_simde_mm512_fnmsub_ps (SIMDE_MUNIT_TEST_ARGS) {

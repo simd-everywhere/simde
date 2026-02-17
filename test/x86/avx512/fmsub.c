@@ -25,11 +25,22 @@
  *   2020      kitegi <kitegi@users.noreply.github.com>
  */
 
-#define SIMDE_TEST_X86_AVX512_INSN fmsub
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <simde/simde-common.h>
+#include <simde/x86/sse.h>
+#include <simde/x86/sse2.h>
+#include <simde/x86/avx.h>
+#include <simde/x86/avx512/types.h>
+#include <simde/x86/avx512/loadu.h>
 #include <simde/x86/avx512/fmsub.h>
+
+#define SIMDE_TEST_X86_AVX512_INSN fmsub
+#include "../../test.h"
+#include "../test-sse.h"
+#include "../test-sse2.h"
+#include "../test-avx.h"
+#include "test-avx512.h"
 
 static int
 test_simde_mm256_mask3_fmsub_pd (SIMDE_MUNIT_TEST_ARGS) {

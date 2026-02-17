@@ -26,12 +26,21 @@
  *   2025      Michael R. Crusoe <crusoe@debian.org>
  */
 
-#define SIMDE_TEST_X86_AVX512_INSN cmpeq
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <simde/hedley.h>
+#include <simde/simde-common.h>
+#include <simde/x86/avx.h>
+#include <simde/x86/sse2.h>
+#include <simde/x86/avx512/types.h>
 #include <simde/x86/avx512/cmpeq.h>
-#include <simde/x86/avx512/blend.h>
+#include <simde/x86/avx512/loadu.h>
+#include <simde/x86/avx512/set.h>
+
+#define SIMDE_TEST_X86_AVX512_INSN cmpeq
+#include "../../test.h"
+#include "../test-x86.h"
+#include "test-avx512.h"
 
 static int
 test_simde_mm_cmpeq_epi8_mask (SIMDE_MUNIT_TEST_ARGS) {

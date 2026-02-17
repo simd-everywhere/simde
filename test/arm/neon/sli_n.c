@@ -1,7 +1,13 @@
-#define SIMDE_TEST_ARM_NEON_INSN sli_n
-
-#include <test/arm/neon/test-neon.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <simde/simde-common.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/sli_n.h>
+
+#define SIMDE_TEST_ARM_NEON_INSN sli_n
+#include "../../test.h"
+#include "test-neon.h"
 
 static int
 test_simde_vsli_n_s8 (SIMDE_MUNIT_TEST_ARGS) {

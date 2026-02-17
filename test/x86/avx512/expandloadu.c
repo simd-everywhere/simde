@@ -25,11 +25,23 @@
  *   2025      Michael R. Crusoe <crusoe@debian.org>
  */
 
-#define SIMDE_TEST_X86_AVX512_INSN expandloadu
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <simde/simde-common.h>
+#include <simde/simde-align.h>
+#include <simde/x86/sse.h>
+#include <simde/x86/sse2.h>
+#include <simde/x86/avx.h>
+#include <simde/x86/avx512/types.h>
+#include <simde/x86/avx512/loadu.h>
 #include <simde/x86/avx512/expandloadu.h>
+
+#define SIMDE_TEST_X86_AVX512_INSN expandloadu
+#include "../../test.h"
+#include "../test-sse.h"
+#include "../test-sse2.h"
+#include "../test-avx.h"
+#include "test-avx512.h"
 
 /* The test vectors are from simde/x86/avx512/expand.h */
 

@@ -1,8 +1,15 @@
-#define SIMDE_TEST_ARM_NEON_INSN cmla_rot270_lane
-
-#include "test-neon.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <simde/hedley.h>
+#include <simde/simde-common.h>
+#include <simde/simde-f16.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/cmla_rot270_lane.h>
-#include <simde/arm/neon/dup_n.h>
+
+#define SIMDE_TEST_ARM_NEON_INSN cmla_rot270_lane
+#include "../../test.h"
+#include "test-neon.h"
 
 static int
 test_simde_vcmla_rot270_lane_f16 (SIMDE_MUNIT_TEST_ARGS) {

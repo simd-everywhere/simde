@@ -1,9 +1,16 @@
-#define SIMDE_TEST_X86_AVX512_INSN range_round
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
-#include <simde/x86/avx512/setzero.h>
+#include <stdint.h>
+#include <simde/simde-common.h>
+#include <simde/x86/sse.h>
+#include <simde/x86/sse2.h>
+#include <simde/x86/avx512/types.h>
+#include <simde/x86/avx512/loadu.h>
 #include <simde/x86/avx512/range_round.h>
+
+#define SIMDE_TEST_X86_AVX512_INSN range_round
+#include "../../test.h"
+#include "../test-sse.h"
+#include "../test-sse2.h"
+#include "test-avx512.h"
 
 static int
 test_simde_mm512_range_round_ps (SIMDE_MUNIT_TEST_ARGS) {
