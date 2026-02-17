@@ -22,8 +22,9 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX gfni
+#include "../test.h"
+#include "avx512/test-avx512.h"
 #include <simde/x86/gfni.h>
-#include <test/x86/avx512/test-avx512.h>
 
 static int
 test_simde_mm_gf2p8affine_epi64_epi8(SIMDE_MUNIT_TEST_ARGS) {

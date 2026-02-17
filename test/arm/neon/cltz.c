@@ -1,8 +1,13 @@
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN cltz
-
+#include "../../test.h"
 #include "test-neon.h"
+#include <simde/simde-common.h>
+#include <simde/simde-f16.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/cltz.h>
-#include <simde/arm/neon/reinterpret.h>
 
 static int
 test_simde_vcltz_f16 (SIMDE_MUNIT_TEST_ARGS) {

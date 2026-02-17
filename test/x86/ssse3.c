@@ -22,8 +22,9 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX ssse3
+#include "../test.h"
+#include "test-sse2.h"
 #include <simde/x86/ssse3.h>
-#include <test/x86/test-sse2.h>
 
 static int
 test_simde_mm_abs_epi8(SIMDE_MUNIT_TEST_ARGS) {

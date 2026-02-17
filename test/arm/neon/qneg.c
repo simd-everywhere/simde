@@ -1,8 +1,11 @@
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN qneg
-
+#include "../../test.h"
 #include "test-neon.h"
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/qneg.h>
-#include <simde/arm/neon/set_lane.h>
 
 static int
 test_simde_vqnegb_s8 (SIMDE_MUNIT_TEST_ARGS) {

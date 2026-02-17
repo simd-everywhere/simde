@@ -1,8 +1,13 @@
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN usdot_lane
-
+#include "../../test.h"
 #include "test-neon.h"
+#include <simde/hedley.h>
+#include <simde/simde-diagnostic.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/usdot_lane.h>
-#include <simde/arm/neon/dup_n.h>
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_UNREACHABLE_

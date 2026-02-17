@@ -1,8 +1,13 @@
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN cvt_n
-
+#include "../../test.h"
 #include "test-neon.h"
+#include <simde/simde-common.h>
+#include <simde/simde-f16.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/cvt_n.h>
-#include <simde/arm/neon/dup_n.h>
 
 /* Disabled until we fix the FCVTZS/FCVTMS/FCVTPS/FCVTNS family intrinsics
  * https://github.com/simd-everywhere/simde/issues/1099
