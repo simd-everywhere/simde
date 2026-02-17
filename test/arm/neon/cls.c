@@ -1,12 +1,11 @@
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN cls
-
+#include "../../test.h"
 #include "test-neon.h"
+#include <simde/arm/neon/types.h>
 #include <simde/arm/neon/cls.h>
-#include <simde/arm/neon/and.h>
-#include <simde/arm/neon/dup_n.h>
-#include <simde/arm/neon/neg.h>
-#include <simde/arm/neon/set_lane.h>
-#include <simde/arm/neon/shl.h>
+#include <simde/arm/neon/ld1.h>
 
 static int
 test_simde_vcls_s8 (SIMDE_MUNIT_TEST_ARGS) {

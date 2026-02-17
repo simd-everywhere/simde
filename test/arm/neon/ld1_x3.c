@@ -1,8 +1,14 @@
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN ld1_x3
-#include "test/test.h"
+#include "../../test.h"
 #include "test-neon.h"
+#include <simde/simde-common.h>
+#include <simde/simde-f16.h>
+#include <simde/simde-bf16.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/ld1_x3.h>
-#include <simde/arm/neon/ld1_lane.h>
 
 #if !defined(SIMDE_BUG_INTEL_857088)
 

@@ -1,9 +1,17 @@
+#include <limits.h>
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN ld2_lane
-
+#include "../../test.h"
 #include "test-neon.h"
-#include <simde/arm/neon/ld2_lane.h>
+#include <simde/hedley.h>
+#include <simde/simde-constify.h>
+#include <simde/simde-common.h>
+#include <simde/simde-f16.h>
+#include <simde/simde-bf16.h>
+#include <simde/arm/neon/types.h>
 #include <simde/arm/neon/ld1.h>
-#include <simde/arm/neon/ld2.h>
+#include <simde/arm/neon/ld2_lane.h>
 
 static int
 test_simde_vld2_lane_s8 (SIMDE_MUNIT_TEST_ARGS) {

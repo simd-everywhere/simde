@@ -25,14 +25,18 @@
  *   2020      Hidayat Khan <huk2209@gmail.com>
  */
 
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_X86_AVX512_INSN srlv
-
-#include <test/x86/avx512/test-avx512.h>
+#include "../../test.h"
+#include "../test-avx.h"
+#include "../test-sse2.h"
+#include "test-avx512.h"
+#include <simde/x86/sse2.h>
+#include <simde/x86/avx.h>
+#include <simde/x86/avx512/types.h>
+#include <simde/x86/avx512/loadu.h>
 #include <simde/x86/avx512/srlv.h>
-#include <simde/x86/avx512/srli.h>
-#include <simde/x86/avx512/and.h>
-#include <simde/x86/avx512/set1.h>
-#include <simde/x86/avx512/blend.h>
 
 static int
 test_simde_mm_srlv_epi16 (SIMDE_MUNIT_TEST_ARGS) {

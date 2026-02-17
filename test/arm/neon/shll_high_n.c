@@ -1,8 +1,11 @@
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN shll_high_n
-
+#include "../../test.h"
 #include "test-neon.h"
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/shll_high_n.h>
-#include <simde/arm/neon/dup_n.h>
 
 static int
 test_simde_vshll_high_n_s8 (SIMDE_MUNIT_TEST_ARGS) {
