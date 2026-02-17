@@ -33,6 +33,12 @@
  * Based on the document FIPS PUB 197
  */
 
+#include <stdint.h>
+
+#include "../hedley.h"
+#include "../simde-diagnostic.h"
+#include "../simde-features.h"
+#include "../simde-common.h"
 #include "sse2.h"
 
 HEDLEY_DIAGNOSTIC_PUSH

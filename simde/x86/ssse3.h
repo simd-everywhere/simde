@@ -27,6 +27,16 @@
 #if !defined(SIMDE_X86_SSSE3_H)
 #define SIMDE_X86_SSSE3_H
 
+#include <stddef.h>
+#include <stdint.h>
+
+#include "../hedley.h"
+#include "../simde-diagnostic.h"
+#include "../simde-features.h"
+#include "../simde-math.h"
+#include "../simde-common.h"
+#include "mmx.h"
+#include "sse2.h"
 #include "sse3.h"
 
 HEDLEY_DIAGNOSTIC_PUSH

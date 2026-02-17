@@ -26,6 +26,19 @@
 #if !defined(SIMDE_X86_GFNI_H)
 #define SIMDE_X86_GFNI_H
 
+#include <stddef.h>
+#include <stdint.h>
+
+#include "../hedley.h"
+#include "../simde-diagnostic.h"
+#include "../simde-features.h"
+#include "../simde-common.h"
+#include "sse2.h"
+#include "sse4.1.h"
+#include "ssse3.h"
+#include "avx.h"
+#include "avx2.h"
+#include "avx512/types.h"
 #include "avx512/add.h"
 #include "avx512/and.h"
 #include "avx512/broadcast.h"
