@@ -1,4 +1,6 @@
-/* Permission is hereby granted, free of charge, to any person
+/* SPDX-License-Identifier: MIT
+ *
+ * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
  * files (the "Software"), to deal in the Software without
  * restriction, including without limitation the rights to use, copy,
@@ -20,6 +22,8 @@
  *
  * Copyright:
  *   2020      Evan Nemerson <evan@nemerson.com>
+ *   2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
+ *   2023      Michael R. Crusoe <crusoe@debian.org>
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX svml
