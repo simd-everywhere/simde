@@ -1,8 +1,14 @@
+#include <limits.h>
+#include <stddef.h>
 #define SIMDE_TEST_ARM_NEON_INSN copy_lane
-
+#include "../../test.h"
 #include "test-neon.h"
+#include <stdint.h>
+#include <simde/simde-common.h>
+#include <simde/simde-bf16.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/copy_lane.h>
-#include <simde/arm/neon/reinterpret.h>
 
 static int
 test_simde_vcopy_lane_s8 (SIMDE_MUNIT_TEST_ARGS) {

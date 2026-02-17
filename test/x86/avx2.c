@@ -25,8 +25,9 @@
 #if !defined(__clang__) && (defined(__linux__) || defined(__linux) || defined(__gnu_linux__)) && !defined(_GNU_SOURCE)
   #define _GNU_SOURCE 1  // for MAP_ANONYMOUS
 #endif
+#include "../test.h"
+#include "test-avx.h"
 #include <simde/x86/avx2.h>
-#include <test/x86/test-avx.h>
 #if !defined(HEDLEY_MSVC_VERSION)
   #include <sys/mman.h>
 #endif

@@ -1,6 +1,11 @@
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN sli_n
-
-#include <test/arm/neon/test-neon.h>
+#include "../../test.h"
+#include "test-neon.h"
+#include <simde/simde-common.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/sli_n.h>
 
 static int

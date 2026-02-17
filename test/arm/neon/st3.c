@@ -1,9 +1,15 @@
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN st3
-
+#include "../../test.h"
 #include "test-neon.h"
-#include <simde/arm/neon/st3.h>
+#include <simde/simde-common.h>
+#include <simde/simde-f16.h>
+#include <simde/simde-bf16.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/ld3.h>
-#include <simde/arm/neon/get_lane.h>
+#include <simde/arm/neon/st3.h>
 
 /* Implementor notes (seanptmaher):
  *

@@ -22,8 +22,9 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX xop
+#include "../test.h"
+#include "test-avx.h"
 #include <simde/x86/xop.h>
-#include <test/x86/test-avx.h>
 
 static int
 test_simde_mm_cmov_si128 (SIMDE_MUNIT_TEST_ARGS) {

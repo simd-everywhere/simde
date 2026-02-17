@@ -22,8 +22,9 @@
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX clmul
+#include "../test.h"
+#include "avx512/test-avx512.h"
 #include <simde/x86/clmul.h>
-#include <test/x86/avx512/test-avx512.h>
 
 SIMDE_DIAGNOSTIC_DISABLE_DISABLED_MACRO_EXPANSION_
 

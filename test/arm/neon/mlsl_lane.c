@@ -1,7 +1,10 @@
-#include "simde/simde-constify.h"
+#include <stdint.h>
 #define SIMDE_TEST_ARM_NEON_INSN mlsl_lane
-
+#include "../../test.h"
 #include "test-neon.h"
+#include <simde/simde-constify.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
 #include <simde/arm/neon/mlsl_lane.h>
 
 static int
