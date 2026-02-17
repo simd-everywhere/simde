@@ -27,6 +27,17 @@
 #if !defined(SIMDE_X86_XOP_H)
 #define SIMDE_X86_XOP_H
 
+#include <stddef.h>
+#include <stdint.h>
+
+#include "../hedley.h"
+#include "../simde-diagnostic.h"
+#include "../simde-features.h"
+#include "../simde-math.h"
+#include "../simde-common.h"
+#include "sse.h"
+#include "sse2.h"
+#include "avx.h"
 #include "avx2.h"
 
 #if !defined(SIMDE_X86_XOP_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
