@@ -25,10 +25,13 @@
  *   2020      kitegi <kitegi@users.noreply.github.com>
  */
 
+#include <stddef.h>
 #define SIMDE_TEST_X86_AVX512_INSN fnmadd
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
+#include "../../test.h"
+#include "test-avx512.h"
+#include <simde/simde-common.h>
+#include <simde/x86/avx512/types.h>
+#include <simde/x86/avx512/loadu.h>
 #include <simde/x86/avx512/fnmadd.h>
 
 static int

@@ -1,6 +1,6 @@
 #include "run-tests.h"
 
-#include "../../simde/hedley.h"
+#include <simde/hedley.h>
 
 static MunitSuite suites[] = {
   #define SIMDE_TEST_DECLARE_SUITE(name) { (char*) "/", NULL, NULL, 1, MUNIT_SUITE_OPTION_NONE },

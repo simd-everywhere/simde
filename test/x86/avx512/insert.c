@@ -25,10 +25,20 @@
  *   2020      Christopher Moore <moore@free.fr>
  */
 
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_X86_AVX512_INSN insert
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
+#include "../../test.h"
+#include "../test-avx.h"
+#include "test-avx512.h"
+#include <simde/hedley.h>
+#include <simde/simde-constify.h>
+#include <simde/simde-common.h>
+#include <simde/x86/sse.h>
+#include <simde/x86/sse2.h>
+#include <simde/x86/avx.h>
+#include <simde/x86/avx512/types.h>
+#include <simde/x86/avx512/loadu.h>
 #include <simde/x86/avx512/setzero.h>
 #include <simde/x86/avx512/insert.h>
 
