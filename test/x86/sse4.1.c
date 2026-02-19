@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 Evan Nemerson <evan@nemerson.com>
+/* SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -19,6 +19,14 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
+ * Copyright:
+ *   2017-2020 Evan Nemerson <evan@nemerson.com>
+ *   2020-2023 Michael R. Crusoe <crusoe@debian.org>
+ *   2020      Himanshi Mathur <himanshi18037@iiitd.ac.in>
+ *   2020      Hidayat Khan <huk2209@gmail.com>
+ *   2021      Jawad Mairaj <jawmai@avalanchestudios.se>
+ *   2026      Max Slater <max@thenumb.at>
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX sse4_1

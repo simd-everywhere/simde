@@ -1,10 +1,10 @@
 #if !defined(SIMDE_TESTS_H)
 #define SIMDE_TESTS_H
 
-#include "../simde/hedley.h"
-#include "../simde/simde-common.h"
-#include "../simde/simde-f16.h"
-#include "../simde/simde-bf16.h"
+#include <simde/hedley.h>
+#include <simde/simde-common.h>
+#include <simde/simde-f16.h>
+#include <simde/simde-bf16.h>
 
 #if (!defined(__clang__) || SIMDE_DETECT_CLANG_VERSION_CHECK(13, 0, 0))
   #ifndef __STDC_FORMAT_MACROS

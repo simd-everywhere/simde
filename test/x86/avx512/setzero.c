@@ -24,12 +24,15 @@
  *   2020      Evan Nemerson <evan@nemerson.com>
  */
 
-#define SIMDE_TEST_X86_AVX512_INSN setzero
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
+#include <stdint.h>
+#include <simde/simde-common.h>
+#include <simde/simde-f16.h>
 #include <simde/x86/avx512/set1.h>
 #include <simde/x86/avx512/setzero.h>
+
+#define SIMDE_TEST_X86_AVX512_INSN setzero
+#include "../../test.h"
+#include "test-avx512.h"
 
 static int
 test_simde_mm512_setzero_si512(SIMDE_MUNIT_TEST_ARGS) {

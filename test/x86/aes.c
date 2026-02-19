@@ -1,4 +1,4 @@
-/* MIT License
+/* SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -20,6 +20,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
+ * Copyright:
+ *   2023      George Vinokhodov <Vineg@yandex.ru>
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX aes
