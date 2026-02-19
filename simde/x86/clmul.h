@@ -33,6 +33,17 @@
 #if !defined(SIMDE_X86_CLMUL_H)
 #define SIMDE_X86_CLMUL_H
 
+#include <stddef.h>
+#include <stdint.h>
+
+#include "../hedley.h"
+#include "../simde-detect-clang.h"
+#include "../simde-diagnostic.h"
+#include "../simde-features.h"
+#include "../simde-common.h"
+#include "sse2.h"
+#include "avx.h"
+#include "avx512/types.h"
 #include "avx512/set.h"
 #include "avx512/setzero.h"
 

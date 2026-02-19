@@ -25,12 +25,26 @@
  *        2020 Michael R. Crusoe <crusoe@debian.org>
  */
 
-#include "sse.h"
 #if !defined(SIMDE_X86_AVX_H)
 #define SIMDE_X86_AVX_H
 
-#include "sse4.2.h"
+#include <limits.h>
+#include <stddef.h>
+#include <stdint.h>
+
+#include "../hedley.h"
+#include "../simde-align.h"
+#include "../simde-arch.h"
+#include "../simde-detect-clang.h"
+#include "../simde-diagnostic.h"
+#include "../simde-features.h"
+#include "../simde-math.h"
+#include "../simde-common.h"
 #include "../simde-f16.h"
+#include "sse.h"
+#include "sse2.h"
+#include "sse4.1.h"
+#include "sse4.2.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS

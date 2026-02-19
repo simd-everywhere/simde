@@ -1,4 +1,4 @@
-/* MIT License
+/* SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -20,11 +20,14 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
+ * Copyright:
+ *   2023      George Vinokhodov <Vineg@yandex.ru>
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX aes
+#include "../test.h"
+#include "test-sse2.h"
 #include <simde/x86/aes.h>
-#include <test/x86/test-sse2.h>
 
 static int
 test_simde_mm_aesenc_si128 (SIMDE_MUNIT_TEST_ARGS) {

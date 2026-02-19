@@ -25,10 +25,13 @@
  *   2020      Hidayat Khan <huk2209@gmail.com>
  */
 
+#include <stddef.h>
+#include <stdint.h>
 #define SIMDE_TEST_X86_AVX512_INSN mulhrs
-
-#include <test/x86/avx512/test-avx512.h>
-#include <simde/x86/avx512/set.h>
+#include "../../test.h"
+#include "test-avx512.h"
+#include <simde/x86/avx512/types.h>
+#include <simde/x86/avx512/loadu.h>
 #include <simde/x86/avx512/mulhrs.h>
 
 static int

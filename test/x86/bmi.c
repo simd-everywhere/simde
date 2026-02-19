@@ -1,4 +1,4 @@
-/* Copyright (c) 2025 Thomas Magnusson <herr.thomas.magnusson@gmail.com>
+/* SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -19,6 +19,9 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
+ * Copyright:
+ *   2025      Thomas Magnusson <herr.thomas.magnusson@gmail.com>
  */
 
 #define SIMDE_TESTS_CURRENT_ISAX bmi
@@ -35,7 +38,8 @@ test_simde_pext_u64 (SIMDE_MUNIT_TEST_ARGS) {
     const uint64_t mask;
     const uint64_t r;
   } test_vec[] = {
-    { UINT64_C(13508802676154064692),                                                                                                      UINT64_C(11916219417575033503),
+    { UINT64_C(13508802676154064692),
+      UINT64_C(11916219417575033503),
       UINT64_C(         14930477268) },
     { UINT64_C( 8991466077046260319),
       UINT64_C(14641148062227237465),

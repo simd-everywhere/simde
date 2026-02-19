@@ -3,8 +3,8 @@
 
 #include "../test-x86.h"
 #include "../test-avx.h"
-#include "../../../simde/x86/avx512/storeu.h"
-#include "../../../simde/x86/avx512/loadu.h"
+#include <simde/x86/avx512/storeu.h>
+#include <simde/x86/avx512/loadu.h>
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS

@@ -27,6 +27,16 @@
 #if !defined(SIMDE_X86_FMA_H)
 #define SIMDE_X86_FMA_H
 
+#include <stddef.h>
+
+#include "../hedley.h"
+#include "../simde-diagnostic.h"
+#include "../simde-features.h"
+#include "../simde-math.h"
+#include "../simde-common.h"
+#include "sse.h"
+#include "sse2.h"
+#include "sse3.h"
 #include "avx.h"
 
 #if !defined(SIMDE_X86_FMA_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)

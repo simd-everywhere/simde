@@ -24,10 +24,20 @@
  *   2017-2020 Evan Nemerson <evan@nemerson.com>
  */
 
-#include "sse.h"
 #if !defined(SIMDE_X86_SSE4_1_H)
 #define SIMDE_X86_SSE4_1_H
 
+#include <stddef.h>
+#include <stdint.h>
+
+#include "../hedley.h"
+#include "../simde-arch.h"
+#include "../simde-diagnostic.h"
+#include "../simde-features.h"
+#include "../simde-math.h"
+#include "../simde-common.h"
+#include "sse.h"
+#include "sse2.h"
 #include "ssse3.h"
 
 HEDLEY_DIAGNOSTIC_PUSH

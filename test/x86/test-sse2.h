@@ -3,7 +3,7 @@
 
 #include "test-x86.h"
 #include "test-sse.h"
-#include "../../simde/x86/sse2.h"
+#include <simde/x86/sse2.h>
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
