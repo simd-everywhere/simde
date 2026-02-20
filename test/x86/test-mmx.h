@@ -2,7 +2,7 @@
 #define SIMDE_TEST_X86_TEST_MMX_H
 
 #include "test-x86.h"
-#include "../../simde/x86/mmx.h"
+#include <simde/x86/mmx.h>
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS

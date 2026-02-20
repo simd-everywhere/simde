@@ -1,4 +1,4 @@
-/* Copyright (c) 2023 Michael R. Crusoe <crusoe@debian.org>
+/* SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -19,10 +19,13 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
+ * Copyright:
+ *   2023      Michael R. Crusoe <crusoe@debian.org>
  */
 
 #define SIMDE_TEST_WASM_SIMD128_INSN const
-#include "../../../simde/wasm/simd128.h"
+#include <simde/wasm/simd128.h>
 #include "test-simd128.h"
 
 static int

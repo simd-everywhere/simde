@@ -1,9 +1,43 @@
-#define SIMDE_TEST_ARM_NEON_INSN ld2_lane
+/* SPDX-License-Identifier: MIT
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy,
+ * modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Copyright:
+ *   2023      Yi-Yen Chung <eric681@andestech.com> (Copyright owned by Andes Technology)
+ */
 
+#include <limits.h>
+#include <stddef.h>
+#include <stdint.h>
+#define SIMDE_TEST_ARM_NEON_INSN ld2_lane
+#include "../../test.h"
 #include "test-neon.h"
-#include "../../../simde/arm/neon/ld2_lane.h"
-#include "../../../simde/arm/neon/ld1.h"
-#include "../../../simde/arm/neon/ld2.h"
+#include <simde/hedley.h>
+#include <simde/simde-constify.h>
+#include <simde/simde-common.h>
+#include <simde/simde-f16.h>
+#include <simde/simde-bf16.h>
+#include <simde/arm/neon/types.h>
+#include <simde/arm/neon/ld1.h>
+#include <simde/arm/neon/ld2_lane.h>
 
 static int
 test_simde_vld2_lane_s8 (SIMDE_MUNIT_TEST_ARGS) {

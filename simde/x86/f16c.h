@@ -24,12 +24,19 @@
  *   2021      Evan Nemerson <evan@nemerson.com>
  */
 
-#include "../simde-common.h"
-#include "../simde-f16.h"
+
 
 #if !defined(SIMDE_X86_F16C_H)
 #define SIMDE_X86_F16C_H
 
+#include <stddef.h>
+#include "../hedley.h"
+#include "../simde-diagnostic.h"
+#include "../simde-features.h"
+#include "../simde-common.h"
+#include "../simde-f16.h"
+#include "sse.h"
+#include "sse2.h"
 #include "avx.h"
 
 #if !defined(SIMDE_X86_PF16C_NATIVE) && defined(SIMDE_ENABLE_NATIVE_ALIASES)
