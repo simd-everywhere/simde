@@ -530,7 +530,19 @@ simde_mm256_permutexvar_pd (simde__m256i idx, simde__m256d a) {
   #if defined(SIMDE_X86_AVX512F_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_permutexvar_pd(idx, a);
   #else
-    return simde_mm256_castsi256_pd(simde_mm256_permutexvar_epi64(idx, simde_mm256_castpd_si256(a)));
+    simde__m256i_private idx_ = simde__m256i_to_private(idx);
+    simde__m256d_private
+      a_ = simde__m256d_to_private(a),
+      r_;
+
+    #if !defined(__INTEL_COMPILER)
+      SIMDE_VECTORIZE
+    #endif
+    for (size_t i = 0 ; i < (sizeof(r_.f64) / sizeof(r_.f64[0])) ; i++) {
+      r_.f64[i] = a_.f64[idx_.i64[i] & 3];
+    }
+
+    return simde__m256d_from_private(r_);
   #endif
 }
 #if defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
