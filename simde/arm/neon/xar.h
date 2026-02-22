@@ -44,7 +44,7 @@ simde_vxarq_u64(simde_uint64x2_t a, simde_uint64x2_t b, const int d)
 
   SIMDE_VECTORIZE
   for (size_t i=0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = ((t.values[i] >> d) | (t.values[i] << (64 - d)));
+    r_.values[i] = ((t.values[i] >> d) | (t.values[i] << ((64 - d) & 63 )));
   }
 
   return simde_uint64x2_from_private(r_);
