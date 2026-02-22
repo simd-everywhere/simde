@@ -519,6 +519,8 @@ simde_mm256_setzero_si256 (void) {
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_setzero_si128();
       r_.m128i[1] = simde_mm_setzero_si128();
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT)
+      r_.i32 = __extension__ (__typeof__(r_.i32)) { 0, 0, 0, 0, 0, 0, 0, 0 };
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32f) / sizeof(r_.i32f[0])) ; i++) {
