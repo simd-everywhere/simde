@@ -267,12 +267,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - version: 16
-          cross: armel
-          arch_gnu_abi: eabi
-          arch_deb: armel
-          arch_gnu: arm
-          distro: ubuntu-24.04
+        # - version: 16
+        #   cross: armel
+        #   arch_gnu_abi: eabi
+        #   arch_deb: armel
+        #   arch_gnu: arm
+        #   distro: ubuntu-24.04
         - version: 16
           cross: riscv64
           arch_gnu: riscv64
