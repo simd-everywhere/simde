@@ -5839,7 +5839,7 @@ simde_mm_loadu_si64 (void const* mem_addr) {
     r_.lsx_i64 = __lsx_vbsrl_v(__lsx_vldrepl_d(mem_addr, 0), 8);
     return simde__m128i_from_private(r_);
   #else
-  int64_t val;
+    int64_t val;
     simde_memcpy(&val, mem_addr, sizeof(val));
     return simde_mm_cvtsi64_si128(val);
   #endif

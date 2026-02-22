@@ -5500,6 +5500,10 @@ test_simde_mm_unpacklo_ps(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+#if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+HEDLEY_DIAGNOSTIC_PUSH
+#pragma GCC diagnostic ignored "-Wanalyzer-use-of-uninitialized-value"
+#endif
 static int
 test_simde_mm_undefined_ps(SIMDE_MUNIT_TEST_ARGS) {
   simde__m128 z = simde_mm_setzero_ps();
@@ -5510,6 +5514,9 @@ test_simde_mm_undefined_ps(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
+#if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+HEDLEY_DIAGNOSTIC_POP
+#endif
 
 static int
 test_simde_mm_xor_ps(SIMDE_MUNIT_TEST_ARGS) {

@@ -15009,10 +15009,13 @@ test_simde_mm256_sub_pd(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
-  HEDLEY_DIAGNOSTIC_PUSH
-  SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
+HEDLEY_DIAGNOSTIC_PUSH
+SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
 #endif
-
+#if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+HEDLEY_DIAGNOSTIC_PUSH
+#pragma GCC diagnostic ignored "-Wanalyzer-use-of-uninitialized-value"
+#endif
 static int
 test_simde_mm256_undefined_ps(SIMDE_MUNIT_TEST_ARGS) {
   simde__m256 r;
@@ -15050,9 +15053,11 @@ test_simde_mm256_undefined_si256(SIMDE_MUNIT_TEST_ARGS) {
   simde_assert_m256i_equal(simde_mm256_castpd_si256(r), simde_mm256_castpd_si256(e));
   return 0;
 }
-
+#if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+HEDLEY_DIAGNOSTIC_POP
+#endif
 #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
-  HEDLEY_DIAGNOSTIC_POP
+HEDLEY_DIAGNOSTIC_POP
 #endif
 
 static int

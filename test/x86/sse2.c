@@ -4719,11 +4719,20 @@ test_simde_mm_loadu_si64 (SIMDE_MUNIT_TEST_ARGS) {
       {  INT64_C( 7628307720165229322),  INT64_C(                   0) } }
   };
 
+  #if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(13,0,0)
+  HEDLEY_DIAGNOSTIC_PUSH
+  #pragma GCC diagnostic ignored "-Wanalyzer-allocation-size"
+  // False positive that goes away if the underlying call to native
+  // _mm_loadu_si64 is removed
+  #endif
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
-    int64_t a = test_vec[i].a;
+    const int64_t a = test_vec[i].a;
     simde__m128i r = HEDLEY_CONCAT(simde,_mm_loadu_si64)(&a);
     simde_test_x86_assert_equal_i64x2(r, simde_x_mm_loadu_epi64(test_vec[i].r));
   }
+  #if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(13,0,0)
+  HEDLEY_DIAGNOSTIC_POP
+  #endif
 
   return 0;
 }
@@ -8842,12 +8851,21 @@ test_simde_mm_storeu_si32 (SIMDE_MUNIT_TEST_ARGS) {
        INT32_C(   548763692) }
   };
 
+  #if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(13,0,0)
+  HEDLEY_DIAGNOSTIC_PUSH
+  #pragma GCC diagnostic ignored "-Wanalyzer-allocation-size"
+  // False positive that goes away if the underlying call to native
+  // _mm_storeu_si64 is removed
+  #endif
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i a = simde_x_mm_loadu_epi32(test_vec[i].a);
     int32_t r;
     HEDLEY_CONCAT(simde,_mm_storeu_si32)(&r, a);
     simde_assert_equal_i32(r, test_vec[i].r);
   }
+  #if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(13,0,0)
+  HEDLEY_DIAGNOSTIC_POP
+  #endif
 
   return 0;
 }
@@ -8876,12 +8894,21 @@ test_simde_mm_storeu_si64 (SIMDE_MUNIT_TEST_ARGS) {
        INT64_C(  407001106525339075) }
   };
 
+  #if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(13,0,0)
+  HEDLEY_DIAGNOSTIC_PUSH
+  #pragma GCC diagnostic ignored "-Wanalyzer-allocation-size"
+  // False positive that goes away if the underlying call to native
+  // _mm_loadu_si128 is removed
+  #endif
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128i a = simde_x_mm_loadu_epi64(test_vec[i].a);
     int64_t r;
     HEDLEY_CONCAT(simde,_mm_storeu_si64)(&r, a);
     simde_assert_equal_i64(r, test_vec[i].r);
   }
+  #if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(13,0,0)
+  HEDLEY_DIAGNOSTIC_POP
+  #endif
 
   return 0;
 }
@@ -9865,6 +9892,11 @@ test_simde_mm_ucomilt_sd(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+
+#if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+HEDLEY_DIAGNOSTIC_PUSH
+#pragma GCC diagnostic ignored "-Wanalyzer-use-of-uninitialized-value"
+#endif
 static int
 test_simde_mm_undefined_pd(SIMDE_MUNIT_TEST_ARGS) {
   simde__m128d z = simde_mm_setzero_pd();
@@ -9886,7 +9918,9 @@ test_simde_mm_undefined_si128(SIMDE_MUNIT_TEST_ARGS) {
 
   return 0;
 }
-
+#if defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(12,0,0)
+HEDLEY_DIAGNOSTIC_POP
+#endif
 
 static int
 test_simde_mm_ucomineq_sd(SIMDE_MUNIT_TEST_ARGS) {

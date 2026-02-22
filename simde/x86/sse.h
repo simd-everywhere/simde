@@ -4101,9 +4101,16 @@ simde_mm_setzero_ps (void) {
   #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     return (simde__m128)__lsx_vreplgr2vr_w(0);
   #else
-    simde__m128 r;
-    simde_memset(&r, 0, sizeof(r));
-    return r;
+    simde__m128_private r_;
+    #if defined(SIMDE_VECTOR_SUBSCRIPT)
+      r_.f32 = __extension__ (__typeof__(r_.f32)) { 0.0f, 0.0f, 0.0f, 0.0f };
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
+        r_.f32[i] = 0.0f;
+      }
+    #endif
+    return simde__m128_from_private(r_);
   #endif
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
@@ -4115,18 +4122,29 @@ HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
 #endif
 
+#if defined(SIMDE_X86_SSE_NATIVE)
+#  if defined(__has_builtin)
+#    if __has_builtin(__builtin_ia32_undef128)
+#      define SIMDE_HAVE_UNDEFINED128
+#    endif
+#  elif !defined(__PGI) && !defined(SIMDE_BUG_GCC_REV_208793) && !defined(_MSC_VER)
+#    define SIMDE_HAVE_UNDEFINED128
+#  endif
+#endif
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128
 simde_mm_undefined_ps (void) {
-  simde__m128_private r_;
 
   #if defined(SIMDE_HAVE_UNDEFINED128)
-    r_.n = _mm_undefined_ps();
+    return _mm_undefined_ps();
   #elif !defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_)
-    r_ = simde__m128_to_private(simde_mm_setzero_ps());
+    return simde_mm_setzero_ps();
+  #else
+    simde__m128_private r_;
+    return simde__m128_from_private(r_);
   #endif
 
-  return simde__m128_from_private(r_);
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_undefined_ps() simde_mm_undefined_ps()
@@ -4833,16 +4851,6 @@ simde_mm_ucomineq_ss (simde__m128 a, simde__m128 b) {
 }
 #if defined(SIMDE_X86_SSE_ENABLE_NATIVE_ALIASES)
 #  define _mm_ucomineq_ss(a, b) simde_mm_ucomineq_ss((a), (b))
-#endif
-
-#if defined(SIMDE_X86_SSE_NATIVE)
-#  if defined(__has_builtin)
-#    if __has_builtin(__builtin_ia32_undef128)
-#      define SIMDE_HAVE_UNDEFINED128
-#    endif
-#  elif !defined(__PGI) && !defined(SIMDE_BUG_GCC_REV_208793) && !defined(_MSC_VER)
-#    define SIMDE_HAVE_UNDEFINED128
-#  endif
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
