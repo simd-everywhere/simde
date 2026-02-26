@@ -668,7 +668,7 @@ SIMDE_TEST_CODEGEN_GENERATE_RANDOM_INT_FUNC_(simde_poly64, p64)
         } \
       } \
     \
-      char buf[53]; \
+      char buf[64]; \
       simde_test_codegen_##symbol_identifier(sizeof(buf), buf, values[i]); \
       fputs(buf, SIMDE_CODEGEN_FP); \
     } \
@@ -748,7 +748,7 @@ SIMDE_TEST_CODEGEN_GENERATE_WRITE_VECTOR_FUNC_(simde_poly64, p64, 4)
     } \
  \
     { \
-      char buf[53]; \
+      char buf[64]; \
       simde_test_codegen_##symbol_identifier(sizeof(buf), buf, value); \
       fputs(buf, SIMDE_CODEGEN_FP); \
     } \

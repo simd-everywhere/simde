@@ -118,8 +118,7 @@ jobs:
           - target: tgl
           - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes  # icelake
             target: icl
-          - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes -mpconfig -mwbnoinvd -mclwb -mmovdiri -mmovdir64b -menqcmd -mcldemote -mptwrite -mwaitpkg -mserialize -mtsxldtrk -muintr -mavxvnni -mavx512fp16  # sapphire rapids without bf16
-            # See https://github.com/simd-everywhere/simde/issues/1095
+          - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes -mpconfig -mwbnoinvd -mclwb -mmovdiri -mmovdir64b -menqcmd -mcldemote -mptwrite -mwaitpkg -mserialize -mtsxldtrk -muintr -mavxvnni -mavx512fp16 -mavx512bf16 # sapphire rapids
             target: spr
     env:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
