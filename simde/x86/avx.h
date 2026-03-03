@@ -3830,10 +3830,9 @@ simde_mm256_cvttpd_epi32 (simde__m256d a) {
     return a_.m128i[0];
   #else
     simde__m128i_private r_;
-    simde__m256d_private a_;
+    simde__m256d_private a_ = simde__m256d_to_private(a);
 
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
-      a_ = simde__m256d_to_private(a);
       r_.m64[0] = simde_mm_cvttpd_pi32(a_.m128d[0]);
       r_.m64[1] = simde_mm_cvttpd_pi32(a_.m128d[1]);
     #else
@@ -3866,10 +3865,9 @@ simde_mm256_cvttps_epi32 (simde__m256 a) {
     return __lasx_xvftintrz_w_s(a);
   #else
     simde__m256i_private r_;
-    simde__m256_private a_;
+    simde__m256d_private a_ = simde__m256d_to_private(a);
 
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
-      a_ = simde__m256_to_private(a);
       r_.m128i[0] = simde_mm_cvttps_epi32(a_.m128[0]);
       r_.m128i[1] = simde_mm_cvttps_epi32(a_.m128[1]);
     #else
