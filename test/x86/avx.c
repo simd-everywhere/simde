@@ -7125,9 +7125,9 @@ test_simde_mm256_cvtpd_epi32(SIMDE_MUNIT_TEST_ARGS) {
     #endif
     #if !defined(SIMDE_FAST_CONVERSION_RANGE)
     { simde_mm256_set_pd(
-        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1), 
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1),
         HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100),
-        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1), 
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1),
         HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100)),
       simde_mm_set_epi32(
         INT32_MIN, INT32_C(2147483547), INT32_MIN, -INT32_C(2147483548)) },
@@ -7218,9 +7218,9 @@ test_simde_mm256_cvtps_epi32(SIMDE_MUNIT_TEST_ARGS) {
     #endif
     #if !defined(SIMDE_FAST_CONVERSION_RANGE)
     { simde_mm256_set_ps(
-        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1), 
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1),
         HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100),
-        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1), 
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1),
         HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100),
         0.f, 0.f, 0.f, 0.f),
       simde_mm256_set_epi32(
@@ -7436,7 +7436,20 @@ test_simde_mm256_cvttpd_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256d a;
     simde__m128i r;
-  } test_vec[8] = {
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS)
+    { simde_mm256_set_pd(SIMDE_MATH_NAN, -SIMDE_MATH_NAN, 0.0, 0.0),
+      simde_mm_set_epi32(     INT32_MIN,       INT32_MIN,   0,   0) },
+    #endif
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+    { simde_mm256_set_pd(
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1),
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100),
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1),
+        HEDLEY_STATIC_CAST(simde_float64, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100)),
+      simde_mm_set_epi32(
+        INT32_MIN, INT32_C(2147483547), INT32_MIN, -INT32_C(2147483548)) },
+    #endif
     { simde_mm256_set_pd(SIMDE_FLOAT64_C( -175.82), SIMDE_FLOAT64_C(  -91.19),
                          SIMDE_FLOAT64_C( -855.64), SIMDE_FLOAT64_C(-1000.00)),
       simde_mm_set_epi32(INT32_C(-175), INT32_C( -91), INT32_C(-855), INT32_C(-1000)) },
@@ -7476,7 +7489,22 @@ test_simde_mm256_cvttps_epi32(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256 a;
     simde__m256i r;
-  } test_vec[8] = {
+  } test_vec[] = {
+    #if !defined(SIMDE_FAST_NANS)
+    { simde_mm256_set_ps(SIMDE_MATH_NAN, -SIMDE_MATH_NAN, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f),
+      simde_mm256_set_epi32(  INT32_MIN,       INT32_MIN,   0,   0,   0,   0,   0,   0) },
+    #endif
+    #if !defined(SIMDE_FAST_CONVERSION_RANGE)
+    { simde_mm256_set_ps(
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) + 1),
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MAX) - 100),
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) - 1),
+        HEDLEY_STATIC_CAST(simde_float32, HEDLEY_STATIC_CAST(int64_t, INT32_MIN) + 100),
+        0.f, 0.f, 0.f, 0.f),
+      simde_mm256_set_epi32(
+        INT32_MIN,  INT32_C(2147483520), INT32_MIN, -INT32_C(2147483520),
+        0, 0, 0, 0) },
+    #endif
     { simde_mm256_set_ps(SIMDE_FLOAT32_C( -135.75), SIMDE_FLOAT32_C(  534.39),
                          SIMDE_FLOAT32_C(  -81.93), SIMDE_FLOAT32_C( -234.94),
                          SIMDE_FLOAT32_C( -390.94), SIMDE_FLOAT32_C( -625.05),
