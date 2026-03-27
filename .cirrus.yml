@@ -2,6 +2,23 @@ container:
   image: debian:trixie-slim
 
 task:
+  name: Alpine (musl + GCC + SIMDE_NO_NATIVE)
+  skip: $BRANCH == "master" || ($BRANCH != 'ci/cirrus' && $BRANCH =~ '^ci/.+')
+  container:
+    image: alpine:latest
+  env:
+    CC: gcc
+    CXX: g++
+  install_dependencies_script:
+    - apk add --no-cache build-base meson ninja python3
+  configure_script:
+    - meson setup build -Dc_args="-DSIMDE_NO_NATIVE -Wextra -Werror" -Dcpp_args="-DSIMDE_NO_NATIVE -Wextra -Werror"
+  build_script:
+    - ninja -C build -v -j 3
+  test_script:
+    - ninja -C build -v test
+
+task:
   name: Sanitizers
   skip: $BRANCH == "master" || ($BRANCH != 'ci/cirrus' && $BRANCH =~ '^ci/.+')
   env:
