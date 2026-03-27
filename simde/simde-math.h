@@ -1266,9 +1266,17 @@ simde_math_fpclass(double v, const int imm8) {
 #endif
 
 #if !defined(simde_math_roundeven)
+  /* GCC 10+ lowers __builtin_roundeven to a libm roundeven() call when
+   * the target has no native instruction.  roundeven() is C23 and only
+   * available in glibc >= 2.25; other platforms (musl, OpenBSD, MinGW,
+   * etc.) lack the symbol and produce a link error.  Clang lowers the
+   * builtin to an llvm.roundeven.* intrinsic which is always emitted
+   * inline (no libm dependency), so the GCC guard is not needed there. */
   #if \
-     ((!defined(HEDLEY_EMSCRIPTEN_VERSION) || HEDLEY_EMSCRIPTEN_VERSION_CHECK(3, 1, 43)) && HEDLEY_HAS_BUILTIN(__builtin_roundeven)) || \
-      HEDLEY_GCC_VERSION_CHECK(10,0,0)
+     ((!defined(HEDLEY_EMSCRIPTEN_VERSION) || HEDLEY_EMSCRIPTEN_VERSION_CHECK(3, 1, 43)) && \
+       HEDLEY_HAS_BUILTIN(__builtin_roundeven) && \
+       (!HEDLEY_GCC_VERSION_CHECK(10,0,0) || \
+        (defined(__GLIBC__) && ((__GLIBC__ > 2) || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 25)))))
     #define simde_math_roundeven(v) __builtin_roundeven(v)
   #elif defined(simde_math_round) && defined(simde_math_fabs)
     static HEDLEY_INLINE
@@ -1286,9 +1294,14 @@ simde_math_fpclass(double v, const int imm8) {
 #endif
 
 #if !defined(simde_math_roundevenf)
+  /* Same rationale as simde_math_roundeven above; applies to the float
+   * variant.  GCC 10+ requires glibc >= 2.25 for roundevenf(); Clang
+   * is always safe via llvm.roundeven.f32 inline expansion. */
   #if \
-     ((!defined(HEDLEY_EMSCRIPTEN_VERSION) || HEDLEY_EMSCRIPTEN_VERSION_CHECK(3, 1, 43)) && HEDLEY_HAS_BUILTIN(__builtin_roundevenf)) || \
-      HEDLEY_GCC_VERSION_CHECK(10,0,0)
+     ((!defined(HEDLEY_EMSCRIPTEN_VERSION) || HEDLEY_EMSCRIPTEN_VERSION_CHECK(3, 1, 43)) && \
+       HEDLEY_HAS_BUILTIN(__builtin_roundevenf) && \
+       (!HEDLEY_GCC_VERSION_CHECK(10,0,0) || \
+        (defined(__GLIBC__) && ((__GLIBC__ > 2) || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 25)))))
     #define simde_math_roundevenf(v) __builtin_roundevenf(v)
   #elif defined(simde_math_roundf) && defined(simde_math_fabsf)
     static HEDLEY_INLINE
