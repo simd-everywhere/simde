@@ -1774,7 +1774,7 @@ test_simde_mm512_cvtpd_epi32 (SIMDE_MUNIT_TEST_ARGS) {
         -INT32_C(           2),  INT32_C(           4), -INT32_C(           4),  INT32_C(      123456) } },
     { { SIMDE_FLOAT64_C(  -123456.50), SIMDE_FLOAT64_C( 2147483647.00), SIMDE_FLOAT64_C(-2147483648.00), SIMDE_FLOAT64_C(     1024.50),
         SIMDE_FLOAT64_C(    -1024.50), SIMDE_FLOAT64_C(    65535.90), SIMDE_FLOAT64_C(   -65535.90), SIMDE_FLOAT64_C(       42.00) },
-      { -INT32_C(      123456),  INT32_C(  2147483647), -INT32_C(  2147483648),  INT32_C(        1024),
+      { -INT32_C(      123456),  INT32_C(  2147483647),  INT32_MIN,  INT32_C(        1024),
         -INT32_C(        1024),  INT32_C(       65536), -INT32_C(       65536),  INT32_C(          42) } },
     { { SIMDE_FLOAT64_C(        7.49), SIMDE_FLOAT64_C(        7.50), SIMDE_FLOAT64_C(        8.50), SIMDE_FLOAT64_C(       -7.49),
         SIMDE_FLOAT64_C(       -7.50), SIMDE_FLOAT64_C(       -8.50), SIMDE_FLOAT64_C(   999999.40), SIMDE_FLOAT64_C(  -999999.40) },
