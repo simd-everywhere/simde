@@ -348,6 +348,20 @@ simde_mm_maskz_loadu_pd(simde__mmask8 k, void const * mem_addr) {
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
+simde_mm256_maskz_loadu_epi8(simde__mmask32 k, void const * mem_addr) {
+#if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+  return _mm256_maskz_loadu_epi8(k, HEDLEY_REINTERPRET_CAST(void const*, mem_addr));
+#else
+  return simde_mm256_maskz_mov_epi8(k, simde_mm256_loadu_epi8(mem_addr));
+#endif
+}
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+#undef _mm256_maskz_loadu_epi8
+#define _mm256_maskz_loadu_epi8(k, mem_addr) simde_mm256_maskz_loadu_epi8(k, mem_addr)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
 simde_mm256_mask_loadu_epi16(simde__m256i src, simde__mmask16 k, void const * mem_addr) {
   #if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
     return _mm256_mask_loadu_epi16(src, k, HEDLEY_REINTERPRET_CAST(void const*, mem_addr));

@@ -36,6 +36,52 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 SIMDE_BEGIN_DECLS_
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i simde_mm_sllv_epi16(simde__m128i a, simde__m128i b) {
+  simde__m128i_private a_ = simde__m128i_to_private(a), b_ = simde__m128i_to_private(b), r_;
+
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  r_.u16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u16), (b_.u16 < 16)) & (a_.u16 << b_.u16);
+#else
+  SIMDE_VECTORIZE
+  for (size_t i = 0; i < (sizeof(r_.u16) / sizeof(r_.u16[0])); i++) {
+    r_.u16[i] = (b_.u16[i] < 16) ? HEDLEY_STATIC_CAST(uint16_t, (a_.u16[i] << b_.u16[i])) : 0;
+  }
+#endif
+
+  return simde__m128i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+#define simde_mm_sllv_epi16(a, b) _mm_sllv_epi16(a, b)
+#endif
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+#undef _mm_sllv_epi16
+#define _mm_sllv_epi16(a, b) simde_mm_sllv_epi16(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i simde_mm256_sllv_epi16(simde__m256i a, simde__m256i b) {
+  simde__m256i_private a_ = simde__m256i_to_private(a), b_ = simde__m256i_to_private(b), r_;
+
+#if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+  r_.u16 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.u16), (b_.u16 < 16)) & (a_.u16 << b_.u16);
+#else
+  SIMDE_VECTORIZE
+  for (size_t i = 0; i < (sizeof(r_.u16) / sizeof(r_.u16[0])); i++) {
+    r_.u16[i] = (b_.u16[i] < 16) ? HEDLEY_STATIC_CAST(uint16_t, (a_.u16[i] << b_.u16[i])) : 0;
+  }
+#endif
+
+  return simde__m256i_from_private(r_);
+}
+#if defined(SIMDE_X86_AVX512BW_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+#define simde_mm256_sllv_epi16(a, b) _mm256_sllv_epi16(a, b)
+#endif
+#if defined(SIMDE_X86_AVX512BW_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+#undef _mm256_sllv_epi16
+#define _mm256_sllv_epi16(a, b) simde_mm256_sllv_epi16(a, b)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_sllv_epi16 (simde__m512i a, simde__m512i b) {
   simde__m512i_private
