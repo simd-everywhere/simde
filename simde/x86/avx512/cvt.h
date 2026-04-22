@@ -272,8 +272,8 @@ simde__m512i simde_mm512_cvtepi8_epi32(simde__m128i a) {
   simde__m128i_private a_ = simde__m128i_to_private(a);
 
 #if defined(SIMDE_X86_AVX2_NATIVE)
-  r_.m256i[0] = _mm256_cvtepi8_epi32(_mm_loadl_epi64(HEDLEY_REINTERPRET_CAST(__m128i const *, &a_.m64[0])));
-  r_.m256i[1] = _mm256_cvtepi8_epi32(_mm_loadl_epi64(HEDLEY_REINTERPRET_CAST(__m128i const *, &a_.m64[1])));
+  r_.m256i[0] = _mm256_cvtepi8_epi32(a_.n);
+  r_.m256i[1] = _mm256_cvtepi8_epi32(_mm_srli_si128(a_.n, 8));
 #elif defined(SIMDE_CONVERT_VECTOR_)
   SIMDE_CONVERT_VECTOR_(r_.i32, a_.i8);
 #else
