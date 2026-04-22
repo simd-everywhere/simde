@@ -521,7 +521,7 @@ simde__m512i simde_mm512_cvtepi32_epi64(simde__m256i a) {
   simde__m512i_private r_;
   simde__m256i_private a_ = simde__m256i_to_private(a);
 
-#if defined(SIMDE_X86_AVX_NATIVE)
+#if defined(SIMDE_X86_AVX2_NATIVE)
   r_.m256i[0] = _mm256_cvtepi32_epi64(a_.m128i[0]);
   r_.m256i[1] = _mm256_cvtepi32_epi64(a_.m128i[1]);
 #elif defined(SIMDE_CONVERT_VECTOR_)
