@@ -4,15 +4,17 @@ on:
   push:
     branches: [ master ]
 
+permissions: {}
+
 jobs:
   no-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
          persist-credentials: false
          fetch-depth: 0
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
       - name: Filter Repository
         run: |
           pip install git-filter-repo
@@ -20,7 +22,7 @@ jobs:
           git-filter-repo --path-rename '.no-test/':'simde/' && \
           git-filter-repo --subdirectory-filter simde
       - name: GitHub Push
-        uses: ad-m/github-push-action@v1.1.0
+        uses: ad-m/github-push-action@4cc74773234f74829a8c21bc4d69dd4be9cfa599 # v1.1.0
         with:
           github_token: ${{ secrets.PUSH_TO_NO_TESTS_TOKEN }}
           repository: simd-everywhere/simde-no-tests
@@ -28,21 +30,22 @@ jobs:
   status:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         persist-credentials: false
         fetch-depth: 0
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         fetch-depth: 0
         repository: simd-everywhere/implementation-status
         token: ${{ secrets.PUSH_IMPLEMENTATION_STATUS_TOKEN }}
         path: implementation-status
+        persist-credentials: false
     - name: Install APT Dependencies
       run: sudo apt-get update && sudo apt-get install -y python3-lxml
     - name: Update
       run: ./implementation-status/scripts/update.sh .
-    - uses: EndBug/add-and-commit@v10
+    - uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10
       with:
         cwd: implementation-status
         message: Sync with latest SIMDe.

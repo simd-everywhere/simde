@@ -10,6 +10,8 @@ on:
     branches:
       - 'master'
 
+permissions: {}
+
 concurrency:
   group: build-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -18,9 +20,10 @@ jobs:
   checkinstall:
     runs-on: ubuntu-slim
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         fetch-depth: 2
+        persist-credentials: false
     - name: Install APT Dependencies
       run: |
         sudo apt-get update && sudo apt-get install -y --no-install-recommends ninja-build
@@ -33,9 +36,10 @@ jobs:
   formatting:
     runs-on: ubuntu-slim
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         fetch-depth: 2
+        persist-credentials: false
     - name: Install pcre2grep
       run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pcre2-utils
     # Check for trailing whitespace
@@ -126,9 +130,10 @@ jobs:
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       INTEL_TARGET: ${{ matrix.target }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
@@ -143,7 +148,7 @@ jobs:
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}-${{ matrix.isax }}
         verbose: 2
@@ -171,9 +176,10 @@ jobs:
       CFLAGS: -Wall -Wextra -Werror -march=bdver2
       CXXFLAGS: -Wall -Wextra -Werror -march=bdver2
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
@@ -188,7 +194,7 @@ jobs:
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}
         verbose: 2
@@ -213,16 +219,17 @@ jobs:
           - "32-relaxed"
           - "64-relaxed"
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends ninja-build pipx ccache
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}
         verbose: 2
@@ -254,9 +261,10 @@ jobs:
       CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror -pedantic
       CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror -pedantic
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - id: cpu
       name: CPU Information
       run: cat /proc/cpuinfo
@@ -272,7 +280,7 @@ jobs:
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}
         verbose: 2
@@ -294,9 +302,10 @@ jobs:
       CFLAGS: -march=native -Wall -Wextra -Werror
       CXXFLAGS: -march=native -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - id: cpu
       name: CPU Information
       run: |
@@ -313,7 +322,7 @@ jobs:
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}
         verbose: 2
@@ -415,9 +424,10 @@ jobs:
           format('{0}-g++-{1}', matrix.gcc, matrix.version)
         ) }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - id: cpu
       name: CPU Information
       run: |
@@ -440,7 +450,7 @@ jobs:
     - if: ${{ matrix.version == '15' }}
       run: sudo apt-get satisfy -y 'binutils (>= 2.45)'
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
         verbose: 2
@@ -503,9 +513,10 @@ jobs:
         #   distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - name: CPU Information
       run: cat /proc/cpuinfo
     - if: ${{ matrix.distro == 'ubuntu-24.04' && ( matrix.version == '15' )}}
@@ -521,7 +532,7 @@ jobs:
           qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
         verbose: 2
@@ -559,9 +570,10 @@ jobs:
           distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
@@ -575,7 +587,7 @@ jobs:
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
         verbose: 2
@@ -615,9 +627,10 @@ jobs:
           distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
@@ -629,7 +642,7 @@ jobs:
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu ccache
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
         verbose: 2
@@ -686,9 +699,10 @@ jobs:
           distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
@@ -703,7 +717,7 @@ jobs:
           binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
         pipx install meson
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.cross }}
         verbose: 2
@@ -901,9 +915,10 @@ jobs:
         matrix.plain == true, '-Wall -Weverything -Werror',
         '-march=native -Wall -Weverything -Werror') }} -fno-lax-vector-conversions
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     - id: cpu
       name: CPU Information
       run: |
@@ -937,7 +952,7 @@ jobs:
         sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/cc
         sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/c++
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}${{ matrix.plain }}
         verbose: 2
@@ -992,15 +1007,16 @@ jobs:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -Wno-complex-component-init
       CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -Wno-complex-component-init
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         submodules: recursive
+        persist-credentials: false
     # - name: System Information
     #   run: system_profiler
     - name: Compiler version
       run: cc --version
     - name: ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
       with:
         key: ${{ github.job }}-${{ matrix.os }}-${{ matrix.xcode }}
         verbose: 2
@@ -1027,7 +1043,9 @@ jobs:
       CFLAGS: -Wall -Werror -march=native -fp-model precise
       CXXFLAGS: -Wall -Werror -march=native -fp-model precise
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      with:
+        persist-credentials: false
     - name: CPU Information
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies

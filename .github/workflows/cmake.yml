@@ -10,6 +10,8 @@ on:
     branches:
       - 'master'
 
+permissions: {}
+
 concurrency:
   group: cmake-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -24,9 +26,11 @@ jobs:
         os: [macos-latest, ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm]
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
-      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1
 
       - name: Configure SIMDe
         run: cmake -G Ninja -S . -B build

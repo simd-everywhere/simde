@@ -1,11 +1,15 @@
 name: Lint GitHub Actions workflows
 on: [push, pull_request]
 
+permissions: {}
+
 jobs:
   actionlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
       - name: Check workflow files
         run: |
           echo "::add-matcher::.github/actionlint-matcher.json"
