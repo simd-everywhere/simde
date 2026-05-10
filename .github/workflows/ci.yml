@@ -86,7 +86,7 @@ jobs:
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}-${{ matrix.isax }}
         verbose: 2
@@ -132,7 +132,7 @@ jobs:
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}
         verbose: 2
@@ -167,7 +167,7 @@ jobs:
         sudo apt-get install -y --no-install-recommends ninja-build pipx ccache
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}
         verbose: 2
@@ -218,7 +218,7 @@ jobs:
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}
         verbose: 2
@@ -260,7 +260,7 @@ jobs:
         sudo ln -s /usr/bin/g++-15 /usr/bin/g++
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}
         verbose: 2
@@ -388,7 +388,7 @@ jobs:
     - if: ${{ matrix.version == '15' }}
       run: sudo apt-get satisfy -y 'binutils (>= 2.45)'
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}
         verbose: 2
@@ -475,7 +475,7 @@ jobs:
           qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
         pipx install meson==1.3.2
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
         verbose: 2
@@ -530,7 +530,7 @@ jobs:
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
         verbose: 2
@@ -585,7 +585,7 @@ jobs:
           libstdc++-12-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu ccache
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}-${{ matrix.distro }}-${{ matrix.cross }}
         verbose: 2
@@ -660,7 +660,7 @@ jobs:
           binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
         pipx install meson
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.cross }}
         verbose: 2
@@ -899,7 +899,7 @@ jobs:
         sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/cc
         sudo ln -s "$(command -v clang-${{ matrix.version }})" /usr/bin/c++
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}-${{ matrix.version }}-${{ matrix.distro }}-${{ matrix.arch_flags }}${{ matrix.plain }}
         verbose: 2
@@ -975,7 +975,7 @@ jobs:
     - name: Compiler version
       run: cc --version
     - name: ccache
-      uses: hendrikmuhs/ccache-action@5ebbd400eff9e74630f759d94ddd7b6c26299639 # v1.2
+      uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
         key: ${{ github.job }}-${{ matrix.os }}-${{ matrix.xcode }}
         verbose: 2
