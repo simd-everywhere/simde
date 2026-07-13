@@ -945,6 +945,14 @@ jobs:
             os: macos-26  # arm64
             arch_flags: -Wno-poison-system-directories -Wno-switch-default
               # "-Wno-poison-system-directories": due to meson test
+          - xcode: "26.4.1"  # clang 21?
+            os: macos-26  # arm64
+            arch_flags: -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword
+              # "-Wno-poison-system-directories": due to meson test
+          - xcode: "26.5"  # clang 21?
+            os: macos-26  # arm64
+            arch_flags: -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword
+              # "-Wno-poison-system-directories": due to meson test
     runs-on: ${{ matrix.os }}
     env:
       DEVELOPER_DIR:  /Applications/Xcode_${{ matrix.xcode }}.app
