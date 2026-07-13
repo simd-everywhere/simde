@@ -850,6 +850,10 @@ jobs:
           arch_flags: --target=arm-linux-gnueabihf -march=armv7-a -mfpu=neon -isystem=/usr/arm-linux-gnueabihf/include -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
           pkg: libstdc++-16-dev-armhf-cross
           plain: true
+        - version: "21"  # x86 no -march=native
+          distro: ubuntu-24.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+          plain: true
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} ${{ case(
@@ -946,11 +950,15 @@ jobs:
             arch_flags: -Wno-poison-system-directories -Wno-switch-default
               # "-Wno-poison-system-directories": due to meson test
           - xcode: "26.4.1"  # clang 21?
-            os: macos-26  # arm64
+            os: macos-26
             arch_flags: -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword
               # "-Wno-poison-system-directories": due to meson test
           - xcode: "26.5"  # clang 21?
-            os: macos-26  # arm64
+            os: macos-26-intel
+            arch_flags: -march=native -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword
+              # "-Wno-poison-system-directories": due to meson test
+          - xcode: "26.5"  # clang 21?
+            os: macos-26-intel
             arch_flags: -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword
               # "-Wno-poison-system-directories": due to meson test
     runs-on: ${{ matrix.os }}
