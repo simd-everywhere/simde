@@ -528,7 +528,7 @@ simde_mm_cmpeq_epi64 (simde__m128i a, simde__m128i b) {
       uint32x4_t cmp = vceqq_u32(a_.neon_u32, b_.neon_u32);
       uint32x4_t swapped = vrev64q_u32(cmp);
       r_.neon_u32 = vandq_u32(cmp, swapped);
-    #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r_.altivec_i64 = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed long long), vec_cmpeq(a_.altivec_i64, b_.altivec_i64));
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_i64 = __lsx_vseq_d(a_.lsx_i64, b_.lsx_i64);
