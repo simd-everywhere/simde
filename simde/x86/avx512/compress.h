@@ -957,6 +957,63 @@ simde_mm512_mask_compress_epi32 (simde__m512i src, simde__mmask16 k, simde__m512
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
+simde__m512i
+simde_mm512_maskz_compress_epi8 (simde__mmask64 k, simde__m512i a) {
+  #if defined(SIMDE_X86_AVX512VBMI2_NATIVE)
+    return _mm512_maskz_compress_epi8(k, a);
+  #else
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a),
+      r_;
+    simde_memset(&r_, 0, sizeof(r_));
+    size_t ri = 0;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
+      if ((k >> i) & 1) {
+        r_.i8[ri++] = a_.i8[i];
+      }
+    }
+
+    return simde__m512i_from_private(r_);
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VBMI2_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_maskz_compress_epi8
+  #define _mm512_maskz_compress_epi8(k, a) simde_mm512_maskz_compress_epi8(k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
+void
+simde_mm512_mask_compressstoreu_epi8 (void* base_addr, simde__mmask64 k, simde__m512i a) {
+  #if defined(SIMDE_X86_AVX512VBMI2_NATIVE) && !defined(__znver4__)
+    _mm512_mask_compressstoreu_epi8(base_addr, k, a);
+  #elif defined(SIMDE_X86_AVX512VBMI2_NATIVE) && defined(__znver4__)
+    simde__mmask64 store_mask = _pext_u64(HEDLEY_STATIC_CAST(unsigned long long, -1), k);
+    _mm512_mask_storeu_epi8(base_addr, store_mask, _mm512_maskz_compress_epi8(k, a));
+  #else
+    simde__m512i_private
+      a_ = simde__m512i_to_private(a);
+    size_t ri = 0;
+
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(a_.i8) / sizeof(a_.i8[0])) ; i++) {
+      if ((k >> i) & 1) {
+        a_.i8[ri++] = a_.i8[i];
+      }
+    }
+
+    simde_memcpy(base_addr, &a_, ri * sizeof(a_.i8[0]));
+
+    return;
+  #endif
+}
+#if defined(SIMDE_X86_AVX512VBMI2_ENABLE_NATIVE_ALIASES)
+  #undef _mm512_mask_compressstoreu_epi8
+  #define _mm512_mask_compressstoreu_epi8(base_addr, k, a) simde_mm512_mask_compressstoreu_epi8(base_addr, k, a)
+#endif
+
+SIMDE_FUNCTION_ATTRIBUTES
 void
 simde_mm512_mask_compressstoreu_epi16 (void* base_addr, simde__mmask32 k, simde__m512i a) {
   #if defined(SIMDE_X86_AVX512VBMI2_NATIVE) && !defined(__znver4__)
