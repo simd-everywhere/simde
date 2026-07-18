@@ -2085,7 +2085,69 @@ test_simde_mm512_cvtps_epi32 (SIMDE_MUNIT_TEST_ARGS) {
 #endif
 }
 
+static int
+test_simde_mm512_cvtepu8_epi32(SIMDE_MUNIT_TEST_ARGS) {
+#if 1
+  const struct {
+    uint8_t a[16];
+    int32_t r[16];
+  } test_vec[8] = {
+    { { UINT8_C( 22), UINT8_C(154), UINT8_C(234), UINT8_C( 15), UINT8_C( 31), UINT8_C(245), UINT8_C(205), UINT8_C(218),
+        UINT8_C( 55), UINT8_C(251), UINT8_C(227), UINT8_C( 37), UINT8_C( 41), UINT8_C(164), UINT8_C( 75), UINT8_C( 33) },
+      {  INT32_C(          22),  INT32_C(         154),  INT32_C(         234),  INT32_C(          15),  INT32_C(          31),  INT32_C(         245),  INT32_C(         205),  INT32_C(         218),
+         INT32_C(          55),  INT32_C(         251),  INT32_C(         227),  INT32_C(          37),  INT32_C(          41),  INT32_C(         164),  INT32_C(          75),  INT32_C(          33) } },
+    { { UINT8_C( 64), UINT8_C(140), UINT8_C(166), UINT8_C(195), UINT8_C(150), UINT8_C(232), UINT8_C(220), UINT8_C( 50),
+        UINT8_C( 58), UINT8_C(110), UINT8_C(220), UINT8_C(231), UINT8_C(116), UINT8_C(211), UINT8_C(173), UINT8_C(232) },
+      {  INT32_C(          64),  INT32_C(         140),  INT32_C(         166),  INT32_C(         195),  INT32_C(         150),  INT32_C(         232),  INT32_C(         220),  INT32_C(          50),
+         INT32_C(          58),  INT32_C(         110),  INT32_C(         220),  INT32_C(         231),  INT32_C(         116),  INT32_C(         211),  INT32_C(         173),  INT32_C(         232) } },
+    { { UINT8_C(204), UINT8_C(212), UINT8_C( 48), UINT8_C(160), UINT8_C(218), UINT8_C(160), UINT8_C(130), UINT8_C(191),
+        UINT8_C( 78), UINT8_C(242), UINT8_C( 34), UINT8_C( 46), UINT8_C( 43), UINT8_C( 47), UINT8_C(221), UINT8_C( 49) },
+      {  INT32_C(         204),  INT32_C(         212),  INT32_C(          48),  INT32_C(         160),  INT32_C(         218),  INT32_C(         160),  INT32_C(         130),  INT32_C(         191),
+         INT32_C(          78),  INT32_C(         242),  INT32_C(          34),  INT32_C(          46),  INT32_C(          43),  INT32_C(          47),  INT32_C(         221),  INT32_C(          49) } },
+    { { UINT8_C(190), UINT8_C( 66), UINT8_C( 30), UINT8_C(168), UINT8_C( 62), UINT8_C(210), UINT8_C(181), UINT8_C(216),
+        UINT8_C( 26), UINT8_C(147), UINT8_C(159), UINT8_C(180), UINT8_C( 53), UINT8_C(108), UINT8_C( 79), UINT8_C(246) },
+      {  INT32_C(         190),  INT32_C(          66),  INT32_C(          30),  INT32_C(         168),  INT32_C(          62),  INT32_C(         210),  INT32_C(         181),  INT32_C(         216),
+         INT32_C(          26),  INT32_C(         147),  INT32_C(         159),  INT32_C(         180),  INT32_C(          53),  INT32_C(         108),  INT32_C(          79),  INT32_C(         246) } },
+    { { UINT8_C(114), UINT8_C( 55), UINT8_C(179), UINT8_C(188), UINT8_C( 58), UINT8_C(142), UINT8_C(115), UINT8_C(219),
+        UINT8_C( 13), UINT8_C(136), UINT8_C( 14), UINT8_C( 92), UINT8_C(139), UINT8_C(158), UINT8_C(173), UINT8_C(179) },
+      {  INT32_C(         114),  INT32_C(          55),  INT32_C(         179),  INT32_C(         188),  INT32_C(          58),  INT32_C(         142),  INT32_C(         115),  INT32_C(         219),
+         INT32_C(          13),  INT32_C(         136),  INT32_C(          14),  INT32_C(          92),  INT32_C(         139),  INT32_C(         158),  INT32_C(         173),  INT32_C(         179) } },
+    { { UINT8_C(  3), UINT8_C( 92), UINT8_C( 73), UINT8_C(205), UINT8_C( 35), UINT8_C( 72), UINT8_C( 15), UINT8_C( 46),
+        UINT8_C(110), UINT8_C(192), UINT8_C(214), UINT8_C(232), UINT8_C(174), UINT8_C( 80), UINT8_C(189), UINT8_C(159) },
+      {  INT32_C(           3),  INT32_C(          92),  INT32_C(          73),  INT32_C(         205),  INT32_C(          35),  INT32_C(          72),  INT32_C(          15),  INT32_C(          46),
+         INT32_C(         110),  INT32_C(         192),  INT32_C(         214),  INT32_C(         232),  INT32_C(         174),  INT32_C(          80),  INT32_C(         189),  INT32_C(         159) } },
+    { { UINT8_C(166), UINT8_C( 43), UINT8_C( 26), UINT8_C( 79), UINT8_C( 80), UINT8_C( 25), UINT8_C( 41), UINT8_C(139),
+        UINT8_C(226), UINT8_C(217), UINT8_C(248), UINT8_C(226), UINT8_C(212), UINT8_C(139), UINT8_C(110), UINT8_C( 58) },
+      {  INT32_C(         166),  INT32_C(          43),  INT32_C(          26),  INT32_C(          79),  INT32_C(          80),  INT32_C(          25),  INT32_C(          41),  INT32_C(         139),
+         INT32_C(         226),  INT32_C(         217),  INT32_C(         248),  INT32_C(         226),  INT32_C(         212),  INT32_C(         139),  INT32_C(         110),  INT32_C(          58) } },
+    { { UINT8_C(176), UINT8_C(220), UINT8_C( 56), UINT8_C(145), UINT8_C(249), UINT8_C(157), UINT8_C( 23), UINT8_C(112),
+        UINT8_C(202), UINT8_C( 28), UINT8_C(  3), UINT8_C(104), UINT8_C(154), UINT8_C(108), UINT8_C( 70), UINT8_C(130) },
+      {  INT32_C(         176),  INT32_C(         220),  INT32_C(          56),  INT32_C(         145),  INT32_C(         249),  INT32_C(         157),  INT32_C(          23),  INT32_C(         112),
+         INT32_C(         202),  INT32_C(          28),  INT32_C(           3),  INT32_C(         104),  INT32_C(         154),  INT32_C(         108),  INT32_C(          70),  INT32_C(         130) } },
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+    simde__m128i a = simde_x_mm_loadu_epi8(test_vec[i].a);
+    simde__m512i r = simde_mm512_cvtepu8_epi32(a);
+    simde_test_x86_assert_equal_i32x16(r, simde_mm512_loadu_epi32(test_vec[i].r));
+  }
+
+  return 0;
+#else
+  fputc('\n', stdout);
+  for (int i = 0 ; i < 8 ; i++) {
+    simde__m128i a = simde_test_x86_random_u8x16();
+    simde__m512i r = simde_mm512_cvtepu8_epi32(a);
+
+    simde_test_x86_write_u8x16(2, a, SIMDE_TEST_VEC_POS_FIRST);
+    simde_test_x86_write_i32x16(2, r, SIMDE_TEST_VEC_POS_LAST);
+  }
+  return 1;
+#endif
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm512_cvtepu8_epi32)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_cvtepi64_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_mask_cvtepi64_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_maskz_cvtepi64_pd)
