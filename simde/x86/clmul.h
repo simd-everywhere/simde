@@ -290,10 +290,10 @@ simde_mm256_clmulepi64_epi128 (simde__m256i a, simde__m256i b, const int imm8)
 
   return simde__m256i_from_private(r_);
 }
-#if defined(SIMDE_X86_VPCLMULQDQ_NATIVE) && defined(SIMDE_X86_AVX512VL_NATIVE)
+#if defined(SIMDE_X86_VPCLMULQDQ_NATIVE) && (defined(SIMDE_X86_AVX512VL_NATIVE) || (defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_X86_AVX512F_NATIVE)))
   #define simde_mm256_clmulepi64_epi128(a, b, imm8) _mm256_clmulepi64_epi128(a, b, imm8)
 #endif
-#if defined(SIMDE_X86_VPCLMULQDQ_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_VPCLMULQDQ_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
   #undef _mm256_clmulepi64_epi128
   #define _mm256_clmulepi64_epi128(a, b, imm8) simde_mm256_clmulepi64_epi128(a, b, imm8)
 #endif
@@ -390,7 +390,7 @@ simde_mm512_clmulepi64_epi128 (simde__m512i a, simde__m512i b, const int imm8)
 #if defined(SIMDE_X86_VPCLMULQDQ_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
   #define simde_mm512_clmulepi64_epi128(a, b, imm8) _mm512_clmulepi64_epi128(a, b, imm8)
 #endif
-#if defined(SIMDE_X86_VPCLMULQDQ_ENABLE_NATIVE_ALIASES) && defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_X86_VPCLMULQDQ_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512F_ENABLE_NATIVE_ALIASES)
   #undef _mm512_clmulepi64_epi128
   #define _mm512_clmulepi64_epi128(a, b, imm8) simde_mm512_clmulepi64_epi128(a, b, imm8)
 #endif
