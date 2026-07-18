@@ -265,8 +265,17 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
 
     return simde__m128i_from_altivec_u8(r);
   #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
+    /* The two vec_perm shuffles are byte-index based, so GCC's little-endian
+     * fix-up makes the constants endianness-specific (the big-endian versions
+     * are the reversed index vectors). bit_select feeds vec_bperm, whose bit
+     * numbering is big-endian on both targets, so it is shared. */
+    #if SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_BIG
+      static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) byte_interleave = {15, 7, 14, 6, 13, 5, 12, 4, 11, 3, 10, 2, 9, 1, 8, 0};
+      static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) byte_deinterleave= {15, 13, 11, 9, 7, 5, 3, 1, 14, 12, 10, 8, 6, 4, 2, 0};
+    #else
     static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) byte_interleave = {0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15};
     static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) byte_deinterleave= {0, 2, 4, 6, 8, 10, 12, 14, 1, 3, 5, 7, 9, 11, 13, 15};
+    #endif
     static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) bit_select = {64, 72, 80, 88, 96, 104, 112, 120, 0, 8, 16, 24, 32, 40, 48, 56};
     const SIMDE_POWER_ALTIVEC_VECTOR(signed char) zero = vec_splats(HEDLEY_STATIC_CAST(signed char, 0));
     SIMDE_POWER_ALTIVEC_VECTOR(signed char) X;
@@ -287,8 +296,15 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
       #else
         p = vec_bperm(a, bit_select);
       #endif
+      /* vec_bperm leaves the gather in bits 48:63, i.e. unsigned-short element 4
+       * in little-endian element numbering but element 3 in big-endian. */
+      #if SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_BIG
+        p = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char),
+                                    vec_splat(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), p), 3));
+      #else
       p = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char),
                                   vec_splat(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned short), p), 4));
+      #endif
       p = vec_and(p, vec_cmplt(X, zero));
       r = vec_xor(r, p);
       a = vec_add(a, a);
@@ -299,7 +315,13 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
     return simde__m128i_from_altivec_u8(r);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) mask = {128, 64, 32, 16, 8, 4, 2, 1, 128, 64, 32, 16, 8, 4, 2, 1};
+    /* vec_sum2s leaves the 8-bit gather in the low byte of words 1 and 3; that
+     * byte is at offset 4/12 in little-endian but 7/15 in big-endian. */
+    #if SIMDE_ENDIAN_ORDER == SIMDE_ENDIAN_BIG
+    static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) byte_select = {7, 7, 7, 7, 7, 7, 7, 7, 15, 15, 15, 15, 15, 15, 15, 15};
+    #else
     static const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) byte_select = {4, 4, 4, 4, 4, 4, 4, 4, 12, 12, 12, 12, 12, 12, 12, 12};
+    #endif
     const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) sevens = vec_splats(HEDLEY_STATIC_CAST(unsigned char, 7));
     const SIMDE_POWER_ALTIVEC_VECTOR(signed char) zero = vec_splats(HEDLEY_STATIC_CAST(signed char, 0));
     SIMDE_POWER_ALTIVEC_VECTOR(signed char) X;
