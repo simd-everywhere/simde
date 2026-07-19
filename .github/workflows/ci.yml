@@ -440,6 +440,11 @@ jobs:
           arch_deb: ppc64el
           distro: ubuntu-24.04
         - version: 14
+          cross: power7
+          arch_gnu: powerpc64le
+          arch_deb: ppc64el
+          distro: ubuntu-24.04
+        - version: 14
           cross: loongarch64
           arch_gnu: loongarch64
           arch_deb: loong64

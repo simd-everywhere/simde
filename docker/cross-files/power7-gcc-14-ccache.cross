@@ -1,0 +1,22 @@
+[binaries]
+c = ['ccache', 'powerpc64le-linux-gnu-gcc-14']
+cpp = ['ccache', 'powerpc64le-linux-gnu-g++-14']
+ar = 'powerpc64le-linux-gnu-ar'
+strip = 'powerpc64le-linux-gnu-strip'
+objcopy = 'powerpc64le-linux-gnu-objcopy'
+ld = 'powerpc64le-linux-gnu-ld'
+# Build targets power7, but execute under a power9 QEMU CPU: Ubuntu's
+# ppc64el userspace (glibc) has a POWER8 baseline, so emulating a real
+# power7 would SIGILL inside libc. Code compiled with -mcpu=power7 uses
+# only a subset ISA and runs fine on the newer CPU model.
+exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power9', '-L', '/usr/powerpc64le-linux-gnu/']
+
+[built-in options]
+c_args = ['-mcpu=power7', '-Wextra', '-Werror']
+cpp_args = ['-mcpu=power7', '-Wextra', '-Werror']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'ppc64'
+cpu = 'ppc64el'
+endian = 'little'
