@@ -2725,7 +2725,7 @@ simde_mm_div_ps (simde__m128 a, simde__m128 b) {
       r_.wasm_v128 =  wasm_f32x4_div(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f32 = vec_div(a_.altivec_f32, b_.altivec_f32);
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_f32 = __lsx_vfdiv_s(a_.lsx_f32, b_.lsx_f32);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.f32 = a_.f32 / b_.f32;
