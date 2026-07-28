@@ -226,6 +226,82 @@ jobs:
           when: always
       - run: /root/.local/bin/meson test -C build --num-processes 5 --print-errorlogs
 
+  alpine:  # (musl + GCC + SIMDE_NO_NATIVE)
+    resource_class: large
+    docker:
+      - image: alpine:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    environment:
+      CC: gcc
+      CXX: g++
+    steps:
+      - run: apk add --no-cache build-base meson ninja python3 ccache
+      - checkout
+      - restore_cache:
+         keys:
+            - ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}
+            - ccache-{{ .Environment.CIRCLE_JOB }}-master
+            - ccache-{{ .Environment.CIRCLE_JOB }}
+      - run:
+          name: System Information
+          command: cat /proc/cpuinfo /proc/meminfo
+      - run:
+          command: |
+            ccache --set-config=max_size='500M'
+            ccache --set-config=compression=true
+            ccache -p
+            ccache -z
+      - run: |
+          export PATH=/usr/lib/ccache:${PATH}
+          meson setup build -Dc_args="-DSIMDE_NO_NATIVE -Wextra -Werror" -Dcpp_args="-DSIMDE_NO_NATIVE -Wextra -Werror"
+          meson compile -C build --verbose -j 5
+      - run: /usr/bin/ccache -s
+      - save_cache:
+          key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
+          paths: [ "/root/.cache/ccache" ]
+          when: always
+      - run: meson test -C build --num-processes 5 --print-errorlogs
+  sanitizers:
+    resource_class: large
+    docker:
+      - image: debian:trixie-slim
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    environment:
+      CC: clang-17
+      CXX: clang++-17
+    steps:
+      - run: apt-get update && apt-get install -y ninja-build ninja-build pipx python3-setuptools python3-wheel gcovr clang-17 ccache
+      - checkout
+      - restore_cache:
+         keys:
+            - ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}
+            - ccache-{{ .Environment.CIRCLE_JOB }}-master
+            - ccache-{{ .Environment.CIRCLE_JOB }}
+      - run:
+          name: System Information
+          command: cat /proc/cpuinfo /proc/meminfo
+      - run: pipx install meson==0.64.0
+      - run:
+          command: |
+            ccache --set-config=max_size='500M'
+            ccache --set-config=compression=true
+            ccache -p
+            ccache -z
+      - run: |
+          export PATH=/usr/lib/ccache:${PATH}
+          /root/.local/bin/meson setup build -Db_coverage=true -Db_sanitize=address,undefined -Db_lundef=false
+          /root/.local/bin/meson compile -C build --verbose -j 5
+      - run: /usr/bin/ccache -s
+      - save_cache:
+          key: 'ccache-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ epoch }}'
+          paths: [ "/root/.cache/ccache" ]
+          when: always
+      - run: /root/.local/bin/meson test -C build --num-processes 5 --print-errorlogs
+
 
 workflows:
   version: 2
@@ -257,6 +333,16 @@ workflows:
       #         ignore:
       #         - /^ci/(?!circleci).*$/
       - i686-gcc12-O2:
+          filters:
+            branches:
+              ignore:
+              - /^ci/(?!circleci).*$/
+      - alpine:
+          filters:
+            branches:
+              ignore:
+              - /^ci/(?!circleci).*$/
+      - sanitizers:
           filters:
             branches:
               ignore:
