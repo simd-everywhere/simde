@@ -40,7 +40,7 @@ jobs:
         repository: simd-everywhere/implementation-status
         token: ${{ secrets.PUSH_IMPLEMENTATION_STATUS_TOKEN }}
         path: implementation-status
-        persist-credentials: false
+        persist-credentials: true
     - name: Install APT Dependencies
       run: sudo apt-get update && sudo apt-get install -y python3-lxml
     - name: Update
