@@ -4082,7 +4082,7 @@ simde_wasm_i64x2_all_true (simde_v128_t a) {
       return _mm_test_all_zeros(_mm_cmpeq_epi64(a_.sse_m128i, _mm_setzero_si128()), _mm_set1_epi32(~INT32_C(0)));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       return _mm_movemask_pd(_mm_cmpeq_pd(a_.sse_m128d, _mm_setzero_pd())) == 0;
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       return HEDLEY_STATIC_CAST(simde_bool, vec_all_ne(a_.altivec_i64, HEDLEY_REINTERPRET_CAST(__typeof__(a_.altivec_i64), vec_splats(0))));
     #else
       int64_t r = !INT32_C(0);
@@ -6822,7 +6822,7 @@ simde_wasm_i64x2_extend_low_i32x4 (simde_v128_t a) {
       r_.sse_m128i = _mm_cvtepi32_epi64(a_.sse_m128i);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_unpacklo_epi32(a_.sse_m128i, _mm_cmpgt_epi32(_mm_setzero_si128(), a_.sse_m128i));
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r_.altivec_i64 =
         vec_sra(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(long long), vec_mergeh(a_.altivec_i32, a_.altivec_i32)),
         vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 32))
@@ -7096,7 +7096,7 @@ simde_wasm_i64x2_extend_high_i32x4 (simde_v128_t a) {
       r_.sse_m128i = _mm_cvtepi32_epi64(_mm_shuffle_epi32(a_.sse_m128i, _MM_SHUFFLE(3, 2, 3, 2)));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.sse_m128i = _mm_unpackhi_epi32(a_.sse_m128i, _mm_cmpgt_epi32(_mm_setzero_si128(), a_.sse_m128i));
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r_.altivec_i64 =
         vec_sra(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(long long), vec_mergel(a_.altivec_i32, a_.altivec_i32)),
         vec_splats(HEDLEY_STATIC_CAST(unsigned long long, 32))
@@ -7377,21 +7377,12 @@ simde_wasm_i64x2_extmul_low_i32x4 (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = vmull_s32(vget_low_s32(a_.neon_i32), vget_low_s32(b_.neon_i32));
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       SIMDE_POWER_ALTIVEC_VECTOR(signed int) ashuf;
       SIMDE_POWER_ALTIVEC_VECTOR(signed int) bshuf;
 
-      #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-        ashuf = vec_mergeh(a_.altivec_i32, a_.altivec_i32);
-        bshuf = vec_mergeh(b_.altivec_i32, b_.altivec_i32);
-      #else
-        SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) perm = {
-          0, 1, 2, 3, 0, 1, 2, 3,
-          4, 5, 6, 7, 4, 5, 6, 7
-        };
-        ashuf = vec_perm(a_.altivec_i32, a_.altivec_i32, perm);
-        bshuf = vec_perm(b_.altivec_i32, b_.altivec_i32, perm);
-      #endif
+      ashuf = vec_mergeh(a_.altivec_i32, a_.altivec_i32);
+      bshuf = vec_mergeh(b_.altivec_i32, b_.altivec_i32);
 
       r_.altivec_i64 = vec_mule(ashuf, bshuf);
     #elif defined(SIMDE_X86_SSE4_1_NATIVE)
@@ -7555,21 +7546,12 @@ simde_wasm_u64x2_extmul_low_u32x4 (simde_v128_t a, simde_v128_t b) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u64 = vmull_u32(vget_low_u32(a_.neon_u32), vget_low_u32(b_.neon_u32));
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) ashuf;
       SIMDE_POWER_ALTIVEC_VECTOR(unsigned int) bshuf;
 
-      #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-        ashuf = vec_mergeh(a_.altivec_u32, a_.altivec_u32);
-        bshuf = vec_mergeh(b_.altivec_u32, b_.altivec_u32);
-      #else
-        SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) perm = {
-          0, 1, 2, 3, 0, 1, 2, 3,
-          4, 5, 6, 7, 4, 5, 6, 7
-        };
-        ashuf = vec_perm(a_.altivec_u32, a_.altivec_u32, perm);
-        bshuf = vec_perm(b_.altivec_u32, b_.altivec_u32, perm);
-      #endif
+      ashuf = vec_mergeh(a_.altivec_u32, a_.altivec_u32);
+      bshuf = vec_mergeh(b_.altivec_u32, b_.altivec_u32);
 
       r_.altivec_u64 = vec_mule(ashuf, bshuf);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
@@ -7724,21 +7706,12 @@ simde_wasm_i64x2_extmul_high_i32x4 (simde_v128_t a, simde_v128_t b) {
       r_.neon_i64 = vmull_high_s32(a_.neon_i32, b_.neon_i32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i64 = vmull_s32(vget_high_s32(a_.neon_i32), vget_high_s32(b_.neon_i32));
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       SIMDE_POWER_ALTIVEC_VECTOR(signed int) ashuf;
       SIMDE_POWER_ALTIVEC_VECTOR(signed int) bshuf;
 
-      #if defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
-        ashuf = vec_mergel(a_.altivec_i32, a_.altivec_i32);
-        bshuf = vec_mergel(b_.altivec_i32, b_.altivec_i32);
-      #else
-        SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) perm = {
-           8,  9, 10, 11,  8,  9, 10, 11,
-          12, 13, 14, 15, 12, 13, 14, 15
-        };
-        ashuf = vec_perm(a_.altivec_i32, a_.altivec_i32, perm);
-        bshuf = vec_perm(b_.altivec_i32, b_.altivec_i32, perm);
-      #endif
+      ashuf = vec_mergel(a_.altivec_i32, a_.altivec_i32);
+      bshuf = vec_mergel(b_.altivec_i32, b_.altivec_i32);
 
       r_.altivec_i64 = vec_mule(ashuf, bshuf);
     #elif defined(SIMDE_X86_SSE4_1_NATIVE)
@@ -7885,7 +7858,7 @@ simde_wasm_u64x2_extmul_high_u32x4 (simde_v128_t a, simde_v128_t b) {
       r_.neon_u64 = vmull_high_u32(a_.neon_u32, b_.neon_u32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_u64 = vmull_u32(vget_high_u32(a_.neon_u32), vget_high_u32(b_.neon_u32));
-    #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
+    #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r_.altivec_u64 =
         vec_mule(
           vec_mergel(a_.altivec_u32, a_.altivec_u32),
