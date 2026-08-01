@@ -286,7 +286,11 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 /*** Classification macros from C99 ***/
 
 #if !defined(simde_math_isinf)
-  #if SIMDE_MATH_BUILTIN_LIBM(isinf)
+  #if defined(SIMDE_ARCH_POWER) && defined(FP_INFINITE)
+    #define simde_math_isinf(v) (fpclassify(v) == FP_INFINITE)
+  #elif defined(SIMDE_ARCH_POWER) && defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_isinf(v) (std::fpclassify(v) == FP_INFINITE)
+  #elif SIMDE_MATH_BUILTIN_LIBM(isinf)
     #define simde_math_isinf(v) __builtin_isinf(v)
   #elif defined(isinf) || defined(SIMDE_MATH_HAVE_MATH_H)
     #define simde_math_isinf(v) isinf(v)
@@ -296,7 +300,11 @@ SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
 #endif
 
 #if !defined(simde_math_isinff)
-  #if HEDLEY_HAS_BUILTIN(__builtin_isinff) || \
+  #if defined(SIMDE_ARCH_POWER) && defined(FP_INFINITE)
+    #define simde_math_isinff(v) (fpclassify(v) == FP_INFINITE)
+  #elif defined(SIMDE_ARCH_POWER) && defined(SIMDE_MATH_HAVE_CMATH)
+    #define simde_math_isinff(v) (std::fpclassify(v) == FP_INFINITE)
+  #elif HEDLEY_HAS_BUILTIN(__builtin_isinff) || \
       HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
       HEDLEY_ARM_VERSION_CHECK(4,1,0)
     #define simde_math_isinff(v) __builtin_isinff(v)
