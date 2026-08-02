@@ -455,7 +455,7 @@ simde_math_fpclassf(float v, const int imm8) {
   fu.f = v;
   uint32_t bits = fu.u;
   uint8_t NegNum = (bits >> 31) & 1;
-  uint32_t const ExpMask = 0x3F800000; // [30:23]
+  uint32_t const ExpMask = 0x7F800000; // [30:23]
   uint32_t const MantMask = 0x007FFFFF; // [22:0]
   uint8_t ExpAllOnes = ((bits & ExpMask) == ExpMask);
   uint8_t ExpAllZeros = ((bits & ExpMask) == 0);
@@ -472,14 +472,14 @@ simde_math_fpclassf(float v, const int imm8) {
   uint8_t Denorm_res = ExpAllZeros & (!MantAllZeros);
   uint8_t FinNeg_res = NegNum & (!ExpAllOnes) & (!ZeroNumber);
   uint8_t sNaN_res = ExpAllOnes & (!MantAllZeros) & (!SignalingBit);
-  result = (((imm8 >> 0) & qNaN_res)   | \
-            ((imm8 >> 1) & Pzero_res)  | \
-            ((imm8 >> 2) & Nzero_res)  | \
-            ((imm8 >> 3) & Pinf_res)   | \
-            ((imm8 >> 4) & Ninf_res)   | \
-            ((imm8 >> 5) & Denorm_res) | \
-            ((imm8 >> 6) & FinNeg_res) | \
-            ((imm8 >> 7) & sNaN_res));
+  result = ((((imm8 >> 0) & qNaN_res) ? SIMDE_MATH_FP_QNAN : 0)       | \
+            (((imm8 >> 1) & Pzero_res) ? SIMDE_MATH_FP_PZERO : 0)     | \
+            (((imm8 >> 2) & Nzero_res) ? SIMDE_MATH_FP_NZERO : 0)     | \
+            (((imm8 >> 3) & Pinf_res) ? SIMDE_MATH_FP_PINF : 0)       | \
+            (((imm8 >> 4) & Ninf_res) ? SIMDE_MATH_FP_NINF : 0)       | \
+            (((imm8 >> 5) & Denorm_res) ? SIMDE_MATH_FP_DENORMAL : 0) | \
+            (((imm8 >> 6) & FinNeg_res) ? SIMDE_MATH_FP_NEGATIVE : 0) | \
+            (((imm8 >> 7) & sNaN_res)  ? SIMDE_MATH_FP_SNAN : 0)) ;
   return result;
 }
 
@@ -510,14 +510,14 @@ simde_math_fpclass(double v, const int imm8) {
   uint8_t Denorm_res = ExpAllZeros & (!MantAllZeros);
   uint8_t FinNeg_res = NegNum & (!ExpAllOnes) & (!ZeroNumber);
   uint8_t sNaN_res = ExpAllOnes & (!MantAllZeros) & (!SignalingBit);
-  result = (((imm8 >> 0) & qNaN_res)   | \
-            ((imm8 >> 1) & Pzero_res)  | \
-            ((imm8 >> 2) & Nzero_res)  | \
-            ((imm8 >> 3) & Pinf_res)   | \
-            ((imm8 >> 4) & Ninf_res)   | \
-            ((imm8 >> 5) & Denorm_res) | \
-            ((imm8 >> 6) & FinNeg_res) | \
-            ((imm8 >> 7) & sNaN_res));
+  result = ((((imm8 >> 0) & qNaN_res) ? SIMDE_MATH_FP_QNAN : 0)       | \
+            (((imm8 >> 1) & Pzero_res) ? SIMDE_MATH_FP_PZERO : 0)     | \
+            (((imm8 >> 2) & Nzero_res) ? SIMDE_MATH_FP_NZERO : 0)     | \
+            (((imm8 >> 3) & Pinf_res) ? SIMDE_MATH_FP_PINF : 0)       | \
+            (((imm8 >> 4) & Ninf_res) ? SIMDE_MATH_FP_NINF : 0)       | \
+            (((imm8 >> 5) & Denorm_res) ? SIMDE_MATH_FP_DENORMAL : 0) | \
+            (((imm8 >> 6) & FinNeg_res) ? SIMDE_MATH_FP_NEGATIVE : 0) | \
+            (((imm8 >> 7) & sNaN_res)  ? SIMDE_MATH_FP_SNAN : 0)) ;
   return result;
 }
 
