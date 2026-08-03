@@ -600,7 +600,7 @@ simde_mm_blend_epi32(simde__m128i a, simde__m128i b, const int imm8)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
 #  define simde_mm_blend_epi32(a, b, imm8) _mm_blend_epi32(a, b, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+#elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
 #  define simde_mm_blend_epi32(a, b, imm8)  __lsx_vbitsel_v(a, b, \
   simde_mm_set_epi32(-((imm8 >> 3) & 1), -((imm8 >> 2) & 1), -((imm8 >> 1)& 1), -(imm8 & 1)))
 #elif SIMDE_NATURAL_FLOAT_VECTOR_SIZE_LE(128)
@@ -731,7 +731,7 @@ simde__m128i
 simde_mm_broadcastb_epi8 (simde__m128i a) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm_broadcastb_epi8(a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     return __lsx_vreplvei_b(a, 0);
   #else
     simde__m128i_private r_;
@@ -779,7 +779,7 @@ simde__m128i
 simde_mm_broadcastw_epi16 (simde__m128i a) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm_broadcastw_epi16(a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     return __lsx_vreplvei_h(a, 0);
   #else
     simde__m128i_private r_;
@@ -827,7 +827,7 @@ simde__m128i
 simde_mm_broadcastd_epi32 (simde__m128i a) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm_broadcastd_epi32(a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     return __lsx_vreplvei_w(a, 0);
   #else
     simde__m128i_private r_;
@@ -875,7 +875,7 @@ simde__m128i
 simde_mm_broadcastq_epi64 (simde__m128i a) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm_broadcastq_epi64(a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     return __lsx_vreplvei_d(a, 0);
   #else
     simde__m128i_private r_;
@@ -929,7 +929,7 @@ simde_mm_broadcastss_ps (simde__m128 a) {
     simde__m128_private r_;
     simde__m128_private a_= simde__m128_to_private(a);
 
-    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_i64 = __lsx_vreplvei_w(a_.lsx_i64, 0);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.f32 = SIMDE_SHUFFLE_VECTOR_(32, 16, a_.f32, a_.f32, 0, 0, 0, 0);
@@ -3223,7 +3223,7 @@ simde_mm_maskload_epi32 (const int32_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       mask_shr_.neon_i32 = vshrq_n_s32(mask_.neon_i32, 31);
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       mask_shr_.lsx_i64 = __lsx_vsrli_w(mask_.lsx_i64, 31);
     #else
       SIMDE_VECTORIZE
@@ -3291,7 +3291,7 @@ simde_mm_maskload_epi64 (const int64_t mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       mask_shr_.neon_i64 = vshrq_n_s64(mask_.neon_i64, 63);
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       mask_shr_.lsx_i64 = __lsx_vsrli_d(mask_.lsx_i64, 63);
     #else
       SIMDE_VECTORIZE
@@ -3355,7 +3355,7 @@ simde_mm_maskstore_epi32 (int32_t mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m128i 
     simde__m128i_private mask_ = simde__m128i_to_private(mask);
     simde__m128i_private a_ = simde__m128i_to_private(a);
 
-    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
        mask_.lsx_i64 = __lsx_vslti_w(mask_.lsx_i64, 0);
        a_.lsx_i64  = __lsx_vbitsel_v(__lsx_vld(mem_addr, 0), a_.lsx_i64, mask_.lsx_i64);
        __lsx_vst(a_.lsx_i64, mem_addr, 0);
@@ -3409,7 +3409,7 @@ simde_mm_maskstore_epi64 (int64_t mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m128i 
     simde__m128i_private mask_ = simde__m128i_to_private(mask);
     simde__m128i_private a_ = simde__m128i_to_private(a);
 
-    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
       if (__lsx_vpickve2gr_d(mask_.lsx_i64, 0) < 0) __lsx_vstelm_d(a_.lsx_i64, mem_addr, 0, 0);
       if (__lsx_vpickve2gr_d(mask_.lsx_i64, 1) < 0) __lsx_vstelm_d(a_.lsx_i64, mem_addr, 8, 1);
     #else
@@ -4983,7 +4983,7 @@ simde_mm_sllv_epi32 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     r_.neon_u32 = vshlq_u32(a_.neon_u32, vreinterpretq_s32_u32(b_.neon_u32));
     r_.neon_u32 = vandq_u32(r_.neon_u32, vcltq_u32(b_.neon_u32, vdupq_n_u32(32)));
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     r_.lsx_i64 = __lsx_vsll_w(a_.lsx_i64, b_.lsx_i64);
     r_.lsx_i64 = __lsx_vand_v(r_.lsx_i64, __lsx_vslei_wu(b_.lsx_i64, 31));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -5049,7 +5049,7 @@ simde_mm_sllv_epi64 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
     r_.neon_u64 = vshlq_u64(a_.neon_u64, vreinterpretq_s64_u64(b_.neon_u64));
     r_.neon_u64 = vandq_u64(r_.neon_u64, vcltq_u64(b_.neon_u64, vdupq_n_u64(64)));
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     r_.lsx_i64 = __lsx_vsll_d(a_.lsx_i64, b_.lsx_i64);
     r_.lsx_i64 = __lsx_vand_v(r_.lsx_i64, __lsx_vsle_du(b_.lsx_i64, __lsx_vreplgr2vr_d(63)));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
@@ -5257,7 +5257,7 @@ simde__m128i
 simde_mm_srav_epi32 (simde__m128i a, simde__m128i count) {
   #if defined(SIMDE_X86_AVX2_NATIVE)
     return _mm_srav_epi32(a, count);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     return __lsx_vsra_w(a, __lsx_vmini_wu(count, 31));
   #else
     simde__m128i_private
@@ -5617,7 +5617,7 @@ simde_mm_srlv_epi32 (simde__m128i a, simde__m128i b) {
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
   #define simde_mm_srlv_epi32(a, b) _mm_srlv_epi32(a, b)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+#elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
   #define simde_mm_srlv_epi32(a, b) __lsx_vand_v(__lsx_vsrl_w(a, b), __lsx_vslei_wu(b, 31))
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
@@ -5675,7 +5675,7 @@ simde_mm_srlv_epi64 (simde__m128i a, simde__m128i b) {
 }
 #if defined(SIMDE_X86_AVX2_NATIVE)
   #define simde_mm_srlv_epi64(a, b) _mm_srlv_epi64(a, b)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+#elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
   #define simde_mm_srlv_epi64(a, b) __lsx_vand_v(__lsx_vsrl_d(a, b), __lsx_vsle_du(b, __lsx_vreplgr2vr_d(63)))
 #endif
 #if defined(SIMDE_X86_AVX2_ENABLE_NATIVE_ALIASES)
