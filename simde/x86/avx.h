@@ -2127,7 +2127,7 @@ simde__m128
 simde_mm_broadcast_ss (simde_float32 const * a) {
   #if defined(SIMDE_X86_AVX_NATIVE)
     return _mm_broadcast_ss(a);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     return (simde__m128)__lsx_vldrepl_w(a, 0);
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     return simde__m128_from_wasm_v128(wasm_v128_load32_splat(a));
@@ -2671,7 +2671,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
     case SIMDE_CMP_EQ_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_seq_d(a_.lsx_f64, b_.lsx_f64), 0x00);
       #else
         a_.i64[0] = (a_.f64[0] == b_.f64[0]) ? ~INT64_C(0) : INT64_C(0);
@@ -2680,7 +2680,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_LT_OQ:
     case SIMDE_CMP_LT_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_slt_d(a_.lsx_f64, b_.lsx_f64), 0x00);
       #else
         a_.i64[0] = (a_.f64[0] < b_.f64[0]) ? ~INT64_C(0) : INT64_C(0);
@@ -2689,7 +2689,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_LE_OQ:
     case SIMDE_CMP_LE_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_sle_d(a_.lsx_f64, b_.lsx_f64), 0x00);
       #else
         a_.i64[0] = (a_.f64[0] <= b_.f64[0]) ? ~INT64_C(0) : INT64_C(0);
@@ -2698,7 +2698,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_UNORD_Q:
     case SIMDE_CMP_UNORD_S:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_cun_d(a_.lsx_f64, b_.lsx_f64), 0x00);
       #else
         a_.i64[0] = ((a_.f64[0] != a_.f64[0]) || (b_.f64[0] != b_.f64[0])) ? ~INT64_C(0) : INT64_C(0);
@@ -2707,7 +2707,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_NEQ_UQ:
     case SIMDE_CMP_NEQ_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_cune_d(a_.lsx_f64, b_.lsx_f64), 0x00);
       #else
         a_.i64[0] = ((a_.f64[0] == a_.f64[0]) & (b_.f64[0] == b_.f64[0]) & (a_.f64[0] != b_.f64[0])) ? ~INT64_C(0) : INT64_C(0);
@@ -2716,7 +2716,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_NEQ_OQ:
     case SIMDE_CMP_NEQ_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_cne_d(a_.lsx_f64, b_.lsx_f64), 0x00);
       #else
         a_.i64[0] = ((a_.f64[0] == a_.f64[0]) & (b_.f64[0] == b_.f64[0]) & (a_.f64[0] != b_.f64[0])) ? ~INT64_C(0) : INT64_C(0);
@@ -2725,7 +2725,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_NLT_UQ:
     case SIMDE_CMP_NLT_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         t_ = __lsx_vfcmp_cult_d(a_.lsx_f64, b_.lsx_f64);
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
@@ -2735,7 +2735,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_NLE_UQ:
     case SIMDE_CMP_NLE_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         t_ = __lsx_vfcmp_cule_d(a_.lsx_f64, b_.lsx_f64);
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
@@ -2745,7 +2745,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_ORD_Q:
     case SIMDE_CMP_ORD_S:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_cor_d(a_.lsx_f64, b_.lsx_f64), 0x00);
       #else
         a_.i64[0] = ((a_.f64[0] == a_.f64[0]) & (b_.f64[0] == b_.f64[0])) ? ~INT64_C(0) : INT64_C(0);
@@ -2754,7 +2754,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_EQ_UQ:
     case SIMDE_CMP_EQ_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_cueq_d(a_.lsx_f64, b_.lsx_f64), 0x00);
       #else
         a_.i64[0] = ((a_.f64[0] != a_.f64[0]) | (b_.f64[0] != b_.f64[0]) | (a_.f64[0] == b_.f64[0])) ? ~INT64_C(0) : INT64_C(0);
@@ -2763,7 +2763,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_NGE_UQ:
     case SIMDE_CMP_NGE_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_cult_d(a_.lsx_f64, b_.lsx_f64), 0x00);
       #else
         a_.i64[0] = !(a_.f64[0] >= b_.f64[0]) ? ~INT64_C(0) : INT64_C(0);
@@ -2772,7 +2772,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_NGT_UQ:
     case SIMDE_CMP_NGT_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_cule_d(a_.lsx_f64, b_.lsx_f64), 0x00);
       #else
         a_.i64[0] = !(a_.f64[0] > b_.f64[0]) ? ~INT64_C(0) : INT64_C(0);
@@ -2786,7 +2786,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_GE_OQ:
     case SIMDE_CMP_GE_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         t_ = __lsx_vfcmp_clt_d(a_.lsx_f64, b_.lsx_f64);
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
@@ -2796,7 +2796,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
 
     case SIMDE_CMP_GT_OQ:
     case SIMDE_CMP_GT_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vfcmp_clt_d(b_.lsx_f64, a_.lsx_f64), 0x00);
       #else
         a_.i64[0] = (a_.f64[0] > b_.f64[0]) ? ~INT64_C(0) : INT64_C(0);
@@ -2836,7 +2836,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
   switch (imm8) {
     case SIMDE_CMP_EQ_OQ:
     case SIMDE_CMP_EQ_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_seq_s(a_.lsx_f32, b_.lsx_f32), 0x00);
       #else
         a_.i32[0] = (a_.f32[0] == b_.f32[0]) ? ~INT32_C(0) : INT32_C(0);
@@ -2845,7 +2845,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_LT_OQ:
     case SIMDE_CMP_LT_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_slt_s(a_.lsx_f32, b_.lsx_f32), 0x00);
       #else
         a_.i32[0] = (a_.f32[0] < b_.f32[0]) ? ~INT32_C(0) : INT32_C(0);
@@ -2854,7 +2854,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_LE_OQ:
     case SIMDE_CMP_LE_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_sle_s(a_.lsx_f32, b_.lsx_f32), 0x00);
       #else
         a_.i32[0] = (a_.f32[0] <= b_.f32[0]) ? ~INT32_C(0) : INT32_C(0);
@@ -2863,7 +2863,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_UNORD_Q:
     case SIMDE_CMP_UNORD_S:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_cun_s(a_.lsx_f32, b_.lsx_f32), 0x00);
       #else
         a_.i32[0] = ((a_.f32[0] != a_.f32[0]) || (b_.f32[0] != b_.f32[0])) ? ~INT32_C(0) : INT32_C(0);
@@ -2872,7 +2872,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_NEQ_UQ:
     case SIMDE_CMP_NEQ_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_cune_s(a_.lsx_f32, b_.lsx_f32), 0x00);
       #else
         a_.i32[0] = ((a_.f32[0] == a_.f32[0]) & (b_.f32[0] == b_.f32[0]) & (a_.f32[0] != b_.f32[0])) ? ~INT32_C(0) : INT32_C(0);
@@ -2881,7 +2881,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_NEQ_OQ:
     case SIMDE_CMP_NEQ_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_cne_s(a_.lsx_f32, b_.lsx_f32), 0x00);
       #else
         a_.i32[0] = ((a_.f32[0] == a_.f32[0]) & (b_.f32[0] == b_.f32[0]) & (a_.f32[0] != b_.f32[0])) ? ~INT32_C(0) : INT32_C(0);
@@ -2890,7 +2890,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_NLT_UQ:
     case SIMDE_CMP_NLT_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         t_ = __lsx_vfcmp_cult_s(a_.lsx_f32, b_.lsx_f32);
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
@@ -2900,7 +2900,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_NLE_UQ:
     case SIMDE_CMP_NLE_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         t_ = __lsx_vfcmp_cule_s(a_.lsx_f32, b_.lsx_f32);
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
@@ -2910,7 +2910,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_ORD_Q:
     case SIMDE_CMP_ORD_S:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_cor_s(a_.lsx_f32, b_.lsx_f32), 0x00);
       #else
         a_.i32[0] = ((a_.f32[0] == a_.f32[0]) & (b_.f32[0] == b_.f32[0])) ? ~INT32_C(0) : INT32_C(0);
@@ -2919,7 +2919,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_EQ_UQ:
     case SIMDE_CMP_EQ_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_cueq_s(a_.lsx_f32, b_.lsx_f32), 0x00);
       #else
         a_.i32[0] = ((a_.f32[0] != a_.f32[0]) | (b_.f32[0] != b_.f32[0]) | (a_.f32[0] == b_.f32[0])) ? ~INT32_C(0) : INT32_C(0);
@@ -2928,7 +2928,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_NGE_UQ:
     case SIMDE_CMP_NGE_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_cult_s(a_.lsx_f32, b_.lsx_f32), 0x00);
       #else
         a_.i32[0] = !(a_.f32[0] >= b_.f32[0]) ? ~INT32_C(0) : INT32_C(0);
@@ -2937,7 +2937,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_NGT_UQ:
     case SIMDE_CMP_NGT_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_cule_s(a_.lsx_f32, b_.lsx_f32), 0x00);
       #else
         a_.i32[0] = !(a_.f32[0] > b_.f32[0]) ? ~INT32_C(0) : INT32_C(0);
@@ -2955,7 +2955,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_GE_OQ:
     case SIMDE_CMP_GE_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         t_ = __lsx_vfcmp_clt_s(a_.lsx_f32, b_.lsx_f32);
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
@@ -2965,7 +2965,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_GT_OQ:
     case SIMDE_CMP_GT_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vfcmp_clt_s(b_.lsx_f32, a_.lsx_f32), 0x00);
       #else
         a_.i32[0] = (a_.f32[0] > b_.f32[0]) ? ~INT32_C(0) : INT32_C(0);
@@ -4476,7 +4476,7 @@ simde__m256
 simde_mm256_loadu2_m128 (const float hiaddr[HEDLEY_ARRAY_PARAM(4)], const float loaddr[HEDLEY_ARRAY_PARAM(4)]) {
   #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341) && !defined(SIMDE_BUG_MCST_LCC_MISSING_AVX_LOAD_STORE_M128_FUNCS)
     return _mm256_loadu2_m128(hiaddr, loaddr);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     simde__m256_private r_;
     r_.m128_private[1].lsx_i64 = __lsx_vld(hiaddr, 0);
     r_.m128_private[0].lsx_i64 = __lsx_vld(loaddr, 0);
@@ -4497,7 +4497,7 @@ simde__m256d
 simde_mm256_loadu2_m128d (const double hiaddr[HEDLEY_ARRAY_PARAM(2)], const double loaddr[HEDLEY_ARRAY_PARAM(2)]) {
   #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341) && !defined(SIMDE_BUG_MCST_LCC_MISSING_AVX_LOAD_STORE_M128_FUNCS)
     return _mm256_loadu2_m128d(hiaddr, loaddr);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     simde__m256d_private r_;
     r_.m128d_private[1].lsx_i64 = __lsx_vld(hiaddr, 0);
     r_.m128d_private[0].lsx_i64 = __lsx_vld(loaddr, 0);
@@ -4518,7 +4518,7 @@ simde__m256i
 simde_mm256_loadu2_m128i (const simde__m128i* hiaddr, const simde__m128i* loaddr) {
   #if defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_BUG_GCC_91341) && !defined(SIMDE_BUG_MCST_LCC_MISSING_AVX_LOAD_STORE_M128_FUNCS)
     return _mm256_loadu2_m128i(hiaddr, loaddr);
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     simde__m256i_private r_;
     r_.m128i[1] = __lsx_vld(hiaddr, 0);
     r_.m128i[0] = __lsx_vld(loaddr, 0);
@@ -4554,7 +4554,7 @@ simde_mm_maskload_pd (const simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       return simde_mm_and_pd(simde_mm_load_pd(mem_addr),
           simde__m128d_from_wasm_v128(wasm_i64x2_shr(mask_.wasm_v128, 63)));
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       mask_shr_.lsx_i64 = __lsx_vsrli_d(mask_.lsx_i64, 63);
     #else
       SIMDE_VECTORIZE
@@ -4621,7 +4621,7 @@ simde_mm_maskload_ps (const simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       return simde_mm_and_ps(simde_mm_load_ps(mem_addr),
           simde__m128_from_wasm_v128(wasm_i32x4_shr(mask_.wasm_v128, 31)));
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       mask_shr_.lsx_i64 = __lsx_vsrli_w(mask_.lsx_i64, 31);
     #else
       SIMDE_VECTORIZE
@@ -4678,7 +4678,7 @@ simde_mm_maskstore_pd (simde_float64 mem_addr[HEDLEY_ARRAY_PARAM(2)], simde__m12
     #else
       _mm_maskstore_pd(mem_addr, mask, a);
     #endif
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     if (__lsx_vpickve2gr_d(mask, 0) < 0)
       __lsx_vstelm_d(HEDLEY_REINTERPRET_CAST(simde__m128i, a), mem_addr, 0, 0);
     if (__lsx_vpickve2gr_d(mask, 1) < 0)
@@ -4744,7 +4744,7 @@ simde_mm_maskstore_ps (simde_float32 mem_addr[HEDLEY_ARRAY_PARAM(4)], simde__m12
     #else
       _mm_maskstore_ps(mem_addr, mask, a);
     #endif
-  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
     __m128i r_ = __lsx_vld(mem_addr, 0); mask = __lsx_vslti_w(mask, 0);
     r_ = __lsx_vbitsel_v(r_, HEDLEY_REINTERPRET_CAST(simde__m128i, a), mask);
     __lsx_vst(r_, mem_addr, 0);
@@ -5280,7 +5280,7 @@ simde_mm_permute_ps (simde__m128 a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
 #  define simde_mm_permute_ps(a, imm8) _mm_permute_ps(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+#elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
 #  define simde_mm_permute_ps(a, imm8) HEDLEY_REINTERPRET_CAST(simde__m128, __lsx_vshuf4i_w(HEDLEY_REINTERPRET_CAST(simde__m128i, a), imm8))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
 #  define simde_mm_permute_ps(a, imm8) simde__m128_from_wasm_v128(wasm_i32x4_shuffle(simde__m128_to_wasm_v128(a), simde__m128_to_wasm_v128(a), ((imm8) & 3), (((imm8) >> 2) & 3 ), (((imm8) >> 4) & 3), (((imm8) >> 6) & 3)))
@@ -5308,7 +5308,7 @@ simde_mm_permute_pd (simde__m128d a, const int imm8)
 }
 #if defined(SIMDE_X86_AVX_NATIVE)
 #  define simde_mm_permute_pd(a, imm8) _mm_permute_pd(a, imm8)
-#elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+#elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
 #  define simde_mm_permute_pd(a, imm8) HEDLEY_REINTERPRET_CAST(simde__m128d, __lsx_vshuf4i_d(HEDLEY_REINTERPRET_CAST(simde__m128i, a), HEDLEY_REINTERPRET_CAST(simde__m128i, a), (imm8 & 1) | (((imm8 >> 1) & 1) << 2)))
 #elif defined(SIMDE_WASM_SIMD128_NATIVE)
 #  define simde_mm_permute_pd(a, imm8) simde__m128d_from_wasm_v128(wasm_i64x2_shuffle(simde__m128d_to_wasm_v128(a), simde__m128d_to_wasm_v128(a), ((imm8) & 1), (((imm8) >> 1) & 1 )))
@@ -5329,7 +5329,7 @@ simde_mm_permutevar_ps (simde__m128 a, simde__m128i b) {
       a_ = simde__m128_to_private(a);
     simde__m128i_private b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_i64 = __lsx_vshuf_w(__lsx_vand_v(b_.lsx_i64, __lsx_vreplgr2vr_w(3)), a_.lsx_i64, a_.lsx_i64);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f32x4_make(
@@ -5363,7 +5363,7 @@ simde_mm_permutevar_pd (simde__m128d a, simde__m128i b) {
       a_ = simde__m128d_to_private(a);
     simde__m128i_private b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_i64 = __lsx_vshuf_d(__lsx_vsrli_d(__lsx_vand_v(b_.lsx_i64, __lsx_vreplgr2vr_d(2)), 1), a_.lsx_i64, a_.lsx_i64);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f64x2_make(
@@ -6584,7 +6584,7 @@ simde_mm_testc_ps (simde__m128 a, simde__m128 b) {
       m = wasm_v128_and(m, simde_mm_movehl_ps(m, m));
       m = wasm_v128_and(m, simde_mm_shuffle_epi32(m, SIMDE_MM_SHUFFLE(3, 2, 0, 1)));
       return wasm_i32x4_extract_lane(m, 0);
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       a_.lsx_i64 = __lsx_vandn_v(a_.lsx_i64, b_.lsx_i64);
       a_.lsx_i64 = __lsx_vmskltz_w(a_.lsx_i64);
       return __lsx_vpickve2gr_w(a_.lsx_i64, 0) ? 0 : 1;
@@ -6617,7 +6617,7 @@ simde_mm_testc_pd (simde__m128d a, simde__m128d b) {
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t m = wasm_u64x2_shr(wasm_v128_or(wasm_v128_not(b_.wasm_v128), a_.wasm_v128), 63);
       return HEDLEY_STATIC_CAST(int, wasm_i64x2_extract_lane(m, 0) & wasm_i64x2_extract_lane(m, 1));
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       a_.lsx_i64 = __lsx_vandn_v(a_.lsx_i64, b_.lsx_i64);
       a_.lsx_i64 = __lsx_vmskltz_d(a_.lsx_i64);
       return __lsx_vpickve2gr_w(a_.lsx_i64, 0) ? 0 : 1;
@@ -6743,7 +6743,7 @@ simde_mm_testz_ps (simde__m128 a, simde__m128 b) {
       m = wasm_v128_and(m, simde_mm_movehl_ps(m, m));
       m = wasm_v128_and(m, simde_mm_shuffle_epi32(m, SIMDE_MM_SHUFFLE(3, 2, 0, 1)));
       return wasm_i32x4_extract_lane(m, 0);
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       a_.lsx_i64 = __lsx_vand_v(a_.lsx_i64, b_.lsx_i64);
       a_.lsx_i64 = __lsx_vmskltz_w(a_.lsx_i64);
       return __lsx_vpickve2gr_w(a_.lsx_i64, 0) ? 0 : 1;
@@ -6776,7 +6776,7 @@ simde_mm_testz_pd (simde__m128d a, simde__m128d b) {
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
       v128_t m = wasm_u64x2_shr(wasm_v128_not(wasm_v128_and(a_.wasm_v128, b_.wasm_v128)), 63);
       return HEDLEY_STATIC_CAST(int, wasm_i64x2_extract_lane(m, 0) & wasm_i64x2_extract_lane(m, 1));
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       a_.lsx_i64 = __lsx_vand_v(a_.lsx_i64, b_.lsx_i64);
       a_.lsx_i64 = __lsx_vmskltz_d(a_.lsx_i64);
       return __lsx_vpickve2gr_w(a_.lsx_i64, 0) ? 0 : 1;
@@ -6905,7 +6905,7 @@ simde_mm_testnzc_ps (simde__m128 a, simde__m128 b) {
       m  = wasm_v128_or(m,  simde_mm_shuffle_epi32(m, SIMDE_MM_SHUFFLE(3, 2, 0, 1)));
       m2 = wasm_v128_or(m2, simde_mm_shuffle_epi32(m2, SIMDE_MM_SHUFFLE(3, 2, 0, 1)));
       return wasm_i32x4_extract_lane(m, 0) & wasm_i32x4_extract_lane(m2, 0);
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       __m128i m = __lsx_vandn_v(a_.lsx_i64, b_.lsx_i64);
       __m128i n = __lsx_vand_v(a_.lsx_i64, b_.lsx_i64);
       m = __lsx_vmskltz_w(m); n = __lsx_vmskltz_w(n);
@@ -6942,7 +6942,7 @@ simde_mm_testnzc_pd (simde__m128d a, simde__m128d b) {
       v128_t m2 = wasm_u64x2_shr(wasm_v128_andnot(b_.wasm_v128, a_.wasm_v128), 63);
       return HEDLEY_STATIC_CAST(int, (wasm_i64x2_extract_lane(m, 0)  | wasm_i64x2_extract_lane(m, 1))
                                    & (wasm_i64x2_extract_lane(m2, 0) | wasm_i64x2_extract_lane(m2, 1)));
-    #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       __m128i m = __lsx_vandn_v(a_.lsx_i64, b_.lsx_i64);
       __m128i n = __lsx_vand_v(a_.lsx_i64, b_.lsx_i64);
       m = __lsx_vmskltz_d(m); n = __lsx_vmskltz_d(n);

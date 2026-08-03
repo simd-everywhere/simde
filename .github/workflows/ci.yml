@@ -45,6 +45,18 @@ jobs:
     - name: Check formatting
       run: .github/workflows/formatting.bash
 
+  conditional-inclusion:
+    runs-on: ubuntu-slim
+    steps:
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      with:
+        fetch-depth: 2
+        persist-credentials: false
+    - name: Install python3
+      run: sudo apt-get update && sudo apt-get install -y python3
+    - name: Check conditional inclusion for LoongArch
+      run: test/check-loongarch-guards.py
+
   x86:
     runs-on: ubuntu-24.04
     strategy:
