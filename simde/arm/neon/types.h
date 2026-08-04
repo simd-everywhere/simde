@@ -43,6 +43,26 @@ SIMDE_BEGIN_DECLS_
   #define SIMDE_ARM_NEON_DECLARE_VECTOR(Element_Type, Name, Vector_Size) Element_Type Name[(Vector_Size) / sizeof(Element_Type)]
 #endif
 
+#if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+  /* LSX operates on 128-bit registers, but the 64-bit (x1) vector types
+   * hold only 8 bytes of data.  These helpers move the low 64 bits
+   * between a private union's .values array and a __m128i register. */
+  SIMDE_FUNCTION_ATTRIBUTES
+  __m128i simde_x_lsx_load64(const void* p) {
+    /* memcpy to a __m128i makes GCC emit a zero-init (vreplvei.d) before the
+     * insert; going through a GPR and replicating avoids that and keeps
+     * the data in a single vector register. */
+    int64_t v;
+    simde_memcpy(&v, p, 8);
+    return __lsx_vreplgr2vr_d(v);
+  }
+
+  SIMDE_FUNCTION_ATTRIBUTES
+  void simde_x_lsx_store64(void* p, __m128i v) {
+    simde_memcpy(p, &v, 8);
+  }
+#endif
+
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(int8_t, values, 8);
 
@@ -195,6 +215,7 @@ typedef union {
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vuint8m1_t sv64;
   #endif
+
 } simde_poly8x8_private;
 
 typedef union {
@@ -202,6 +223,7 @@ typedef union {
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vuint16m1_t sv64;
   #endif
+
 } simde_poly16x4_private;
 
 typedef union {
@@ -209,6 +231,7 @@ typedef union {
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vuint64m1_t sv64;
   #endif
+
 } simde_poly64x1_private;
 
 typedef union {
@@ -230,6 +253,10 @@ typedef union {
     fixed_vint8m1_t sv128;
   #endif
 
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
+  #endif
+
 } simde_int8x16_private;
 
 typedef union {
@@ -249,6 +276,10 @@ typedef union {
 
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vint16m1_t sv128;
+  #endif
+
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
   #endif
 
 } simde_int16x8_private;
@@ -276,6 +307,10 @@ typedef union {
     fixed_vint32m1_t sv128;
   #endif
 
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
+  #endif
+
 } simde_int32x4_private;
 
 typedef union {
@@ -295,6 +330,10 @@ typedef union {
 
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vint64m1_t sv128;
+  #endif
+
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
   #endif
 
 } simde_int64x2_private;
@@ -318,6 +357,10 @@ typedef union {
     fixed_vuint8m1_t sv128;
   #endif
 
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
+  #endif
+
 } simde_uint8x16_private;
 
 typedef union {
@@ -337,6 +380,10 @@ typedef union {
 
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vuint16m1_t sv128;
+  #endif
+
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
   #endif
 
 } simde_uint16x8_private;
@@ -360,6 +407,10 @@ typedef union {
     fixed_vuint32m1_t sv128;
   #endif
 
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
+  #endif
+
 } simde_uint32x4_private;
 
 typedef union {
@@ -379,6 +430,10 @@ typedef union {
 
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vuint64m1_t sv128;
+  #endif
+
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
   #endif
 
 } simde_uint64x2_private;
@@ -410,6 +465,10 @@ typedef union {
     fixed_vfloat16m1_t sv128;
   #endif
 
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
+  #endif
+
 } simde_float16x8_private;
 
 typedef union {
@@ -429,6 +488,10 @@ typedef union {
 
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vfloat32m1_t sv128;
+  #endif
+
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
   #endif
 
 } simde_float32x4_private;
@@ -452,12 +515,20 @@ typedef union {
     fixed_vfloat64m1_t sv128;
   #endif
 
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
+  #endif
+
 } simde_float64x2_private;
 
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(simde_poly8, values, 16);
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vuint8m1_t sv128;
+  #endif
+
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
   #endif
 } simde_poly8x16_private;
 
@@ -466,12 +537,20 @@ typedef union {
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vuint16m1_t sv128;
   #endif
+
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
+  #endif
 } simde_poly16x8_private;
 
 typedef union {
   SIMDE_ARM_NEON_DECLARE_VECTOR(simde_poly64, values, 16);
   #if defined(SIMDE_RISCV_V_NATIVE)
     fixed_vuint64m1_t sv128;
+  #endif
+
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i m128i;
   #endif
 } simde_poly64x2_private;
 

@@ -453,6 +453,8 @@ simde_vandq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       r_.v128 = wasm_v128_and(a_.v128, b_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vand_vv_u8m1(a_.sv128, b_.sv128, 16);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vand_v(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values & b_.values;
     #else

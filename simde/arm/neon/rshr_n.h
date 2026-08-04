@@ -106,10 +106,14 @@ simde_vrshrq_n_s8 (const simde_int8x16_t a, const int n)
     r_,
     a_ = simde_int8x16_to_private(a);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(int8_t, (a_.values[i] + (1 << (n - 1))) >> n);
-  }
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.m128i = (n == 8) ? __lsx_vreplgr2vr_b(0) : __lsx_vsrar_b(a_.m128i, __lsx_vreplgr2vr_b(n));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = HEDLEY_STATIC_CAST(int8_t, (a_.values[i] + (1 << (n - 1))) >> n);
+    }
+  #endif
 
   return simde_int8x16_from_private(r_);
 }
@@ -133,10 +137,14 @@ simde_vrshrq_n_s16 (const simde_int16x8_t a, const int n)
     r_,
     a_ = simde_int16x8_to_private(a);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(int16_t, (a_.values[i] + (1 << (n - 1))) >> n);
-  }
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.m128i = (n == 16) ? __lsx_vreplgr2vr_h(0) : __lsx_vsrar_h(a_.m128i, __lsx_vreplgr2vr_h(HEDLEY_STATIC_CAST(int16_t, (n))));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = HEDLEY_STATIC_CAST(int16_t, (a_.values[i] + (1 << (n - 1))) >> n);
+    }
+  #endif
 
   return simde_int16x8_from_private(r_);
 }
@@ -160,10 +168,14 @@ simde_vrshrq_n_s32 (const simde_int32x4_t a, const int n)
     r_,
     a_ = simde_int32x4_to_private(a);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = (a_.values[i] >> ((n == 32) ? 31 : n)) + ((a_.values[i] & HEDLEY_STATIC_CAST(int32_t, UINT32_C(1) << (n - 1))) != 0);
-  }
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.m128i = (n == 32) ? __lsx_vreplgr2vr_w(0) : __lsx_vsrar_w(a_.m128i, __lsx_vreplgr2vr_w(n));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = (a_.values[i] >> ((n == 32) ? 31 : n)) + ((a_.values[i] & HEDLEY_STATIC_CAST(int32_t, UINT32_C(1) << (n - 1))) != 0);
+    }
+  #endif
 
   return simde_int32x4_from_private(r_);
 }
@@ -187,10 +199,14 @@ simde_vrshrq_n_s64 (const simde_int64x2_t a, const int n)
     r_,
     a_ = simde_int64x2_to_private(a);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = (a_.values[i] >> ((n == 64) ? 63 : n)) + ((a_.values[i] & HEDLEY_STATIC_CAST(int64_t, UINT64_C(1) << (n - 1))) != 0);
-  }
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.m128i = (n == 64) ? __lsx_vreplgr2vr_d(0) : __lsx_vsrar_d(a_.m128i, __lsx_vreplgr2vr_d(n));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = (a_.values[i] >> ((n == 64) ? 63 : n)) + ((a_.values[i] & HEDLEY_STATIC_CAST(int64_t, UINT64_C(1) << (n - 1))) != 0);
+    }
+  #endif
 
   return simde_int64x2_from_private(r_);
 }
@@ -214,10 +230,14 @@ simde_vrshrq_n_u8 (const simde_uint8x16_t a, const int n)
     r_,
     a_ = simde_uint8x16_to_private(a);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (a_.values[i] + (1 << (n - 1))) >> n);
-  }
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.m128i = (n == 8) ? __lsx_vsrl_b(a_.m128i, __lsx_vreplgr2vr_b(7)) : __lsx_vsrlr_b(a_.m128i, __lsx_vreplgr2vr_b(n));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = HEDLEY_STATIC_CAST(uint8_t, (a_.values[i] + (1 << (n - 1))) >> n);
+    }
+  #endif
 
   return simde_uint8x16_from_private(r_);
 }
@@ -240,10 +260,14 @@ simde_vrshrq_n_u16 (const simde_uint16x8_t a, const int n)
     r_,
     a_ = simde_uint16x8_to_private(a);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, (a_.values[i] + (1 << (n - 1))) >> n);
-  }
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.m128i = (n == 16) ? __lsx_vsrl_h(a_.m128i, __lsx_vreplgr2vr_h(15)) : __lsx_vsrlr_h(a_.m128i, __lsx_vreplgr2vr_h(n));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = HEDLEY_STATIC_CAST(uint16_t, (a_.values[i] + (1 << (n - 1))) >> n);
+    }
+  #endif
 
   return simde_uint16x8_from_private(r_);
 }
@@ -266,10 +290,14 @@ simde_vrshrq_n_u32 (const simde_uint32x4_t a, const int n)
     r_,
     a_ = simde_uint32x4_to_private(a);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = ((n == 32) ? 0 : (a_.values[i] >> n)) + ((a_.values[i] & (UINT32_C(1) << (n - 1))) != 0);
-  }
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.m128i = (n == 32) ? __lsx_vsrl_w(a_.m128i, __lsx_vreplgr2vr_w(31)) : __lsx_vsrlr_w(a_.m128i, __lsx_vreplgr2vr_w(n));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = ((n == 32) ? 0 : (a_.values[i] >> n)) + ((a_.values[i] & (UINT32_C(1) << (n - 1))) != 0);
+    }
+  #endif
 
   return simde_uint32x4_from_private(r_);
 }
@@ -292,10 +320,14 @@ simde_vrshrq_n_u64 (const simde_uint64x2_t a, const int n)
     r_,
     a_ = simde_uint64x2_to_private(a);
 
-  SIMDE_VECTORIZE
-  for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-    r_.values[i] = ((n == 64) ? 0 : (a_.values[i] >> n)) + ((a_.values[i] & (UINT64_C(1) << (n - 1))) != 0);
-  }
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.m128i = (n == 64) ? __lsx_vsrl_d(a_.m128i, __lsx_vreplgr2vr_d(63)) : __lsx_vsrlr_d(a_.m128i, __lsx_vreplgr2vr_d(n));
+  #else
+    SIMDE_VECTORIZE
+    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+      r_.values[i] = ((n == 64) ? 0 : (a_.values[i] >> n)) + ((a_.values[i] & (UINT64_C(1) << (n - 1))) != 0);
+    }
+  #endif
 
   return simde_uint64x2_from_private(r_);
 }

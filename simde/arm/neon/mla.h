@@ -380,6 +380,14 @@ simde_uint16x8_t
 simde_vmlaq_u16(simde_uint16x8_t a, simde_uint16x8_t b, simde_uint16x8_t c) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmlaq_u16(a, b, c);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint16x8_private
+      r_,
+      a_ = simde_uint16x8_to_private(a),
+      b_ = simde_uint16x8_to_private(b),
+      c_ = simde_uint16x8_to_private(c);
+    r_.m128i = __lsx_vmadd_h(a_.m128i, b_.m128i, c_.m128i);
+    return simde_uint16x8_from_private(r_);
   #elif defined(SIMDE_RISCV_V_NATIVE)
       simde_uint16x8_private
         r_,

@@ -476,6 +476,19 @@ simde_vld4q_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(32)]) {
       a_[1].sv128 = __riscv_vget_v_i16m1x4_i16m1(dest, 1);
       a_[2].sv128 = __riscv_vget_v_i16m1x4_i16m1(dest, 2);
       a_[3].sv128 = __riscv_vget_v_i16m1x4_i16m1(dest, 3);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i R0=__lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,ptr),0);
+      __m128i R1=__lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,ptr+8),0);
+      __m128i R2=__lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,ptr+16),0);
+      __m128i R3=__lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,ptr+24),0);
+      __m128i R4= __lsx_vpickev_h(R1,R0); // 0,2,4,6,8,10,12,14
+      __m128i R5= __lsx_vpickev_h(R3,R2); // 16,18,20,22,24,26,28,30
+      __m128i R6= __lsx_vpickod_h(R1,R0); // 1,3,5,7,9,11,13,15
+      __m128i R7= __lsx_vpickod_h(R3,R2); // 17,19,21,23,25,27,29,31
+      a_[0].m128i=__lsx_vpickev_h(R5,R4); // 0,4,8,12,16,20,24,28
+      a_[2].m128i=__lsx_vpickod_h(R5,R4); // 2,6,10,14,18,22,26,30
+      a_[1].m128i=__lsx_vpickev_h(R7,R6); // 1,5,9,13,17,21,25,29
+      a_[3].m128i=__lsx_vpickod_h(R7,R6); // 3,7,11,15,19,23,27,31
     #else
       for (size_t i = 0; i < (sizeof(simde_int16x8_t) / sizeof(*ptr)) * 4 ; i++) {
         a_[i % 4].values[i / 4] = ptr[i];
@@ -602,6 +615,29 @@ simde_vld4q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(64)]) {
       simde_uint8x16_from_private(r_[1]),
       simde_uint8x16_from_private(r_[2]),
       simde_uint8x16_from_private(r_[3])
+    } };
+    return r;
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i r0 = __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*, ptr), 0);
+    __m128i r1 = __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*, ptr + 16), 0);
+    __m128i r2 = __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*, ptr + 32), 0);
+    __m128i r3 = __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*, ptr + 48), 0);
+
+    __m128i v0 = __lsx_vpickev_b(r1, r0); // 0 2 4 6 8 ... 28 30
+    __m128i v1 = __lsx_vpickev_b(r3, r2); // 32 34 36 38 40 ... 60 62
+    __m128i v2 = __lsx_vpickod_b(r1, r0); // 1 3 5 7 9 ... 29 31
+    __m128i v3 = __lsx_vpickod_b(r3, r2); // 33 35 37 39 41 ... 61 63
+
+    __m128i v4 = __lsx_vpickev_b(v1, v0); // 0 4 8 ...
+    __m128i v5 = __lsx_vpickod_b(v1, v0); // 2 6 10 ...
+    __m128i v6 = __lsx_vpickev_b(v3, v2); // 1 5 9 ...
+    __m128i v7 = __lsx_vpickod_b(v3, v2); // 3 7 11 ...
+
+    simde_uint8x16_private rp[4];
+    rp[0].m128i = v4; rp[1].m128i = v6; rp[2].m128i = v5; rp[3].m128i = v7;
+    simde_uint8x16x4_t r = { {
+      simde_uint8x16_from_private(rp[0]), simde_uint8x16_from_private(rp[1]),
+      simde_uint8x16_from_private(rp[2]), simde_uint8x16_from_private(rp[3])
     } };
     return r;
   #else

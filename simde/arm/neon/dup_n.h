@@ -244,6 +244,8 @@ simde_vdup_n_u8(uint8_t value) {
       r_.m64 = _mm_set1_pi8(HEDLEY_STATIC_CAST(int8_t, value));
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 =  __riscv_vmv_v_x_u8m1(value, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vreplgr2vr_b(HEDLEY_STATIC_CAST(int8_t, value)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -495,6 +497,8 @@ simde_vdupq_n_s16(int16_t value) {
       r_.v128 = wasm_i16x8_splat(value);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 =  __riscv_vmv_v_x_i16m1(value, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vreplgr2vr_h(value);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -597,6 +601,8 @@ simde_vdupq_n_u8(uint8_t value) {
       r_.v128 = wasm_i8x16_splat(HEDLEY_STATIC_CAST(int8_t, value));
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 =  __riscv_vmv_v_x_u8m1(value, 16);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vreplgr2vr_b(HEDLEY_STATIC_CAST(int8_t, value));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -631,6 +637,8 @@ simde_vdupq_n_u16(uint16_t value) {
       r_.v128 = wasm_i16x8_splat(HEDLEY_STATIC_CAST(int16_t, value));
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 =  __riscv_vmv_v_x_u16m1(value, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vreplgr2vr_h(HEDLEY_STATIC_CAST(int16_t, value));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -665,6 +673,8 @@ simde_vdupq_n_u32(uint32_t value) {
       r_.v128 = wasm_i32x4_splat(HEDLEY_STATIC_CAST(int32_t, value));
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 =  __riscv_vmv_v_x_u32m1(value, 4);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vreplgr2vr_w(value);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -699,6 +709,8 @@ simde_vdupq_n_u64(uint64_t value) {
       r_.v128 = wasm_i64x2_splat(HEDLEY_STATIC_CAST(int64_t, value));
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 =  __riscv_vmv_v_x_u64m1(value, 2);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vreplgr2vr_d(value);
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

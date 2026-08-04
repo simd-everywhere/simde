@@ -162,6 +162,8 @@ simde_vmovl_u8(simde_uint8x8_t a) {
     #if defined(SIMDE_RISCV_V_NATIVE)
       vuint8mf2_t va = __riscv_vlmul_trunc_v_u8m1_u8mf2(a_.sv64);
       r_.sv128 = __riscv_vwcvtu_x_x_v_u16m1 (va, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vsllwil_hu_bu(simde_x_lsx_load64(&a_.values), 0);
     #elif defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_BUG_GCC_100761)
       SIMDE_CONVERT_VECTOR_(r_.values, a_.values);
     #else

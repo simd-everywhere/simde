@@ -141,6 +141,17 @@ simde_vmlsl_u16(simde_uint32x4_t a, simde_uint16x4_t b, simde_uint16x4_t c) {
     vuint16mf2_t vc = __riscv_vlmul_trunc_v_u16m1_u16mf2 (c_.sv64);
     r_.sv128 = __riscv_vsub_vv_u32m1(a_.sv128 , __riscv_vwmulu_vv_u32m1(vb , vc , 4) , 4);
     return simde_uint32x4_from_private(r_);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
+    simde_uint16x4_private
+      b_ = simde_uint16x4_to_private(b),
+      c_ = simde_uint16x4_to_private(c);
+    simde_uint32x4_private r_;
+    r_.m128i = __lsx_vsub_w(a_.m128i,
+      __lsx_vmulwev_w_hu(
+        __lsx_vsllwil_wu_hu(simde_x_lsx_load64(&b_.values), 0),
+        __lsx_vsllwil_wu_hu(simde_x_lsx_load64(&c_.values), 0)));
+    return simde_uint32x4_from_private(r_);
   #else
     return simde_vsubq_u32(a, simde_vmull_u16(b, c));
   #endif

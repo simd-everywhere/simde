@@ -267,6 +267,14 @@ simde_vld2_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
       simde_uint8x8_from_private(a_[1]),
     } };
     return r;
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    static const uint8_t deint_mask[16] = {0,2,4,6,8,10,12,14, 1,3,5,7,9,11,13,15};
+    __m128i data = __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*, ptr), 0);
+    __m128i mask = __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*, deint_mask), 0);
+    __m128i result = __lsx_vshuf_b(data, data, mask);
+    simde_uint8x8x2_t r;
+    simde_memcpy(&r, &result, sizeof(r));
+    return r;
   #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && defined(SIMDE_SHUFFLE_VECTOR_)
     simde_uint8x16_private a_ = simde_uint8x16_to_private(simde_vld1q_u8(ptr));
     a_.values = SIMDE_SHUFFLE_VECTOR_(8, 16, a_.values, a_.values, 0, 2, 4, 6, 8, 10, 12, 14, 1, 3, 5, 7, 9, 11, 13, 15);
