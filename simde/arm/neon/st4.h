@@ -163,7 +163,12 @@ simde_vst4_s16(int16_t *ptr, simde_int16x4x4_t val) {
   #else
     simde_int16x4_private a_[4] = { simde_int16x4_to_private(val.val[0]), simde_int16x4_to_private(val.val[1]),
                                     simde_int16x4_to_private(val.val[2]), simde_int16x4_to_private(val.val[3]) };
-    #if defined(SIMDE_RISCV_V_NATIVE)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i t0 = __lsx_vilvl_h(simde_x_lsx_load64(&a_[1].values), simde_x_lsx_load64(&a_[0].values));
+      __m128i t1 = __lsx_vilvl_h(simde_x_lsx_load64(&a_[3].values), simde_x_lsx_load64(&a_[2].values));
+      __lsx_vst(__lsx_vilvl_w(t1, t0), ptr, 0);
+      __lsx_vst(__lsx_vilvh_w(t1, t0), ptr + 8, 0);
+    #elif defined(SIMDE_RISCV_V_NATIVE)
       vint16m1x4_t dest = __riscv_vlseg4e16_v_i16m1x4(ptr, 4);
       dest = __riscv_vset_v_i16m1_i16m1x4 (dest, 0, a_[0].sv64);
       dest = __riscv_vset_v_i16m1_i16m1x4 (dest, 1, a_[1].sv64);
@@ -278,6 +283,11 @@ simde_vst4_u8(uint8_t *ptr, simde_uint8x8x4_t val) {
       dest = __riscv_vset_v_u8m1_u8m1x4 (dest, 2, a_[2].sv64);
       dest = __riscv_vset_v_u8m1_u8m1x4 (dest, 3, a_[3].sv64);
       __riscv_vsseg4e8_v_u8m1x4 (ptr, dest, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i t0 = __lsx_vilvl_b(simde_x_lsx_load64(&a_[1].values), simde_x_lsx_load64(&a_[0].values));
+      __m128i t1 = __lsx_vilvl_b(simde_x_lsx_load64(&a_[3].values), simde_x_lsx_load64(&a_[2].values));
+      __lsx_vst(__lsx_vilvl_h(t1, t0), ptr, 0);
+      __lsx_vst(__lsx_vilvh_h(t1, t0), ptr + 16, 0);
     #else
       uint8_t buf[32];
       for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 4 ; i++) {
@@ -599,6 +609,17 @@ simde_vst4q_u8(uint8_t *ptr, simde_uint8x16x4_t val) {
       dest = __riscv_vset_v_u8m1_u8m1x4 (dest, 2, a_[2].sv128);
       dest = __riscv_vset_v_u8m1_u8m1x4 (dest, 3, a_[3].sv128);
       __riscv_vsseg4e8_v_u8m1x4 (ptr, dest, 16);
+
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i t0 = __lsx_vilvl_b(a_[1].m128i, a_[0].m128i);
+      __m128i t1 = __lsx_vilvl_b(a_[3].m128i, a_[2].m128i);
+      __m128i t2 = __lsx_vilvh_b(a_[1].m128i, a_[0].m128i);
+      __m128i t3 = __lsx_vilvh_b(a_[3].m128i, a_[2].m128i);
+      __lsx_vst(__lsx_vilvl_h(t1, t0), ptr, 0);
+      __lsx_vst(__lsx_vilvh_h(t1, t0), ptr + 16, 0);
+      __lsx_vst(__lsx_vilvl_h(t3, t2), ptr + 32, 0);
+      __lsx_vst(__lsx_vilvh_h(t3, t2), ptr + 48, 0);
+
     #else
       uint8_t buf[64];
       for (size_t i = 0; i < (sizeof(val.val[0]) / sizeof(*ptr)) * 4 ; i++) {

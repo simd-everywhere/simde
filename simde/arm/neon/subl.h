@@ -49,6 +49,12 @@ simde_vsubl_s8(simde_int8x8_t a, simde_int8x8_t b) {
     simde_int8x8_private b_ = simde_int8x8_to_private(b);
     r_.sv128 = __riscv_vwsub_vv_i16m1(__riscv_vlmul_trunc_v_i8m1_i8mf2(a_.sv64) , __riscv_vlmul_trunc_v_i8m1_i8mf2(b_.sv64) , 8);
     return simde_int16x8_from_private(r_);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int16x8_private r_;
+    simde_int8x8_private a_ = simde_int8x8_to_private(a);
+    simde_int8x8_private b_ = simde_int8x8_to_private(b);
+    r_.m128i = __lsx_vsub_h(__lsx_vsllwil_h_b(simde_x_lsx_load64(&a_.values), 0), __lsx_vsllwil_h_b(simde_x_lsx_load64(&b_.values), 0));
+    return simde_int16x8_from_private(r_);
   #else
     return simde_vsubq_s16(simde_vmovl_s8(a), simde_vmovl_s8(b));
   #endif
@@ -68,6 +74,12 @@ simde_vsubl_s16(simde_int16x4_t a, simde_int16x4_t b) {
     simde_int16x4_private a_ = simde_int16x4_to_private(a);
     simde_int16x4_private b_ = simde_int16x4_to_private(b);
     r_.sv128 = __riscv_vwsub_vv_i32m1(__riscv_vlmul_trunc_v_i16m1_i16mf2(a_.sv64) , __riscv_vlmul_trunc_v_i16m1_i16mf2(b_.sv64) , 4);
+    return simde_int32x4_from_private(r_);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int32x4_private r_;
+    simde_int16x4_private a_ = simde_int16x4_to_private(a);
+    simde_int16x4_private b_ = simde_int16x4_to_private(b);
+    r_.m128i = __lsx_vsub_w(__lsx_vsllwil_w_h(simde_x_lsx_load64(&a_.values), 0), __lsx_vsllwil_w_h(simde_x_lsx_load64(&b_.values), 0));
     return simde_int32x4_from_private(r_);
   #else
     return simde_vsubq_s32(simde_vmovl_s16(a), simde_vmovl_s16(b));
@@ -89,6 +101,12 @@ simde_vsubl_s32(simde_int32x2_t a, simde_int32x2_t b) {
     simde_int32x2_private b_ = simde_int32x2_to_private(b);
     r_.sv128 = __riscv_vwsub_vv_i64m1(__riscv_vlmul_trunc_v_i32m1_i32mf2(a_.sv64) , __riscv_vlmul_trunc_v_i32m1_i32mf2(b_.sv64) , 2);
     return simde_int64x2_from_private(r_);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int64x2_private r_;
+    simde_int32x2_private a_ = simde_int32x2_to_private(a);
+    simde_int32x2_private b_ = simde_int32x2_to_private(b);
+    r_.m128i = __lsx_vsub_d(__lsx_vsllwil_d_w(simde_x_lsx_load64(&a_.values), 0), __lsx_vsllwil_d_w(simde_x_lsx_load64(&b_.values), 0));
+    return simde_int64x2_from_private(r_);
   #else
     return simde_vsubq_s64(simde_vmovl_s32(a), simde_vmovl_s32(b));
   #endif
@@ -108,6 +126,12 @@ simde_vsubl_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
     simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
     simde_uint8x8_private b_ = simde_uint8x8_to_private(b);
     r_.sv128 = __riscv_vwsubu_vv_u16m1(__riscv_vlmul_trunc_v_u8m1_u8mf2 (a_.sv64) , __riscv_vlmul_trunc_v_u8m1_u8mf2 (b_.sv64) , 8);
+    return simde_uint16x8_from_private(r_);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint16x8_private r_;
+    simde_uint8x8_private a_ = simde_uint8x8_to_private(a);
+    simde_uint8x8_private b_ = simde_uint8x8_to_private(b);
+    r_.m128i = __lsx_vsub_h(__lsx_vsllwil_hu_bu(simde_x_lsx_load64(&a_.values), 0), __lsx_vsllwil_hu_bu(simde_x_lsx_load64(&b_.values), 0));
     return simde_uint16x8_from_private(r_);
   #else
     return simde_vsubq_u16(simde_vmovl_u8(a), simde_vmovl_u8(b));
@@ -129,6 +153,12 @@ simde_vsubl_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
     simde_uint16x4_private b_ = simde_uint16x4_to_private(b);
     r_.sv128 = __riscv_vwsubu_vv_u32m1(__riscv_vlmul_trunc_v_u16m1_u16mf2 (a_.sv64) , __riscv_vlmul_trunc_v_u16m1_u16mf2 (b_.sv64) , 4);
     return simde_uint32x4_from_private(r_);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint32x4_private r_;
+    simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
+    simde_uint16x4_private b_ = simde_uint16x4_to_private(b);
+    r_.m128i = __lsx_vsub_w(__lsx_vsllwil_wu_hu(simde_x_lsx_load64(&a_.values), 0), __lsx_vsllwil_wu_hu(simde_x_lsx_load64(&b_.values), 0));
+    return simde_uint32x4_from_private(r_);
   #else
     return simde_vsubq_u32(simde_vmovl_u16(a), simde_vmovl_u16(b));
   #endif
@@ -148,6 +178,12 @@ simde_vsubl_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
     simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
     simde_uint32x2_private b_ = simde_uint32x2_to_private(b);
     r_.sv128 = __riscv_vwsubu_vv_u64m1(__riscv_vlmul_trunc_v_u32m1_u32mf2 (a_.sv64) , __riscv_vlmul_trunc_v_u32m1_u32mf2 (b_.sv64) , 4);
+    return simde_uint64x2_from_private(r_);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint64x2_private r_;
+    simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
+    simde_uint32x2_private b_ = simde_uint32x2_to_private(b);
+    r_.m128i = __lsx_vsub_d(__lsx_vsllwil_du_wu(simde_x_lsx_load64(&a_.values), 0), __lsx_vsllwil_du_wu(simde_x_lsx_load64(&b_.values), 0));
     return simde_uint64x2_from_private(r_);
   #else
     return simde_vsubq_u64(simde_vmovl_u32(a), simde_vmovl_u32(b));

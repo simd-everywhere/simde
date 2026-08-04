@@ -141,6 +141,12 @@ simde_uint16x8_t
 simde_vaddw_u8(simde_uint16x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddw_u8(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint16x8_private r_;
+    simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
+    simde_uint8x8_private b_ = simde_uint8x8_to_private(b);
+    r_.m128i = __lsx_vadd_h(a_.m128i, __lsx_vsllwil_hu_bu(simde_x_lsx_load64(&b_.values), 0));
+    return simde_uint16x8_from_private(r_);
   #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128) && !defined(SIMDE_RISCV_V_NATIVE)
     return simde_vaddq_u16(a, simde_vmovl_u8(b));
   #else

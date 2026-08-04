@@ -182,6 +182,8 @@ simde_vadd_s8(simde_int8x8_t a, simde_int8x8_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vadd_vv_i8m1(a_.sv64, b_.sv64, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vadd_b(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #elif defined(SIMDE_X86_MMX_NATIVE)
@@ -214,6 +216,8 @@ simde_vadd_s16(simde_int16x4_t a, simde_int16x4_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vadd_vv_i16m1(a_.sv64, b_.sv64, 4);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vadd_h(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #elif defined(SIMDE_X86_MMX_NATIVE)
@@ -246,6 +250,8 @@ simde_vadd_s32(simde_int32x2_t a, simde_int32x2_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vadd_vv_i32m1(a_.sv64, b_.sv64, 2);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vadd_w(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #elif defined(SIMDE_X86_MMX_NATIVE)
@@ -278,6 +284,8 @@ simde_vadd_s64(simde_int64x1_t a, simde_int64x1_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vadd_vv_i64m1(a_.sv64, b_.sv64, 1);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vadd_d(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #else
@@ -308,6 +316,8 @@ simde_vadd_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vadd_vv_u8m1(a_.sv64, b_.sv64, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vadd_b(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #else
@@ -339,6 +349,8 @@ simde_vadd_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vadd_vv_u16m1(a_.sv64, b_.sv64, 4);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vadd_h(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #else
@@ -369,6 +381,8 @@ simde_vadd_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vadd_vv_u32m1(a_.sv64, b_.sv64, 2);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vadd_w(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #else
@@ -399,6 +413,8 @@ simde_vadd_u64(simde_uint64x1_t a, simde_uint64x1_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vadd_vv_u64m1(a_.sv64, b_.sv64, 1);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vadd_d(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #else
@@ -540,6 +556,8 @@ simde_vaddq_s8(simde_int8x16_t a, simde_int8x16_t b) {
       r_.v128 = wasm_i8x16_add(a_.v128, b_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vadd_vv_i8m1(a_.sv128, b_.sv128, 16);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vadd_b(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #else
@@ -576,6 +594,8 @@ simde_vaddq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       r_.v128 = wasm_i16x8_add(a_.v128, b_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vadd_vv_i16m1(a_.sv128, b_.sv128, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vadd_h(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #else
@@ -612,6 +632,8 @@ simde_vaddq_s32(simde_int32x4_t a, simde_int32x4_t b) {
       r_.v128 = wasm_i32x4_add(a_.v128, b_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vadd_vv_i32m1(a_.sv128, b_.sv128, 4);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vadd_w(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #else
@@ -680,6 +702,8 @@ simde_vaddq_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vadd_vv_u8m1(a_.sv128, b_.sv128, 16);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vadd_b(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #else
@@ -712,6 +736,8 @@ simde_vaddq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vadd_vv_u16m1(a_.sv128, b_.sv128, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vadd_h(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values + b_.values;
     #else

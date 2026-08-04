@@ -84,6 +84,14 @@ simde_vaddhn_s32(simde_int32x4_t a, simde_int32x4_t b) {
       r_.values = __builtin_shufflevector(tmp_.values, tmp_.values, 0, 2, 4, 6);
     #endif
     return simde_int16x4_from_private(r_);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int32x4_private
+      a_ = simde_int32x4_to_private(a),
+      b_ = simde_int32x4_to_private(b);
+    simde_int16x4_private r_;
+    __m128i sum = __lsx_vadd_w(a_.m128i, b_.m128i);
+    simde_x_lsx_store64(&r_.values, __lsx_vssrani_h_w(sum, sum, 16));
+    return simde_int16x4_from_private(r_);
   #else
     return simde_vmovn_s32(simde_vshrq_n_s32(simde_vaddq_s32(a, b), 16));
   #endif
@@ -98,6 +106,14 @@ simde_int32x2_t
 simde_vaddhn_s64(simde_int64x2_t a, simde_int64x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vaddhn_s64(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int64x2_private
+      a_ = simde_int64x2_to_private(a),
+      b_ = simde_int64x2_to_private(b);
+    simde_int32x2_private r_;
+    __m128i sum = __lsx_vadd_d(a_.m128i, b_.m128i);
+    simde_x_lsx_store64(&r_.values, __lsx_vssrani_w_d(sum, sum, 32));
+    return simde_int32x2_from_private(r_);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
     simde_int32x2_private r_;
     simde_int32x4_private tmp_ =

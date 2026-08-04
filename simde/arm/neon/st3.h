@@ -304,6 +304,13 @@ simde_vst3_u8(uint8_t ptr[HEDLEY_ARRAY_PARAM(24)], simde_uint8x8x3_t val) {
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 1, a_[1].sv64);
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 2, a_[2].sv64);
       __riscv_vsseg3e8_v_u8m1x3 (ptr, dest, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i t0 = __lsx_vilvl_b(simde_x_lsx_load64(&a_[1].values), simde_x_lsx_load64(&a_[0].values));
+      __m128i C = simde_x_lsx_load64(&a_[2].values);
+      static const uint8_t m0[16]={0x10,0x11,0x00,0x12,0x13,0x01,0x14,0x15,0x02,0x16,0x17,0x03,0x18,0x19,0x04,0x1A};
+      static const uint8_t m1[16]={0x1B,0x05,0x1C,0x1D,0x06,0x1E,0x1F,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+      __lsx_vst(__lsx_vshuf_b(t0, C, __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,m0),0)),HEDLEY_REINTERPRET_CAST(void*,ptr),0);
+      __lsx_vstelm_d(__lsx_vshuf_b(t0, C, __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,m1),0)),HEDLEY_REINTERPRET_CAST(void*,ptr+16),0,0);
     #elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100762)
       __typeof__(a_[0].values) r0 = SIMDE_SHUFFLE_VECTOR_(8, 8, a_[0].values, a_[1].values,
                                                           0, 8, 3, 1, 9, 4, 2, 10);
@@ -788,6 +795,21 @@ simde_vst3q_u8(uint8_t ptr[HEDLEY_ARRAY_PARAM(48)], simde_uint8x16x3_t val) {
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 1, a_[1].sv128);
       dest = __riscv_vset_v_u8m1_u8m1x3 (dest, 2, a_[2].sv128);
       __riscv_vsseg3e8_v_u8m1x3 (ptr, dest, 16);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i A=a_[0].m128i, B=a_[1].m128i, C=a_[2].m128i;
+      __m128i t0 = __lsx_vilvl_b(B, A);
+      __m128i t1 = __lsx_vilvh_b(B, A);
+      static const uint8_t m0[16]={0x10,0x11,0x00,0x12,0x13,0x01,0x14,0x15,0x02,0x16,0x17,0x03,0x18,0x19,0x04,0x1A};
+      static const uint8_t m1a[16]={0x1B,0x05,0x1C,0x1D,0x06,0x1E,0x1F,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+      static const uint8_t m1b[16]={0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x10,0x11,0x08,0x12,0x13,0x09,0x14,0x15};
+      static const uint8_t sel1[16]={0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+      static const uint8_t m2[16]={0x0A,0x16,0x17,0x0B,0x18,0x19,0x0C,0x1A,0x1B,0x0D,0x1C,0x1D,0x0E,0x1E,0x1F,0x0F};
+      __lsx_vst(__lsx_vshuf_b(t0, C, __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,m0),0)),HEDLEY_REINTERPRET_CAST(void*,ptr),0);
+      __m128i b1a = __lsx_vshuf_b(t0, C, __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,m1a),0));
+      __m128i b1b = __lsx_vshuf_b(t1, C, __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,m1b),0));
+      __lsx_vst(__lsx_vbitsel_v(b1a, b1b, __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,sel1),0)),HEDLEY_REINTERPRET_CAST(void*,ptr+16),0);
+      __lsx_vst(__lsx_vshuf_b(t1, C, __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*,m2),0)),HEDLEY_REINTERPRET_CAST(void*,ptr+32),0);
+
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       __typeof__(a_[0].values) r0  = SIMDE_SHUFFLE_VECTOR_(8, 16, a_[0].values, a_[1].values,
                                                            0, 16, 6, 1, 17, 7, 2, 18, 8, 3, 19, 9,

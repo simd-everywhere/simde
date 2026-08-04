@@ -231,7 +231,11 @@ simde_int16x8_t simde_vld1q_lane_s16(int16_t const *ptr, simde_int16x8_t src,
                                      const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
   simde_int16x8_private r = simde_int16x8_to_private(src);
-  r.values[lane] = *ptr;
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    SIMDE_CONSTIFY_8_(__lsx_vinsgr2vr_h, r.m128i, (HEDLEY_UNREACHABLE(), r.m128i), lane, r.m128i, (int) *ptr);
+  #else
+    r.values[lane] = *ptr;
+  #endif
   return simde_int16x8_from_private(r);
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)

@@ -178,6 +178,8 @@ simde_vst1_u8(uint8_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_uint8x8_t val) {
     simde_uint8x8_private val_ = simde_uint8x8_to_private(val);
     #if defined(SIMDE_RISCV_V_NATIVE)
       __riscv_vse8_v_u8m1(ptr , val_.sv64 , 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __lsx_vstelm_d(simde_x_lsx_load64(&val_.values), HEDLEY_REINTERPRET_CAST(void*, ptr), 0, 0);
     #else
       simde_memcpy(ptr, &val_, sizeof(val_));
     #endif
@@ -324,6 +326,8 @@ simde_vst1q_s8(int8_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_int8x16_t val) {
       wasm_v128_store(ptr, val_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       __riscv_vse8_v_i8m1(ptr , val_.sv128 , 16);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __lsx_vst(val_.m128i, HEDLEY_REINTERPRET_CAST(void*, ptr), 0);
     #else
       simde_memcpy(ptr, &val_, sizeof(val_));
     #endif
@@ -346,6 +350,8 @@ simde_vst1q_s16(int16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_int16x8_t val) {
       wasm_v128_store(ptr, val_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       __riscv_vse16_v_i16m1(ptr , val_.sv128 , 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __lsx_vst(val_.m128i, HEDLEY_REINTERPRET_CAST(void*, ptr), 0);
     #else
       simde_memcpy(ptr, &val_, sizeof(val_));
     #endif
@@ -412,6 +418,8 @@ simde_vst1q_u8(uint8_t ptr[HEDLEY_ARRAY_PARAM(16)], simde_uint8x16_t val) {
       wasm_v128_store(ptr, val_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       __riscv_vse8_v_u8m1(ptr , val_.sv128 , 16);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __lsx_vst(val_.m128i, HEDLEY_REINTERPRET_CAST(void*, ptr), 0);
     #else
       simde_memcpy(ptr, &val_, sizeof(val_));
     #endif
@@ -434,6 +442,8 @@ simde_vst1q_u16(uint16_t ptr[HEDLEY_ARRAY_PARAM(8)], simde_uint16x8_t val) {
       wasm_v128_store(ptr, val_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       __riscv_vse16_v_u16m1(ptr , val_.sv128 , 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __lsx_vst(val_.m128i, HEDLEY_REINTERPRET_CAST(void*, ptr), 0);
     #else
       simde_memcpy(ptr, &val_, sizeof(val_));
     #endif
