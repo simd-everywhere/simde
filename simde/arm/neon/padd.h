@@ -176,6 +176,15 @@ simde_uint8x8_t
 simde_vpadd_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vpadd_u8(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint8x8_private
+      a_ = simde_uint8x8_to_private(a),
+      b_ = simde_uint8x8_to_private(b);
+    simde_uint8x8_private r_;
+    __m128i comb = __lsx_vilvl_d(simde_x_lsx_load64(&b_.values), simde_x_lsx_load64(&a_.values));
+    __m128i sum = __lsx_vhaddw_h_b(comb, comb);
+    simde_x_lsx_store64(&r_.values, __lsx_vpickev_b(sum, sum));
+    return simde_uint8x8_from_private(r_);
   #else
     return simde_vadd_u8(simde_vuzp1_u8(a, b), simde_vuzp2_u8(a, b));
   #endif

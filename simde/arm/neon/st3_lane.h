@@ -121,10 +121,19 @@ simde_vst3_lane_u8(uint8_t ptr[HEDLEY_ARRAY_PARAM(3)], simde_uint8x8x3_t val, co
     SIMDE_CONSTIFY_8_NO_RESULT_(vst3_lane_u8, HEDLEY_UNREACHABLE(), lane, ptr, val);
   #else
     simde_uint8x8_private r;
-    for (size_t i = 0 ; i < 3 ; i++) {
-      r = simde_uint8x8_to_private(val.val[i]);
-      ptr[i] = r.values[lane];
-    }
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r = simde_uint8x8_to_private(val.val[0]);
+      SIMDE_CONSTIFY_8_NO_RESULT_(__lsx_vstelm_b, HEDLEY_UNREACHABLE(), lane, simde_x_lsx_load64(&r.values), ptr, 0);
+      r = simde_uint8x8_to_private(val.val[1]);
+      SIMDE_CONSTIFY_8_NO_RESULT_(__lsx_vstelm_b, HEDLEY_UNREACHABLE(), lane, simde_x_lsx_load64(&r.values), ptr + 1, 0);
+      r = simde_uint8x8_to_private(val.val[2]);
+      SIMDE_CONSTIFY_8_NO_RESULT_(__lsx_vstelm_b, HEDLEY_UNREACHABLE(), lane, simde_x_lsx_load64(&r.values), ptr + 2, 0);
+    #else
+      for (size_t i = 0 ; i < 3 ; i++) {
+        r = simde_uint8x8_to_private(val.val[i]);
+        ptr[i] = r.values[lane];
+      }
+    #endif
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)

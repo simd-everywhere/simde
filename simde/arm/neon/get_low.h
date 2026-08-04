@@ -47,6 +47,8 @@ simde_vget_low_f16(simde_float16x8_t a) {
 
     #if defined(SIMDE_RISCV_V_NATIVE) && defined(SIMDE_ARCH_RISCV_ZVFH)
       r_.sv64 = a_.sv128;
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvl_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -132,6 +134,8 @@ simde_vget_low_s8(simde_int8x16_t a) {
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvl_d(a_.m128i, a_.m128i));
     #else
       #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3, 4, 5, 6, 7);
@@ -164,6 +168,8 @@ simde_vget_low_s16(simde_int16x8_t a) {
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvl_d(a_.m128i, a_.m128i));
     #else
       #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3);
@@ -196,6 +202,8 @@ simde_vget_low_s32(simde_int32x4_t a) {
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvl_d(a_.m128i, a_.m128i));
     #else
       #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1);
@@ -228,6 +236,8 @@ simde_vget_low_s64(simde_int64x2_t a) {
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvl_d(a_.m128i, a_.m128i));
     #else
       #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0);
@@ -260,6 +270,8 @@ simde_vget_low_u8(simde_uint8x16_t a) {
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvl_d(a_.m128i, a_.m128i));
     #else
       #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3, 4, 5, 6, 7);
@@ -292,6 +304,8 @@ simde_vget_low_u16(simde_uint16x8_t a) {
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvl_d(a_.m128i, a_.m128i));
     #else
       #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3);
@@ -324,6 +338,8 @@ simde_vget_low_u32(simde_uint32x4_t a) {
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvl_d(a_.m128i, a_.m128i));
     #else
       #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1);
@@ -356,6 +372,8 @@ simde_vget_low_u64(simde_uint64x2_t a) {
       r_.m64 = _mm_movepi64_pi64(a_.m128i);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvl_d(a_.m128i, a_.m128i));
     #else
       #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0);

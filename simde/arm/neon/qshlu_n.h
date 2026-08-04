@@ -323,6 +323,11 @@ simde_vqshluq_n_s8(simde_int8x16_t a, const int n)
       vuint8m1_t shift = __riscv_vsll_vx_u8m1(__riscv_vreinterpret_v_i8m1_u8m1(a_.sv128), n, 16);
       r_.sv128 = __riscv_vmerge_vxm_u8m1(shift, UINT8_MAX, __riscv_vmsne_vv_u8m1_b8(__riscv_vsrl_vx_u8m1(shift, n, 16), __riscv_vreinterpret_v_i8m1_u8m1(a_.sv128), 16), 16);
       r_.sv128 = __riscv_vmerge_vxm_u8m1(r_.sv128, 0, __riscv_vmslt_vx_i8m1_b8(a_.sv128, 0, 16), 16);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i shift = __lsx_vreplgr2vr_h(HEDLEY_STATIC_CAST(int16_t, n));
+      __m128i lo = __lsx_vsll_h(__lsx_vsllwil_h_b(a_.m128i, 0), shift);
+      __m128i hi = __lsx_vsll_h(__lsx_vexth_h_b(a_.m128i), shift);
+      r_.m128i = __lsx_vssrani_bu_h(hi, lo, 0);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     __typeof__(r_.values) shifted = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values) << n;
 
@@ -366,6 +371,11 @@ simde_vqshluq_n_s16(simde_int16x8_t a, const int n)
       vuint16m1_t shift = __riscv_vsll_vx_u16m1(__riscv_vreinterpret_v_i16m1_u16m1(a_.sv128), n, 8);
       r_.sv128 = __riscv_vmerge_vxm_u16m1(shift, UINT16_MAX, __riscv_vmsne_vv_u16m1_b16(__riscv_vsrl_vx_u16m1(shift, n, 8), __riscv_vreinterpret_v_i16m1_u16m1(a_.sv128), 8), 8);
       r_.sv128 = __riscv_vmerge_vxm_u16m1(r_.sv128, 0, __riscv_vmslt_vx_i16m1_b16(a_.sv128, 0, 8), 8);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i shift = __lsx_vreplgr2vr_w(HEDLEY_STATIC_CAST(int32_t, n));
+      __m128i lo = __lsx_vsll_w(__lsx_vsllwil_w_h(a_.m128i, 0), shift);
+      __m128i hi = __lsx_vsll_w(__lsx_vexth_w_h(a_.m128i), shift);
+      r_.m128i = __lsx_vssrani_hu_w(hi, lo, 0);
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     __typeof__(r_.values) shifted = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values) << n;
 

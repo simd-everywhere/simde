@@ -231,7 +231,21 @@ simde_int16x8_t simde_vld1q_lane_s16(int16_t const *ptr, simde_int16x8_t src,
                                      const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 7) {
   simde_int16x8_private r = simde_int16x8_to_private(src);
-  r.values[lane] = *ptr;
+  #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    switch (lane) {
+      case 0: r.m128i = __lsx_vinsgr2vr_h(r.m128i, (int)*ptr, 0); break;
+      case 1: r.m128i = __lsx_vinsgr2vr_h(r.m128i, (int)*ptr, 1); break;
+      case 2: r.m128i = __lsx_vinsgr2vr_h(r.m128i, (int)*ptr, 2); break;
+      case 3: r.m128i = __lsx_vinsgr2vr_h(r.m128i, (int)*ptr, 3); break;
+      case 4: r.m128i = __lsx_vinsgr2vr_h(r.m128i, (int)*ptr, 4); break;
+      case 5: r.m128i = __lsx_vinsgr2vr_h(r.m128i, (int)*ptr, 5); break;
+      case 6: r.m128i = __lsx_vinsgr2vr_h(r.m128i, (int)*ptr, 6); break;
+      case 7: r.m128i = __lsx_vinsgr2vr_h(r.m128i, (int)*ptr, 7); break;
+      default: HEDLEY_UNREACHABLE();
+    }
+  #else
+    r.values[lane] = *ptr;
+  #endif
   return simde_int16x8_from_private(r);
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)

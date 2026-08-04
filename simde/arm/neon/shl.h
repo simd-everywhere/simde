@@ -890,6 +890,16 @@ simde_vshlq_u16 (const simde_uint16x8_t a, const simde_int16x8_t b) {
                                         _mm256_cmpgt_epi32(_mm256_setzero_si256(), b256));
       r256 = _mm256_shuffle_epi8(r256, _mm256_set1_epi64x(0x0D0C090805040100));
       r_.m128i = _mm_set_epi64x(simde_mm256_extract_epi64(r256, 2), simde_mm256_extract_epi64(r256, 0));
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      /* NEON uses the low byte of each element of b, sign-extended, as the shift count. */
+      __m128i b8 = __lsx_vsrai_h(__lsx_vslli_h(b_.m128i, 8), 8);
+      r_.m128i = __lsx_vsll_h(a_.m128i, b8);
+      __m128i b_abs = __lsx_vsigncov_h(b8, b8);
+      __m128i r_right = __lsx_vsrl_h(a_.m128i, b_abs);
+      __m128i neg_mask = __lsx_vslt_h(b8, __lsx_vreplgr2vr_h(0));
+      r_.m128i = __lsx_vbitsel_v(r_.m128i, r_right, neg_mask);
+      __m128i valid = __lsx_vsle_hu(b_abs, __lsx_vreplgr2vr_h(15));
+      r_.m128i = __lsx_vand_v(r_.m128i, valid);
     #else
       #if defined(SIMDE_RISCV_V_NATIVE)
         vint8mf2_t b_8mf2 = __riscv_vncvt_x_x_w_i8mf2 (b_.sv128, 8);

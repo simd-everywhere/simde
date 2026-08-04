@@ -333,7 +333,11 @@ simde_vsetq_lane_s16(int16_t a, simde_int16x8_t v, const int lane)
     SIMDE_CONSTIFY_8_(vsetq_lane_s16, r, (HEDLEY_UNREACHABLE(), v), lane, a, v);
   #else
     simde_int16x8_private v_ = simde_int16x8_to_private(v);
-    v_.values[lane] = a;
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      SIMDE_CONSTIFY_8_(__lsx_vinsgr2vr_h, v_.m128i, (HEDLEY_UNREACHABLE(), v_.m128i), lane, v_.m128i, HEDLEY_STATIC_CAST(int, a));
+    #else
+      v_.values[lane] = a;
+    #endif
     r = simde_int16x8_from_private(v_);
   #endif
   return r;

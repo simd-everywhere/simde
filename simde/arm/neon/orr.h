@@ -77,6 +77,8 @@ simde_vorr_s16(simde_int16x4_t a, simde_int16x4_t b) {
 
     #if defined(SIMDE_X86_MMX_NATIVE)
       r_.m64 = _mm_or_si64(a_.m64, b_.m64);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vor_v(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values | b_.values;
     #else
@@ -325,6 +327,8 @@ simde_vorrq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       r_.m128i = _mm_or_si128(a_.m128i, b_.m128i);
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_v128_or(a_.v128, b_.v128);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vor_v(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values | b_.values;
     #else

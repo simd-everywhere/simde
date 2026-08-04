@@ -88,6 +88,17 @@ simde_int16x4x2_t
 simde_vzip_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_s16(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int16x4_private a_ = simde_int16x4_to_private(a);
+    simde_int16x4_private b_ = simde_int16x4_to_private(b);
+    simde_int16x4_private lo_p, hi_p;
+    __m128i interleaved = __lsx_vilvl_h(simde_x_lsx_load64(&b_.values), simde_x_lsx_load64(&a_.values));
+    simde_x_lsx_store64(&lo_p.values, interleaved);
+    simde_x_lsx_store64(&hi_p.values, __lsx_vbsrl_v(interleaved, 8));
+    simde_int16x4x2_t r;
+    r.val[0] = simde_int16x4_from_private(lo_p);
+    r.val[1] = simde_int16x4_from_private(hi_p);
+    return r;
   #else
     simde_int16x4x2_t r = { { simde_vzip1_s16(a, b), simde_vzip2_s16(a, b) } };
     return r;
@@ -103,6 +114,17 @@ simde_int32x2x2_t
 simde_vzip_s32(simde_int32x2_t a, simde_int32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_s32(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int32x2_private a_ = simde_int32x2_to_private(a);
+    simde_int32x2_private b_ = simde_int32x2_to_private(b);
+    simde_int32x2_private lo_p, hi_p;
+    __m128i interleaved = __lsx_vilvl_w(simde_x_lsx_load64(&b_.values), simde_x_lsx_load64(&a_.values));
+    simde_x_lsx_store64(&lo_p.values, interleaved);
+    simde_x_lsx_store64(&hi_p.values, __lsx_vbsrl_v(interleaved, 8));
+    simde_int32x2x2_t r;
+    r.val[0] = simde_int32x2_from_private(lo_p);
+    r.val[1] = simde_int32x2_from_private(hi_p);
+    return r;
   #else
     simde_int32x2x2_t r = { { simde_vzip1_s32(a, b), simde_vzip2_s32(a, b) } };
     return r;
@@ -118,6 +140,18 @@ simde_uint8x8x2_t
 simde_vzip_u8(simde_uint8x8_t a, simde_uint8x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_u8(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint8x8_private
+      a_ = simde_uint8x8_to_private(a),
+      b_ = simde_uint8x8_to_private(b),
+      lo_p, hi_p;
+    __m128i interleaved = __lsx_vilvl_b(simde_x_lsx_load64(&b_.values), simde_x_lsx_load64(&a_.values));
+    simde_x_lsx_store64(&lo_p.values, interleaved);
+    simde_x_lsx_store64(&hi_p.values, __lsx_vbsrl_v(interleaved, 8));
+    simde_uint8x8x2_t r;
+    r.val[0] = simde_uint8x8_from_private(lo_p);
+    r.val[1] = simde_uint8x8_from_private(hi_p);
+    return r;
   #else
     simde_uint8x8x2_t r = { { simde_vzip1_u8(a, b), simde_vzip2_u8(a, b) } };
     return r;
@@ -133,6 +167,17 @@ simde_uint16x4x2_t
 simde_vzip_u16(simde_uint16x4_t a, simde_uint16x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_u16(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
+    simde_uint16x4_private b_ = simde_uint16x4_to_private(b);
+    simde_uint16x4_private lo_p, hi_p;
+    __m128i interleaved = __lsx_vilvl_h(simde_x_lsx_load64(&b_.values), simde_x_lsx_load64(&a_.values));
+    simde_x_lsx_store64(&lo_p.values, interleaved);
+    simde_x_lsx_store64(&hi_p.values, __lsx_vbsrl_v(interleaved, 8));
+    simde_uint16x4x2_t r;
+    r.val[0] = simde_uint16x4_from_private(lo_p);
+    r.val[1] = simde_uint16x4_from_private(hi_p);
+    return r;
   #else
     simde_uint16x4x2_t r = { { simde_vzip1_u16(a, b), simde_vzip2_u16(a, b) } };
     return r;
@@ -148,6 +193,17 @@ simde_uint32x2x2_t
 simde_vzip_u32(simde_uint32x2_t a, simde_uint32x2_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzip_u32(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
+    simde_uint32x2_private b_ = simde_uint32x2_to_private(b);
+    simde_uint32x2_private lo_p, hi_p;
+    __m128i interleaved = __lsx_vilvl_w(simde_x_lsx_load64(&b_.values), simde_x_lsx_load64(&a_.values));
+    simde_x_lsx_store64(&lo_p.values, interleaved);
+    simde_x_lsx_store64(&hi_p.values, __lsx_vbsrl_v(interleaved, 8));
+    simde_uint32x2x2_t r;
+    r.val[0] = simde_uint32x2_from_private(lo_p);
+    r.val[1] = simde_uint32x2_from_private(hi_p);
+    return r;
   #else
     simde_uint32x2x2_t r = { { simde_vzip1_u32(a, b), simde_vzip2_u32(a, b) } };
     return r;
@@ -209,6 +265,13 @@ simde_int16x8x2_t
 simde_vzipq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_s16(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int16x8_private a_ = simde_int16x8_to_private(a);
+    simde_int16x8_private b_ = simde_int16x8_to_private(b);
+    simde_int16x8x2_t r;
+    r.val[0] = simde_int16x8_from_private( (simde_int16x8_private) { .m128i = __lsx_vilvl_h(b_.m128i, a_.m128i) } );
+    r.val[1] = simde_int16x8_from_private( (simde_int16x8_private) { .m128i = __lsx_vilvh_h(b_.m128i, a_.m128i) } );
+    return r;
   #else
     simde_int16x8x2_t r = { { simde_vzip1q_s16(a, b), simde_vzip2q_s16(a, b) } };
     return r;
@@ -224,6 +287,13 @@ simde_int32x4x2_t
 simde_vzipq_s32(simde_int32x4_t a, simde_int32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_s32(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int32x4_private a_ = simde_int32x4_to_private(a);
+    simde_int32x4_private b_ = simde_int32x4_to_private(b);
+    simde_int32x4x2_t r;
+    r.val[0] = simde_int32x4_from_private( (simde_int32x4_private) { .m128i = __lsx_vilvl_w(b_.m128i, a_.m128i) } );
+    r.val[1] = simde_int32x4_from_private( (simde_int32x4_private) { .m128i = __lsx_vilvh_w(b_.m128i, a_.m128i) } );
+    return r;
   #else
     simde_int32x4x2_t r = { { simde_vzip1q_s32(a, b), simde_vzip2q_s32(a, b) } };
     return r;
@@ -254,6 +324,13 @@ simde_uint16x8x2_t
 simde_vzipq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_u16(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
+    simde_uint16x8_private b_ = simde_uint16x8_to_private(b);
+    simde_uint16x8x2_t r;
+    r.val[0] = simde_uint16x8_from_private( (simde_uint16x8_private) { .m128i = __lsx_vilvl_h(b_.m128i, a_.m128i) } );
+    r.val[1] = simde_uint16x8_from_private( (simde_uint16x8_private) { .m128i = __lsx_vilvh_h(b_.m128i, a_.m128i) } );
+    return r;
   #else
     simde_uint16x8x2_t r = { { simde_vzip1q_u16(a, b), simde_vzip2q_u16(a, b) } };
     return r;
@@ -269,6 +346,13 @@ simde_uint32x4x2_t
 simde_vzipq_u32(simde_uint32x4_t a, simde_uint32x4_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vzipq_u32(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint32x4_private a_ = simde_uint32x4_to_private(a);
+    simde_uint32x4_private b_ = simde_uint32x4_to_private(b);
+    simde_uint32x4x2_t r;
+    r.val[0] = simde_uint32x4_from_private( (simde_uint32x4_private) { .m128i = __lsx_vilvl_w(b_.m128i, a_.m128i) } );
+    r.val[1] = simde_uint32x4_from_private( (simde_uint32x4_private) { .m128i = __lsx_vilvh_w(b_.m128i, a_.m128i) } );
+    return r;
   #else
     simde_uint32x4x2_t r = { { simde_vzip1q_u32(a, b), simde_vzip2q_u32(a, b) } };
     return r;

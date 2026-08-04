@@ -175,7 +175,11 @@ simde_vget_lane_s64(simde_int64x1_t v, const int lane)
   #else
     simde_int64x1_private v_ = simde_int64x1_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r = __lsx_vpickve2gr_d(simde_x_lsx_load64(&v_.values), 0);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -260,7 +264,12 @@ simde_vget_lane_u64(simde_uint64x1_t v, const int lane)
   #else
     simde_uint64x1_private v_ = simde_uint64x1_to_private(v);
 
-    r = v_.values[lane];
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      (void) lane;
+      r = __lsx_vpickve2gr_d(simde_x_lsx_load64(&v_.values), 0);
+    #else
+      r = v_.values[lane];
+    #endif
   #endif
 
   return r;
@@ -384,6 +393,9 @@ simde_vgetq_lane_s16(simde_int16x8_t v, const int lane)
       int r_;
       SIMDE_CONSTIFY_8_(wasm_i16x8_extract_lane, r_, (HEDLEY_UNREACHABLE(), INT16_C(0)), lane, v_.v128);
       r = HEDLEY_STATIC_CAST(int16_t, r_);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      SIMDE_CONSTIFY_8_(__lsx_vpickve2gr_h, r, (HEDLEY_UNREACHABLE(), INT16_C(0)), lane, v_.m128i);
+      r = HEDLEY_STATIC_CAST(int16_t, r);
     #else
       r = v_.values[lane];
     #endif
@@ -438,6 +450,8 @@ simde_vgetq_lane_s64(simde_int64x2_t v, const int lane)
       int64_t r_;
       SIMDE_CONSTIFY_2_(wasm_i64x2_extract_lane, r_, (HEDLEY_UNREACHABLE(), INT64_C(0)), lane, v_.v128);
       r = HEDLEY_STATIC_CAST(int64_t, r_);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      SIMDE_CONSTIFY_2_(__lsx_vpickve2gr_d, r, (HEDLEY_UNREACHABLE(), INT64_C(0)), lane, v_.m128i);
     #else
       r = v_.values[lane];
     #endif
@@ -546,6 +560,8 @@ simde_vgetq_lane_u64(simde_uint64x2_t v, const int lane)
       int64_t r_;
       SIMDE_CONSTIFY_2_(wasm_i64x2_extract_lane, r_, (HEDLEY_UNREACHABLE(), UINT64_C(0)), lane, v_.v128);
       r = HEDLEY_STATIC_CAST(uint64_t, r_);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      SIMDE_CONSTIFY_2_(__lsx_vpickve2gr_d, r, (HEDLEY_UNREACHABLE(), UINT64_C(0)), lane, v_.m128i);
     #else
       r = v_.values[lane];
     #endif

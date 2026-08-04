@@ -64,7 +64,13 @@ simde_vqdmulh_s16(simde_int16x4_t a, simde_int16x4_t b) {
   #else
     simde_int16x4_private r_;
 
-    #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !defined(SIMDE_ARCH_ZARCH)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_int16x4_private a_ = simde_int16x4_to_private(a);
+      simde_int16x4_private b_ = simde_int16x4_to_private(b);
+      __m128i hi = __lsx_vmuh_h(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values));
+      __m128i lo = __lsx_vmul_h(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values));
+      simde_x_lsx_store64(&r_.values, __lsx_vor_v(__lsx_vslli_h(hi, 1), __lsx_vsrli_h(lo, 15)));
+    #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !defined(SIMDE_ARCH_ZARCH)
       simde_int16x8_private tmp_ =
         simde_int16x8_to_private(
           simde_vreinterpretq_s16_s32(

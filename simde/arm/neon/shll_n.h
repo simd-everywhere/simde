@@ -86,6 +86,10 @@ simde_vshll_n_s16 (const simde_int16x4_t a, const int n)
   #elif defined(SIMDE_WASM_SIMD128_NATIVE)
     v128_t tmp = wasm_i32x4_load16x4(&a_.values);
     r_.v128 = wasm_i32x4_shl(tmp, HEDLEY_STATIC_CAST(uint32_t, n));
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    __m128i lo = __lsx_vilvl_h(__lsx_vreplgr2vr_h(0), simde_x_lsx_load64(&a_.values));
+    __m128i ext = __lsx_vsrai_w(__lsx_vslli_w(lo, 16), 16);
+    r_.m128i = __lsx_vsll_w(ext, __lsx_vreplgr2vr_w((n)));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

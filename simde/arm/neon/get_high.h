@@ -46,6 +46,8 @@ simde_vget_high_f16(simde_float16x8_t a) {
     simde_float16x8_private a_ = simde_float16x8_to_private(a);
     #if defined(SIMDE_RISCV_V_NATIVE) && SIMDE_ARCH_RISCV_ZVFH
       r_.sv64 = __riscv_vslidedown_vx_f16m1(a_.sv128 , 4 , 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -74,6 +76,8 @@ simde_vget_high_f32(simde_float32x4_t a) {
       r_.sv64 = __riscv_vslidedown_vx_f32m1(a_.sv128 , 2 , 4);
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 2, 3);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -102,6 +106,8 @@ simde_vget_high_f64(simde_float64x2_t a) {
       r_.sv64 = __riscv_vslidedown_vx_f64m1(a_.sv128 , 1 , 2);
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 1);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -130,6 +136,8 @@ simde_vget_high_s8(simde_int8x16_t a) {
       r_.sv64 = __riscv_vslidedown_vx_i8m1(a_.sv128 , 8 , 16);
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 8, 9, 10, 11, 12, 13, 14, 15);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -158,6 +166,8 @@ simde_vget_high_s16(simde_int16x8_t a) {
       r_.sv64 = __riscv_vslidedown_vx_i16m1(a_.sv128 , 4 , 8);
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 4, 5, 6, 7);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -186,6 +196,8 @@ simde_vget_high_s32(simde_int32x4_t a) {
       r_.sv64 = __riscv_vslidedown_vx_i32m1(a_.sv128 , 2 , 4);
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 2, 3);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -214,6 +226,8 @@ simde_vget_high_s64(simde_int64x2_t a) {
       r_.sv64 = __riscv_vslidedown_vx_i64m1(a_.sv128 , 1 , 2);
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 1);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -242,6 +256,8 @@ simde_vget_high_u8(simde_uint8x16_t a) {
       r_.sv64 = __riscv_vslidedown_vx_u8m1(a_.sv128 , 8 , 16);
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 8, 9, 10, 11, 12, 13, 14,15);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -270,6 +286,8 @@ simde_vget_high_u16(simde_uint16x8_t a) {
       r_.sv64 = __riscv_vslidedown_vx_u16m1(a_.sv128 , 4 , 8);
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 4, 5, 6, 7);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -298,6 +316,8 @@ simde_vget_high_u32(simde_uint32x4_t a) {
       r_.sv64 = __riscv_vslidedown_vx_u32m1(a_.sv128 , 2 , 4);
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 2, 3);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -326,6 +346,8 @@ simde_vget_high_u64(simde_uint64x2_t a) {
       r_.sv64 = __riscv_vslidedown_vx_u64m1(a_.sv128 , 1 , 2);
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 1);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vilvh_d(a_.m128i, a_.m128i));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

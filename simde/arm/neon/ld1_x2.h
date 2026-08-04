@@ -296,6 +296,9 @@ simde_vld1_u16_x2(uint16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
     #if defined(SIMDE_RISCV_V_NATIVE)
       a_[0].sv64 = __riscv_vle16_v_u16m1(ptr , 4);
       a_[1].sv64 = __riscv_vle16_v_u16m1(ptr+4 , 4);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&a_[0].values, __lsx_vldrepl_d(HEDLEY_REINTERPRET_CAST(const void*, ptr), 0));
+      simde_x_lsx_store64(&a_[1].values, __lsx_vldrepl_d(HEDLEY_REINTERPRET_CAST(const void*, ptr+4), 0));
     #else
       for (size_t i = 0; i < 8; i++) {
         a_[i / 4].values[i % 4] = ptr[i];

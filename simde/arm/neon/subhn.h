@@ -84,6 +84,16 @@ simde_vsubhn_s32(simde_int32x4_t a, simde_int32x4_t b) {
       r_.values = __builtin_shufflevector(tmp_.values, tmp_.values, 0, 2, 4, 6);
     #endif
     return simde_int16x4_from_private(r_);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int32x4_private
+      a_ = simde_int32x4_to_private(a),
+      b_ = simde_int32x4_to_private(b);
+    simde_int16x4_private r_;
+    __m128i diff = __lsx_vsub_w(a_.m128i, b_.m128i);
+    __m128i shr = __lsx_vsrai_w(diff, 16);
+    __m128i tmp = __lsx_vssrarni_h_w(shr, shr, 0);
+    simde_memcpy(&r_, &tmp, sizeof(r_));
+    return simde_int16x4_from_private(r_);
   #else
     return simde_vmovn_s32(simde_vshrq_n_s32(simde_vsubq_s32(a, b), 16));
   #endif
