@@ -33,7 +33,7 @@ jobs:
 
       # Install dotnet, used by OSSAR
     - name: Install .NET
-      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5
+      uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v5
       with:
         dotnet-version: '6.0.x'
 
