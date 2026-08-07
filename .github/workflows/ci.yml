@@ -20,7 +20,7 @@ jobs:
   checkinstall:
     runs-on: ubuntu-slim
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         fetch-depth: 2
         persist-credentials: false
@@ -36,7 +36,7 @@ jobs:
   formatting:
     runs-on: ubuntu-slim
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         fetch-depth: 2
         persist-credentials: false
@@ -44,6 +44,18 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pcre2-utils
     - name: Check formatting
       run: .github/workflows/formatting.bash
+
+  conditional-inclusion:
+    runs-on: ubuntu-slim
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        fetch-depth: 2
+        persist-credentials: false
+    - name: Install python3
+      run: sudo apt-get update && sudo apt-get install -y python3
+    - name: Check conditional inclusion for LoongArch
+      run: test/check-loongarch-guards.py
 
   x86:
     runs-on: ubuntu-24.04
@@ -68,7 +80,7 @@ jobs:
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       INTEL_TARGET: ${{ matrix.target }}
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -114,7 +126,7 @@ jobs:
       CFLAGS: -Wall -Wextra -Werror -march=bdver2
       CXXFLAGS: -Wall -Wextra -Werror -march=bdver2
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -157,7 +169,7 @@ jobs:
           - "32-relaxed"
           - "64-relaxed"
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -199,7 +211,7 @@ jobs:
       CFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror -pedantic
       CXXFLAGS: -DSIMDE_ENABLE_NATIVE_ALIASES -DSIMDE_NATIVE_ALIASES_TESTING -Wall -Wextra -Werror -pedantic
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -240,7 +252,7 @@ jobs:
       CFLAGS: -march=native -Wall -Wextra -Werror
       CXXFLAGS: -march=native -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -362,7 +374,7 @@ jobs:
           format('{0}-g++-{1}', matrix.gcc, matrix.version)
         ) }}
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -456,7 +468,7 @@ jobs:
         #   distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -513,7 +525,7 @@ jobs:
           distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -570,7 +582,7 @@ jobs:
           distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -642,7 +654,7 @@ jobs:
           distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -862,7 +874,7 @@ jobs:
         matrix.plain == true, '-Wall -Weverything -Werror',
         '-march=native -Wall -Weverything -Werror') }} -fno-lax-vector-conversions
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -966,7 +978,7 @@ jobs:
       CFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -Wno-complex-component-init
       CXXFLAGS: ${{ matrix.arch_flags }} -Wall -Weverything -Werror -Wno-complex-component-init
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         submodules: recursive
         persist-credentials: false
@@ -1002,7 +1014,7 @@ jobs:
       CFLAGS: -Wall -Werror -march=native -fp-model precise
       CXXFLAGS: -Wall -Werror -march=native -fp-model precise
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         persist-credentials: false
     - name: CPU Information
