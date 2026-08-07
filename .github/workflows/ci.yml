@@ -447,13 +447,13 @@ jobs:
           cross: loongarch64
           arch_gnu: loongarch64
           arch_deb: loong64
-          distro: ubuntu-24.04
+          distro: ubuntu-26.04
         - extra: -fastmath
           version: 14
           cross: loongarch64
           arch_gnu: loongarch64
           arch_deb: loong64
-          distro: ubuntu-24.04
+          distro: ubuntu-26.04
         # - version: 14
         #   cross: mips64el
         #   arch_gnu: mips64el
@@ -478,7 +478,8 @@ jobs:
         sudo apt-get -y --no-install-recommends install ccache ninja-build \
           gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
           g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} binfmt-support \
-          qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
+          pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
+        sudo apt-get -y --no-install-recommends satisfy 'qemu-user-static | qemu-user-binfmt'
         pipx install meson==1.3.2
     - name: ccache
       uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
@@ -645,19 +646,19 @@ jobs:
           cross: loongarch64
           arch_deb: loong64
           arch_gnu: loongarch64
-          distro: ubuntu-24.04
+          distro: ubuntu-26.04
         - version: 21
           cross: loongarch64
           extra: -fastmath
           arch_deb: loong64
           arch_gnu: loongarch64
-          distro: ubuntu-24.04
+          distro: ubuntu-26.04
         - version: 22
           cross: loongarch64
           extra: -fastmath
           arch_deb: loong64
           arch_gnu: loongarch64
-          distro: ubuntu-24.04
+          distro: ubuntu-26.04
     runs-on: ${{ matrix.distro }}
     steps:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -674,8 +675,9 @@ jobs:
         sudo ./llvm.sh ${{ matrix.version }}
         sudo apt-get -y --no-install-recommends install ccache ninja-build \
           binfmt-support clang-${{ matrix.version }} llvm-${{ matrix.version }} lld-${{ matrix.version }} \
-          qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-14-dev-${{ matrix.arch_deb }}-cross \
+          pipx libc6-${{ matrix.arch_deb }}-cross libstdc++-14-dev-${{ matrix.arch_deb }}-cross \
           binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
+        sudo apt-get -y --no-install-recommends satisfy 'qemu-user-static | qemu-user-binfmt'
         pipx install meson
     - name: ccache
       uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
