@@ -39,12 +39,12 @@ jobs:
       CXXFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
       INTEL_TARGET: ${{ matrix.target }}
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: ${{ github.event_name != 'repository_dispatch' }}
       with:
         submodules: recursive
         persist-credentials: false
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: ${{ github.event_name == 'repository_dispatch' }}
       with:
         submodules: recursive
@@ -94,12 +94,12 @@ jobs:
       CFLAGS: -Wall -Wextra -Werror -march=bdver2
       CXXFLAGS: -Wall -Wextra -Werror -march=bdver2
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: ${{ github.event_name != 'repository_dispatch' }}
       with:
         submodules: recursive
         persist-credentials: false
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: ${{ github.event_name == 'repository_dispatch' }}
       with:
         submodules: recursive
@@ -143,12 +143,12 @@ jobs:
       CFLAGS: -march=native -Wall -Wextra -Werror
       CXXFLAGS: -march=native -Wall -Wextra -Werror
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: ${{ github.event_name != 'repository_dispatch' }}
       with:
         submodules: recursive
         persist-credentials: false
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: ${{ github.event_name == 'repository_dispatch' }}
       with:
         submodules: recursive
@@ -231,12 +231,12 @@ jobs:
         ) }}
 
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: ${{ github.event_name != 'repository_dispatch' }}
       with:
         submodules: recursive
         persist-credentials: false
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: ${{ github.event_name == 'repository_dispatch' }}
       with:
         submodules: recursive
@@ -319,12 +319,12 @@ jobs:
           distro: ubuntu-24.04
     runs-on: ${{ matrix.distro }}
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: ${{ github.event_name != 'repository_dispatch' }}
       with:
         submodules: recursive
         persist-credentials: false
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: ${{ github.event_name == 'repository_dispatch' }}
       with:
         submodules: recursive
