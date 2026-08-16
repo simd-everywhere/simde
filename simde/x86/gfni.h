@@ -399,6 +399,33 @@ simde_x_mm_gf2p8_tower_join (simde__m128i h, simde__m128i l) {
                             simde_mm_shuffle_epi8(simde_x_gf2p4_from_h.m128i, h));
 }
 
+/* Fused tower-affine tables for constant-M SHUFFLE path: apply M to the
+ * tower inverse's intermediate results directly, eliminating tower_join. */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_gf2p8_fused_tower_lo (uint64_t M, uint8_t c) {
+  #define SIMDE_X_GFNI_FROW(n) HEDLEY_STATIC_CAST(int8_t, simde_x_gf2p8_apply_matrix_byte(M, simde_x_gf2p4_from_l.u8[(n)]) ^ (c))
+  simde__m128i r = simde_mm_set_epi8(
+    SIMDE_X_GFNI_FROW(15), SIMDE_X_GFNI_FROW(14), SIMDE_X_GFNI_FROW(13), SIMDE_X_GFNI_FROW(12),
+    SIMDE_X_GFNI_FROW(11), SIMDE_X_GFNI_FROW(10), SIMDE_X_GFNI_FROW( 9), SIMDE_X_GFNI_FROW( 8),
+    SIMDE_X_GFNI_FROW( 7), SIMDE_X_GFNI_FROW( 6), SIMDE_X_GFNI_FROW( 5), SIMDE_X_GFNI_FROW( 4),
+    SIMDE_X_GFNI_FROW( 3), SIMDE_X_GFNI_FROW( 2), SIMDE_X_GFNI_FROW( 1), SIMDE_X_GFNI_FROW( 0));
+  #undef SIMDE_X_GFNI_FROW
+  return r;
+}
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_gf2p8_fused_tower_hi (uint64_t M) {
+  #define SIMDE_X_GFNI_FROW(n) HEDLEY_STATIC_CAST(int8_t, simde_x_gf2p8_apply_matrix_byte(M, simde_x_gf2p4_from_h.u8[(n)]))
+  simde__m128i r = simde_mm_set_epi8(
+    SIMDE_X_GFNI_FROW(15), SIMDE_X_GFNI_FROW(14), SIMDE_X_GFNI_FROW(13), SIMDE_X_GFNI_FROW(12),
+    SIMDE_X_GFNI_FROW(11), SIMDE_X_GFNI_FROW(10), SIMDE_X_GFNI_FROW( 9), SIMDE_X_GFNI_FROW( 8),
+    SIMDE_X_GFNI_FROW( 7), SIMDE_X_GFNI_FROW( 6), SIMDE_X_GFNI_FROW( 5), SIMDE_X_GFNI_FROW( 4),
+    SIMDE_X_GFNI_FROW( 3), SIMDE_X_GFNI_FROW( 2), SIMDE_X_GFNI_FROW( 1), SIMDE_X_GFNI_FROW( 0));
+  #undef SIMDE_X_GFNI_FROW
+  return r;
+}
+
 /* GF(2^8) inverse via the GF((2^4)^2) tower field (no AES needed). */
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
@@ -447,6 +474,62 @@ simde_x_mm_gf2p8inverse_tower (simde__m128i x) {
   iL = simde_mm_andnot_si128(z, iL);
 
   return simde_x_mm_gf2p8_tower_join(iH, iL);
+}
+
+/* affineinv with constant M via the fused tower path (SHUFFLE without AES).
+ * Computes tower inverse then applies M directly to (iH, iL) instead of
+ * tower_join, using the compile-time fused tables. */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_gf2p8affineinv_tower_const (simde__m128i x, uint64_t M, int b) {
+  const simde__m128i zero = simde_mm_setzero_si128();
+  simde__m128i aL = simde_x_mm_gf2p8_tower_lo(x);
+  simde__m128i aH = simde_x_mm_gf2p8_tower_hi(x);
+
+  /* Inline delta multiply: compute log(aH), cache it and z_aH for later reuse. */
+  simde__m128i log_aH = simde_mm_shuffle_epi8(simde_x_gf2p4_log.m128i, aH);
+  simde__m128i z_aH = simde_mm_cmpeq_epi8(aH, zero);
+  simde__m128i log_aL = simde_mm_shuffle_epi8(simde_x_gf2p4_log.m128i, aL);
+  simde__m128i idx = simde_mm_add_epi8(log_aH, log_aL);
+  simde__m128i ge = simde_mm_cmpgt_epi8(idx, simde_mm_set1_epi8(14));
+  idx = simde_mm_sub_epi8(idx, simde_mm_and_si128(ge, simde_mm_set1_epi8(15)));
+  simde__m128i mul_aHaL = simde_mm_shuffle_epi8(simde_x_gf2p4_exp.m128i, idx);
+  simde__m128i z = simde_mm_or_si128(z_aH, simde_mm_cmpeq_epi8(aL, zero));
+  mul_aHaL = simde_mm_andnot_si128(z, mul_aHaL);
+
+  /* delta = a_H^2 . nu ^ a_H . a_L ^ a_L^2 (3-way XOR -> EOR3 on ARM SHA3) */
+  simde__m128i delta = simde_x_gfni_xor3(
+    simde_mm_shuffle_epi8(simde_x_gf2p4_mulnusq.m128i, aH),
+    mul_aHaL,
+    simde_mm_shuffle_epi8(simde_x_gf2p4_sqr.m128i, aL));
+
+  /* Negated-log inversion: log(x^-1) = log(x) XOR 0x0F in GF(2^4)* (order 15). */
+  simde__m128i neg_log_delta = simde_mm_xor_si128(
+    simde_mm_shuffle_epi8(simde_x_gf2p4_log.m128i, delta),
+    simde_mm_set1_epi8(0x0F));
+
+  /* iH = aH * delta^-1, reusing cached log_aH, zero mask checks aH only. */
+  idx = simde_mm_add_epi8(log_aH, neg_log_delta);
+  ge = simde_mm_cmpgt_epi8(idx, simde_mm_set1_epi8(14));
+  idx = simde_mm_sub_epi8(idx, simde_mm_and_si128(ge, simde_mm_set1_epi8(15)));
+  simde__m128i iH = simde_mm_shuffle_epi8(simde_x_gf2p4_exp.m128i, idx);
+  iH = simde_mm_andnot_si128(z_aH, iH);
+
+  /* iL = (aH ^ aL) * delta^-1, zero mask checks (aH ^ aL) only. */
+  simde__m128i aHxaL = simde_mm_xor_si128(aH, aL);
+  simde__m128i log_aHxaL = simde_mm_shuffle_epi8(simde_x_gf2p4_log.m128i, aHxaL);
+  idx = simde_mm_add_epi8(log_aHxaL, neg_log_delta);
+  ge = simde_mm_cmpgt_epi8(idx, simde_mm_set1_epi8(14));
+  idx = simde_mm_sub_epi8(idx, simde_mm_and_si128(ge, simde_mm_set1_epi8(15)));
+  simde__m128i iL = simde_mm_shuffle_epi8(simde_x_gf2p4_exp.m128i, idx);
+  z = simde_mm_cmpeq_epi8(aHxaL, zero);
+  iL = simde_mm_andnot_si128(z, iL);
+
+  /* Fused output: apply M to (iH, iL) directly instead of tower_join then M. */
+  const simde__m128i fused_lo = simde_x_gf2p8_fused_tower_lo(M, HEDLEY_STATIC_CAST(uint8_t, b));
+  const simde__m128i fused_hi = simde_x_gf2p8_fused_tower_hi(M);
+  return simde_mm_xor_si128(simde_mm_shuffle_epi8(fused_lo, iL),
+                            simde_mm_shuffle_epi8(fused_hi, iH));
 }
 #endif /* SIMDE_X_GFNI_HAVE_SHUFFLE */
 
@@ -1114,6 +1197,12 @@ simde_mm_gf2p8affineinv_epi64_epi8 (simde__m128i x, simde__m128i A, int b)
     if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) && (cA_.u64[0] == cA_.u64[1]) && SIMDE_CHECK_CONSTANT_(b)) {
       return simde_x_mm_gf2p8affineinv_const(x, cA_.u64[0], b);
     }
+  #elif defined(SIMDE_X_GFNI_HAVE_SHUFFLE) && defined(SIMDE_CHECK_CONSTANT_)
+    /* constant matrix: fused tower path (SHUFFLE without AES) */
+    simde__m128i_private cA_ = simde__m128i_to_private(A);
+    if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) && (cA_.u64[0] == cA_.u64[1]) && SIMDE_CHECK_CONSTANT_(b)) {
+      return simde_x_mm_gf2p8affineinv_tower_const(x, cA_.u64[0], b);
+    }
   #endif
   return simde_mm_xor_si128(simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
@@ -1137,6 +1226,16 @@ simde_mm256_gf2p8affineinv_epi64_epi8 (simde__m256i x, simde__m256i A, int b)
       simde__m256i_private r_, x_ = simde__m256i_to_private(x);
       r_.m128i[0] = simde_x_mm_gf2p8affineinv_const(x_.m128i[0], cA_.u64[0], b);
       r_.m128i[1] = simde_x_mm_gf2p8affineinv_const(x_.m128i[1], cA_.u64[0], b);
+      return simde__m256i_from_private(r_);
+    }
+  #elif defined(SIMDE_X_GFNI_HAVE_SHUFFLE) && defined(SIMDE_CHECK_CONSTANT_)
+    simde__m256i_private cA_ = simde__m256i_to_private(A);
+    if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) &&
+        SIMDE_CHECK_CONSTANT_(cA_.u64[2]) && SIMDE_CHECK_CONSTANT_(cA_.u64[3]) && SIMDE_CHECK_CONSTANT_(b) &&
+        (cA_.u64[0] == cA_.u64[1]) && (cA_.u64[0] == cA_.u64[2]) && (cA_.u64[0] == cA_.u64[3])) {
+      simde__m256i_private r_, x_ = simde__m256i_to_private(x);
+      r_.m128i[0] = simde_x_mm_gf2p8affineinv_tower_const(x_.m128i[0], cA_.u64[0], b);
+      r_.m128i[1] = simde_x_mm_gf2p8affineinv_tower_const(x_.m128i[1], cA_.u64[0], b);
       return simde__m256i_from_private(r_);
     }
   #endif
@@ -1165,6 +1264,19 @@ simde_mm512_gf2p8affineinv_epi64_epi8 (simde__m512i x, simde__m512i A, int b)
       simde__m512i_private r_, x_ = simde__m512i_to_private(x);
       for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++)
         r_.m128i[i] = simde_x_mm_gf2p8affineinv_const(x_.m128i[i], cA_.u64[0], b);
+      return simde__m512i_from_private(r_);
+    }
+  #elif defined(SIMDE_X_GFNI_HAVE_SHUFFLE) && defined(SIMDE_CHECK_CONSTANT_)
+    simde__m512i_private cA_ = simde__m512i_to_private(A);
+    if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) &&
+        SIMDE_CHECK_CONSTANT_(cA_.u64[2]) && SIMDE_CHECK_CONSTANT_(cA_.u64[3]) &&
+        SIMDE_CHECK_CONSTANT_(cA_.u64[4]) && SIMDE_CHECK_CONSTANT_(cA_.u64[5]) &&
+        SIMDE_CHECK_CONSTANT_(cA_.u64[6]) && SIMDE_CHECK_CONSTANT_(cA_.u64[7]) && SIMDE_CHECK_CONSTANT_(b) &&
+        (cA_.u64[0] == cA_.u64[1]) && (cA_.u64[0] == cA_.u64[2]) && (cA_.u64[0] == cA_.u64[3]) &&
+        (cA_.u64[0] == cA_.u64[4]) && (cA_.u64[0] == cA_.u64[5]) && (cA_.u64[0] == cA_.u64[6]) && (cA_.u64[0] == cA_.u64[7])) {
+      simde__m512i_private r_, x_ = simde__m512i_to_private(x);
+      for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++)
+        r_.m128i[i] = simde_x_mm_gf2p8affineinv_tower_const(x_.m128i[i], cA_.u64[0], b);
       return simde__m512i_from_private(r_);
     }
   #endif
