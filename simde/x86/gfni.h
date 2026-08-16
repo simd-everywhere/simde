@@ -91,8 +91,10 @@ SIMDE_BEGIN_DECLS_
   #define SIMDE_X_GFNI_HAVE_SHUFFLE
 #endif
 
-/* Computing the inverse of a GF element is expensive so use this LUT for an FGP of 0x11B */
-
+/* Computing the inverse of a GF element is expensive so use this LUT for an FGP
+ * of 0x11B. Only the scalar fallback needs it; the AES-borrow and tower-field
+ * paths compute the inverse without a 256-byte table. */
+#if !defined(SIMDE_X_GFNI_HAVE_AES) && !defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
 static const union {
   uint8_t      u8[256];
   simde__m128i m128i[16];
@@ -116,6 +118,7 @@ static const union {
    0x5b, 0x23, 0x38, 0x34, 0x68, 0x46, 0x03, 0x8c, 0xdd, 0x9c, 0x7d, 0xa0, 0xcd, 0x1a, 0x41, 0x1c
   }
 };
+#endif /* scalar inverse LUT */
 
 /* GFNI matrix (qword) for "multiply by the GF(2^8) constant k": column j is
  * k (x) 2^j. Lets a constant-operand GF(2^8) multiply degenerate to an affine
@@ -310,6 +313,142 @@ simde_x_mm_gf2p8affineinv_const (simde__m128i x, uint64_t M, int b) {
   }
 }
 #endif /* SIMDE_X_GFNI_HAVE_AES */
+
+#if defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
+/* Tower field GF(2^8) ~= GF(2^4)[u]/(u^2 + u + nu), nu = 0xB in GF(2^4) with
+ * reduction polynomial 0x13. A byte maps to (a_H, a_L), two GF(2^4) nibbles,
+ * via the (linear) basis change below; the inverse map recombines them. */
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_to_lo   = { {
+  0x00, 0x01, 0x0b, 0x0a, 0x03, 0x02, 0x08, 0x09, 0x09, 0x08, 0x02, 0x03, 0x0a, 0x0b, 0x01, 0x00 } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_to_hi   = { {
+  0x00, 0x0b, 0x06, 0x0d, 0x03, 0x08, 0x05, 0x0e, 0x01, 0x0a, 0x07, 0x0c, 0x02, 0x09, 0x04, 0x0f } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_toh_lo  = { {
+  0x00, 0x00, 0x02, 0x02, 0x04, 0x04, 0x06, 0x06, 0x04, 0x04, 0x06, 0x06, 0x00, 0x00, 0x02, 0x02 } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_toh_hi  = { {
+  0x00, 0x03, 0x0d, 0x0e, 0x03, 0x00, 0x0e, 0x0d, 0x0e, 0x0d, 0x03, 0x00, 0x0d, 0x0e, 0x00, 0x03 } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_from_l  = { {
+  0x00, 0x01, 0x5c, 0x5d, 0xe0, 0xe1, 0xbc, 0xbd, 0x50, 0x51, 0x0c, 0x0d, 0xb0, 0xb1, 0xec, 0xed } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_from_h  = { {
+  0x00, 0x12, 0x0f, 0x1d, 0x59, 0x4b, 0x56, 0x44, 0xd7, 0xc5, 0xd8, 0xca, 0x8e, 0x9c, 0x81, 0x93 } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_sqr     = { {
+  0x00, 0x01, 0x04, 0x05, 0x03, 0x02, 0x07, 0x06, 0x0c, 0x0d, 0x08, 0x09, 0x0f, 0x0e, 0x0b, 0x0a } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_mulnu   = { {
+  0x00, 0x0b, 0x05, 0x0e, 0x0a, 0x01, 0x0f, 0x04, 0x07, 0x0c, 0x02, 0x09, 0x0d, 0x06, 0x08, 0x03 } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_mulnusq = { {
+  0x00, 0x0b, 0x0a, 0x01, 0x0e, 0x05, 0x04, 0x0f, 0x0d, 0x06, 0x07, 0x0c, 0x03, 0x08, 0x09, 0x02 } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_inv     = { {
+  0x00, 0x01, 0x09, 0x0e, 0x0d, 0x0b, 0x07, 0x06, 0x0f, 0x02, 0x0c, 0x05, 0x0a, 0x04, 0x03, 0x08 } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_log     = { {
+  0x00, 0x00, 0x01, 0x04, 0x02, 0x08, 0x05, 0x0a, 0x03, 0x0e, 0x09, 0x07, 0x06, 0x0d, 0x0b, 0x0c } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p4_exp     = { {
+  0x01, 0x02, 0x04, 0x08, 0x03, 0x06, 0x0c, 0x0b, 0x05, 0x0a, 0x07, 0x0e, 0x0f, 0x0d, 0x09, 0x00 } };
+#endif /* SIMDE_X_GFNI_HAVE_SHUFFLE */
+
+#if defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
+/* 3-way XOR. Uses ARMv8.2 SHA3 EOR3 when available (one instruction), else two
+ * XORs. On x86 this is just two VPXOR. */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_gfni_xor3 (simde__m128i a, simde__m128i b, simde__m128i c) {
+  #if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && defined(SIMDE_ARCH_ARM_SHA3)
+    return simde__m128i_from_neon_u8(veor3q_u8(simde__m128i_to_neon_u8(a), simde__m128i_to_neon_u8(b), simde__m128i_to_neon_u8(c)));
+  #else
+    return simde_mm_xor_si128(simde_mm_xor_si128(a, b), c);
+  #endif
+}
+
+/* GF(2^4) multiply (both operands in the low nibble of each byte) via log/exp,
+ * with the exponent reduced mod 15 and a zero mask for the 0 operands. */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_gf2p4_mul (simde__m128i a, simde__m128i b) {
+  const simde__m128i zero = simde_mm_setzero_si128();
+  simde__m128i la = simde_mm_shuffle_epi8(simde_x_gf2p4_log.m128i, a);
+  simde__m128i lb = simde_mm_shuffle_epi8(simde_x_gf2p4_log.m128i, b);
+  simde__m128i idx = simde_mm_add_epi8(la, lb);
+  simde__m128i ge = simde_mm_cmpgt_epi8(idx, simde_mm_set1_epi8(14));
+  idx = simde_mm_sub_epi8(idx, simde_mm_and_si128(ge, simde_mm_set1_epi8(15)));
+  simde__m128i r = simde_mm_shuffle_epi8(simde_x_gf2p4_exp.m128i, idx);
+  simde__m128i z = simde_mm_or_si128(simde_mm_cmpeq_epi8(a, zero), simde_mm_cmpeq_epi8(b, zero));
+  return simde_mm_andnot_si128(z, r);
+}
+
+/* Basis change between the standard byte and the tower (a_H, a_L) nibbles. */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_gf2p8_tower_lo (simde__m128i x) {
+  const simde__m128i nmask = simde_mm_set1_epi8(0x0F);
+  const simde__m128i xlo = simde_mm_and_si128(x, nmask);
+  const simde__m128i xhi = simde_mm_and_si128(simde_mm_srli_epi16(x, 4), nmask);
+  return simde_mm_xor_si128(simde_mm_shuffle_epi8(simde_x_gf2p4_to_lo.m128i, xlo),
+                            simde_mm_shuffle_epi8(simde_x_gf2p4_to_hi.m128i, xhi));
+}
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_gf2p8_tower_hi (simde__m128i x) {
+  const simde__m128i nmask = simde_mm_set1_epi8(0x0F);
+  const simde__m128i xlo = simde_mm_and_si128(x, nmask);
+  const simde__m128i xhi = simde_mm_and_si128(simde_mm_srli_epi16(x, 4), nmask);
+  return simde_mm_xor_si128(simde_mm_shuffle_epi8(simde_x_gf2p4_toh_lo.m128i, xlo),
+                            simde_mm_shuffle_epi8(simde_x_gf2p4_toh_hi.m128i, xhi));
+}
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_gf2p8_tower_join (simde__m128i h, simde__m128i l) {
+  return simde_mm_xor_si128(simde_mm_shuffle_epi8(simde_x_gf2p4_from_l.m128i, l),
+                            simde_mm_shuffle_epi8(simde_x_gf2p4_from_h.m128i, h));
+}
+
+/* GF(2^8) inverse via the GF((2^4)^2) tower field (no AES needed). */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_gf2p8inverse_tower (simde__m128i x) {
+  const simde__m128i zero = simde_mm_setzero_si128();
+  simde__m128i aL = simde_x_mm_gf2p8_tower_lo(x);
+  simde__m128i aH = simde_x_mm_gf2p8_tower_hi(x);
+
+  /* Inline delta multiply: compute log(aH), cache it and z_aH for later reuse. */
+  simde__m128i log_aH = simde_mm_shuffle_epi8(simde_x_gf2p4_log.m128i, aH);
+  simde__m128i z_aH = simde_mm_cmpeq_epi8(aH, zero);
+  simde__m128i log_aL = simde_mm_shuffle_epi8(simde_x_gf2p4_log.m128i, aL);
+  simde__m128i idx = simde_mm_add_epi8(log_aH, log_aL);
+  simde__m128i ge = simde_mm_cmpgt_epi8(idx, simde_mm_set1_epi8(14));
+  idx = simde_mm_sub_epi8(idx, simde_mm_and_si128(ge, simde_mm_set1_epi8(15)));
+  simde__m128i mul_aHaL = simde_mm_shuffle_epi8(simde_x_gf2p4_exp.m128i, idx);
+  simde__m128i z = simde_mm_or_si128(z_aH, simde_mm_cmpeq_epi8(aL, zero));
+  mul_aHaL = simde_mm_andnot_si128(z, mul_aHaL);
+
+  /* delta = a_H^2 . nu ^ a_H . a_L ^ a_L^2 (3-way XOR -> EOR3 on ARM SHA3) */
+  simde__m128i delta = simde_x_gfni_xor3(
+    simde_mm_shuffle_epi8(simde_x_gf2p4_mulnusq.m128i, aH),
+    mul_aHaL,
+    simde_mm_shuffle_epi8(simde_x_gf2p4_sqr.m128i, aL));
+
+  /* Negated-log inversion: log(x^-1) = log(x) XOR 0x0F in GF(2^4)* (order 15). */
+  simde__m128i neg_log_delta = simde_mm_xor_si128(
+    simde_mm_shuffle_epi8(simde_x_gf2p4_log.m128i, delta),
+    simde_mm_set1_epi8(0x0F));
+
+  /* iH = aH * delta^-1, reusing cached log_aH, zero mask checks aH only. */
+  idx = simde_mm_add_epi8(log_aH, neg_log_delta);
+  ge = simde_mm_cmpgt_epi8(idx, simde_mm_set1_epi8(14));
+  idx = simde_mm_sub_epi8(idx, simde_mm_and_si128(ge, simde_mm_set1_epi8(15)));
+  simde__m128i iH = simde_mm_shuffle_epi8(simde_x_gf2p4_exp.m128i, idx);
+  iH = simde_mm_andnot_si128(z_aH, iH);
+
+  /* iL = (aH ^ aL) * delta^-1, zero mask checks (aH ^ aL) only. */
+  simde__m128i aHxaL = simde_mm_xor_si128(aH, aL);
+  simde__m128i log_aHxaL = simde_mm_shuffle_epi8(simde_x_gf2p4_log.m128i, aHxaL);
+  idx = simde_mm_add_epi8(log_aHxaL, neg_log_delta);
+  ge = simde_mm_cmpgt_epi8(idx, simde_mm_set1_epi8(14));
+  idx = simde_mm_sub_epi8(idx, simde_mm_and_si128(ge, simde_mm_set1_epi8(15)));
+  simde__m128i iL = simde_mm_shuffle_epi8(simde_x_gf2p4_exp.m128i, idx);
+  z = simde_mm_cmpeq_epi8(aHxaL, zero);
+  iL = simde_mm_andnot_si128(z, iL);
+
+  return simde_x_mm_gf2p8_tower_join(iH, iL);
+}
+#endif /* SIMDE_X_GFNI_HAVE_SHUFFLE */
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
@@ -715,6 +854,8 @@ simde_x_mm_gf2p8inverse_epi8 (simde__m128i x) {
     const simde__m128i hi = simde_mm_and_si128(simde_mm_srli_epi16(s, 4), nmask);
     return simde_mm_xor_si128(simde_mm_shuffle_epi8(simde_x_gf2p8_inv_tlo.m128i, lo),
                               simde_mm_shuffle_epi8(simde_x_gf2p8_inv_thi.m128i, hi));
+  #elif defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
+    return simde_x_mm_gf2p8inverse_tower(x);
   #else
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     /* N.B. CM: this fallback may not be faster */
