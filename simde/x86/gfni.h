@@ -239,6 +239,19 @@ simde_x_gf2p8_matrix_nibble_hi (uint64_t M) {
   return r;
 }
 
+#if defined(SIMDE_X_GFNI_HAVE_AES)
+/* AES-borrow inverse: inv(a) = A_aes^-1 . (SubBytes(a) ^ 0x63).
+ * SubBytes(a) = InvShiftRows(AESENCLAST(a, 0)). A_aes^-1 is the fixed inverse
+ * AES affine matrix; applied by nibble decomposition with the 0x63 affine
+ * constant folded into the low-nibble table. */
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p8_inv_undo_sr = { {
+  0, 13, 10, 7, 4, 1, 14, 11, 8, 5, 2, 15, 12, 9, 6, 3 } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p8_inv_tlo = { {
+  0x05, 0x4f, 0x91, 0xdb, 0x2c, 0x66, 0xb8, 0xf2, 0x57, 0x1d, 0xc3, 0x89, 0x7e, 0x34, 0xea, 0xa0 } };
+static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p8_inv_thi = { {
+  0x00, 0xa4, 0x49, 0xed, 0x92, 0x36, 0xdb, 0x7f, 0x25, 0x81, 0x6c, 0xc8, 0xb7, 0x13, 0xfe, 0x5a } };
+#endif /* SIMDE_X_GFNI_HAVE_AES */
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
@@ -631,6 +644,19 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_gf2p8inverse_epi8 (simde__m128i x) {
+  #if defined(SIMDE_X_GFNI_HAVE_AES)
+    /* Borrow the AES S-box: AESENCLAST(x, 0) = SubBytes(ShiftRows(x)). Undo
+     * ShiftRows, then inv(x) = A_aes^-1 . (SubBytes(x) ^ 0x63), applied by
+     * nibble decomposition with the 0x63 affine constant folded into the low
+     * table. */
+    simde__m128i s = simde_mm_aesenclast_si128(x, simde_mm_setzero_si128());
+    s = simde_mm_shuffle_epi8(s, simde_x_gf2p8_inv_undo_sr.m128i);
+    const simde__m128i nmask = simde_mm_set1_epi8(0x0F);
+    const simde__m128i lo = simde_mm_and_si128(s, nmask);
+    const simde__m128i hi = simde_mm_and_si128(simde_mm_srli_epi16(s, 4), nmask);
+    return simde_mm_xor_si128(simde_mm_shuffle_epi8(simde_x_gf2p8_inv_tlo.m128i, lo),
+                              simde_mm_shuffle_epi8(simde_x_gf2p8_inv_thi.m128i, hi));
+  #else
   #if defined(SIMDE_X86_SSE4_1_NATIVE)
     /* N.B. CM: this fallback may not be faster */
     simde__m128i r, u, t, test;
@@ -665,6 +691,7 @@ simde_x_mm_gf2p8inverse_epi8 (simde__m128i x) {
     }
 
     return simde__m128i_from_private(r_);
+  #endif
   #endif
 }
 
