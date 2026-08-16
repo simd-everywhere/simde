@@ -145,6 +145,31 @@ test_simde_mm_gf2p8affine_epi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm_gf2p8affine_epi64_epi8_const(SIMDE_MUNIT_TEST_ARGS) {
+  /* Exercises the compile-time-constant-matrix nibble path and checks it agrees
+   * with the same matrix supplied at run time (which takes the general path). */
+  #define SIMDE_TEST_GFNI_AFF_CONST(Q) \
+    do { \
+      volatile int64_t vm_ = HEDLEY_STATIC_CAST(int64_t, UINT64_C(Q)); \
+      simde__m128i rc = simde_mm_gf2p8affine_epi64_epi8(x, simde_mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, UINT64_C(Q))), INT8_C(0x63)); \
+      simde__m128i rr = simde_mm_gf2p8affine_epi64_epi8(x, simde_mm_set1_epi64x(vm_), INT8_C(0x63)); \
+      simde_assert_m128i_i8(rc, ==, rr); \
+    } while (0)
+
+  for (int t = 0 ; t < 16 ; t++) {
+    simde__m128i x = simde_test_x86_random_i8x16();
+    SIMDE_TEST_GFNI_AFF_CONST(0x0102040810204080); /* identity */
+    SIMDE_TEST_GFNI_AFF_CONST(0xF1E3C78F1F3E7CF8); /* AES forward affine */
+    SIMDE_TEST_GFNI_AFF_CONST(0x12345678ABCDEF01);
+    SIMDE_TEST_GFNI_AFF_CONST(0x0000000000000000);
+    SIMDE_TEST_GFNI_AFF_CONST(0xFFFFFFFFFFFFFFFF);
+  }
+
+  #undef SIMDE_TEST_GFNI_AFF_CONST
+  return 0;
+}
+
+static int
 test_simde_mm256_gf2p8affine_epi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i x;
@@ -7387,6 +7412,7 @@ test_simde_mm512_maskz_gf2p8mul_epi8(SIMDE_MUNIT_TEST_ARGS) {
 
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8affine_epi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8affine_epi64_epi8_const)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_gf2p8affine_epi64_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_gf2p8affine_epi64_epi8)
 
