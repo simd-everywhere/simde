@@ -547,6 +547,180 @@ simde_x_mm_gf2p8mul_tower (simde__m128i a, simde__m128i b) {
 }
 #endif /* SIMDE_X_GFNI_HAVE_SHUFFLE */
 
+#if defined(SIMDE_X_GFNI_HAVE_SHUFFLE) && defined(SIMDE_X86_AVX2_NATIVE)
+/* 256-bit (AVX2) versions of the tower-field helpers. Same algorithms as the
+ * 128-bit ones above, with the 16-byte tables broadcast to both lanes. On
+ * full-width cores a ymm shuffle costs the same as an xmm one, so these double
+ * the throughput of the wide multiply/inverse operations versus splitting into
+ * two 128-bit halves. */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_gf2p4_mul (simde__m256i a, simde__m256i b) {
+  const simde__m256i zero = simde_mm256_setzero_si256();
+  const simde__m256i logt = simde_mm256_broadcastsi128_si256(simde_x_gf2p4_log.m128i);
+  simde__m256i la = simde_mm256_shuffle_epi8(logt, a);
+  simde__m256i lb = simde_mm256_shuffle_epi8(logt, b);
+  simde__m256i idx = simde_mm256_add_epi8(la, lb);
+  simde__m256i ge = simde_mm256_cmpgt_epi8(idx, simde_mm256_set1_epi8(14));
+  idx = simde_mm256_sub_epi8(idx, simde_mm256_and_si256(ge, simde_mm256_set1_epi8(15)));
+  simde__m256i r = simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_exp.m128i), idx);
+  simde__m256i z = simde_mm256_or_si256(simde_mm256_cmpeq_epi8(a, zero), simde_mm256_cmpeq_epi8(b, zero));
+  return simde_mm256_andnot_si256(z, r);
+}
+
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_gf2p8_tower_lo (simde__m256i x) {
+  const simde__m256i nmask = simde_mm256_set1_epi8(0x0F);
+  const simde__m256i xlo = simde_mm256_and_si256(x, nmask);
+  const simde__m256i xhi = simde_mm256_and_si256(simde_mm256_srli_epi16(x, 4), nmask);
+  return simde_mm256_xor_si256(
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_to_lo.m128i), xlo),
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_to_hi.m128i), xhi));
+}
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_gf2p8_tower_hi (simde__m256i x) {
+  const simde__m256i nmask = simde_mm256_set1_epi8(0x0F);
+  const simde__m256i xlo = simde_mm256_and_si256(x, nmask);
+  const simde__m256i xhi = simde_mm256_and_si256(simde_mm256_srli_epi16(x, 4), nmask);
+  return simde_mm256_xor_si256(
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_toh_lo.m128i), xlo),
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_toh_hi.m128i), xhi));
+}
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_gf2p8_tower_join (simde__m256i h, simde__m256i l) {
+  return simde_mm256_xor_si256(
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_from_l.m128i), l),
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_from_h.m128i), h));
+}
+
+/* GF(2^8) inverse via the tower field, 256-bit. Mirrors the 128-bit version
+ * including the cached log(aH) / zero-mask reuse. */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_gf2p8inverse_tower (simde__m256i x) {
+  const simde__m256i zero = simde_mm256_setzero_si256();
+  const simde__m256i logt = simde_mm256_broadcastsi128_si256(simde_x_gf2p4_log.m128i);
+  const simde__m256i expt = simde_mm256_broadcastsi128_si256(simde_x_gf2p4_exp.m128i);
+  simde__m256i aL = simde_x_mm256_gf2p8_tower_lo(x);
+  simde__m256i aH = simde_x_mm256_gf2p8_tower_hi(x);
+
+  /* Inline delta multiply: compute log(aH), cache it and z_aH for later reuse. */
+  simde__m256i log_aH = simde_mm256_shuffle_epi8(logt, aH);
+  simde__m256i z_aH = simde_mm256_cmpeq_epi8(aH, zero);
+  simde__m256i log_aL = simde_mm256_shuffle_epi8(logt, aL);
+  simde__m256i idx = simde_mm256_add_epi8(log_aH, log_aL);
+  simde__m256i ge = simde_mm256_cmpgt_epi8(idx, simde_mm256_set1_epi8(14));
+  idx = simde_mm256_sub_epi8(idx, simde_mm256_and_si256(ge, simde_mm256_set1_epi8(15)));
+  simde__m256i mul_aHaL = simde_mm256_shuffle_epi8(expt, idx);
+  simde__m256i z = simde_mm256_or_si256(z_aH, simde_mm256_cmpeq_epi8(aL, zero));
+  mul_aHaL = simde_mm256_andnot_si256(z, mul_aHaL);
+
+  /* delta = a_H^2 . nu ^ a_H . a_L ^ a_L^2 */
+  simde__m256i delta = simde_mm256_xor_si256(simde_mm256_xor_si256(
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_mulnusq.m128i), aH),
+    mul_aHaL),
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_sqr.m128i), aL));
+
+  /* Negated-log inversion: log(x^-1) = log(x) XOR 0x0F in GF(2^4)* (order 15). */
+  simde__m256i neg_log_delta = simde_mm256_xor_si256(
+    simde_mm256_shuffle_epi8(logt, delta), simde_mm256_set1_epi8(0x0F));
+
+  /* iH = aH * delta^-1, reusing cached log_aH, zero mask checks aH only. */
+  idx = simde_mm256_add_epi8(log_aH, neg_log_delta);
+  ge = simde_mm256_cmpgt_epi8(idx, simde_mm256_set1_epi8(14));
+  idx = simde_mm256_sub_epi8(idx, simde_mm256_and_si256(ge, simde_mm256_set1_epi8(15)));
+  simde__m256i iH = simde_mm256_shuffle_epi8(expt, idx);
+  iH = simde_mm256_andnot_si256(z_aH, iH);
+
+  /* iL = (aH ^ aL) * delta^-1, zero mask checks (aH ^ aL) only. */
+  simde__m256i aHxaL = simde_mm256_xor_si256(aH, aL);
+  simde__m256i log_aHxaL = simde_mm256_shuffle_epi8(logt, aHxaL);
+  idx = simde_mm256_add_epi8(log_aHxaL, neg_log_delta);
+  ge = simde_mm256_cmpgt_epi8(idx, simde_mm256_set1_epi8(14));
+  idx = simde_mm256_sub_epi8(idx, simde_mm256_and_si256(ge, simde_mm256_set1_epi8(15)));
+  simde__m256i iL = simde_mm256_shuffle_epi8(expt, idx);
+  z = simde_mm256_cmpeq_epi8(aHxaL, zero);
+  iL = simde_mm256_andnot_si256(z, iL);
+
+  return simde_x_mm256_gf2p8_tower_join(iH, iL);
+}
+
+/* affineinv with constant M via the fused tower path, 256-bit. Mirrors the
+ * 128-bit version: tower inverse guts, then M applied to (iH, iL) directly
+ * through the compile-time fused tables (broadcast to both lanes). */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_gf2p8affineinv_tower_const (simde__m256i x, uint64_t M, int b) {
+  const simde__m256i zero = simde_mm256_setzero_si256();
+  const simde__m256i logt = simde_mm256_broadcastsi128_si256(simde_x_gf2p4_log.m128i);
+  const simde__m256i expt = simde_mm256_broadcastsi128_si256(simde_x_gf2p4_exp.m128i);
+  simde__m256i aL = simde_x_mm256_gf2p8_tower_lo(x);
+  simde__m256i aH = simde_x_mm256_gf2p8_tower_hi(x);
+
+  /* Inline delta multiply: compute log(aH), cache it and z_aH for later reuse. */
+  simde__m256i log_aH = simde_mm256_shuffle_epi8(logt, aH);
+  simde__m256i z_aH = simde_mm256_cmpeq_epi8(aH, zero);
+  simde__m256i log_aL = simde_mm256_shuffle_epi8(logt, aL);
+  simde__m256i idx = simde_mm256_add_epi8(log_aH, log_aL);
+  simde__m256i ge = simde_mm256_cmpgt_epi8(idx, simde_mm256_set1_epi8(14));
+  idx = simde_mm256_sub_epi8(idx, simde_mm256_and_si256(ge, simde_mm256_set1_epi8(15)));
+  simde__m256i mul_aHaL = simde_mm256_shuffle_epi8(expt, idx);
+  simde__m256i z = simde_mm256_or_si256(z_aH, simde_mm256_cmpeq_epi8(aL, zero));
+  mul_aHaL = simde_mm256_andnot_si256(z, mul_aHaL);
+
+  /* delta = a_H^2 . nu ^ a_H . a_L ^ a_L^2 */
+  simde__m256i delta = simde_mm256_xor_si256(simde_mm256_xor_si256(
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_mulnusq.m128i), aH),
+    mul_aHaL),
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_sqr.m128i), aL));
+
+  /* Negated-log inversion: log(x^-1) = log(x) XOR 0x0F in GF(2^4)* (order 15). */
+  simde__m256i neg_log_delta = simde_mm256_xor_si256(
+    simde_mm256_shuffle_epi8(logt, delta), simde_mm256_set1_epi8(0x0F));
+
+  /* iH = aH * delta^-1, reusing cached log_aH, zero mask checks aH only. */
+  idx = simde_mm256_add_epi8(log_aH, neg_log_delta);
+  ge = simde_mm256_cmpgt_epi8(idx, simde_mm256_set1_epi8(14));
+  idx = simde_mm256_sub_epi8(idx, simde_mm256_and_si256(ge, simde_mm256_set1_epi8(15)));
+  simde__m256i iH = simde_mm256_shuffle_epi8(expt, idx);
+  iH = simde_mm256_andnot_si256(z_aH, iH);
+
+  /* iL = (aH ^ aL) * delta^-1, zero mask checks (aH ^ aL) only. */
+  simde__m256i aHxaL = simde_mm256_xor_si256(aH, aL);
+  simde__m256i log_aHxaL = simde_mm256_shuffle_epi8(logt, aHxaL);
+  idx = simde_mm256_add_epi8(log_aHxaL, neg_log_delta);
+  ge = simde_mm256_cmpgt_epi8(idx, simde_mm256_set1_epi8(14));
+  idx = simde_mm256_sub_epi8(idx, simde_mm256_and_si256(ge, simde_mm256_set1_epi8(15)));
+  simde__m256i iL = simde_mm256_shuffle_epi8(expt, idx);
+  z = simde_mm256_cmpeq_epi8(aHxaL, zero);
+  iL = simde_mm256_andnot_si256(z, iL);
+
+  /* Fused output: apply M to (iH, iL) directly instead of tower_join then M. */
+  const simde__m256i fused_lo = simde_mm256_broadcastsi128_si256(simde_x_gf2p8_fused_tower_lo(M, HEDLEY_STATIC_CAST(uint8_t, b)));
+  const simde__m256i fused_hi = simde_mm256_broadcastsi128_si256(simde_x_gf2p8_fused_tower_hi(M));
+  return simde_mm256_xor_si256(simde_mm256_shuffle_epi8(fused_lo, iL),
+                               simde_mm256_shuffle_epi8(fused_hi, iH));
+}
+
+/* GF(2^8) multiply via the tower field (Karatsuba over GF(2^4)), 256-bit. */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m256i
+simde_x_mm256_gf2p8mul_tower (simde__m256i a, simde__m256i b) {
+  simde__m256i aL = simde_x_mm256_gf2p8_tower_lo(a), aH = simde_x_mm256_gf2p8_tower_hi(a);
+  simde__m256i bL = simde_x_mm256_gf2p8_tower_lo(b), bH = simde_x_mm256_gf2p8_tower_hi(b);
+  simde__m256i p = simde_x_mm256_gf2p4_mul(aL, bL);
+  simde__m256i q = simde_x_mm256_gf2p4_mul(aH, bH);
+  simde__m256i r = simde_x_mm256_gf2p4_mul(simde_mm256_xor_si256(aH, aL), simde_mm256_xor_si256(bH, bL));
+  simde__m256i oH = simde_mm256_xor_si256(r, p);
+  simde__m256i oL = simde_mm256_xor_si256(p,
+    simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p4_mulnu.m128i), q));
+  return simde_x_mm256_gf2p8_tower_join(oH, oL);
+}
+#endif /* SIMDE_X_GFNI_HAVE_SHUFFLE && SIMDE_X86_AVX2_NATIVE */
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
@@ -951,6 +1125,12 @@ simde_x_mm_gf2p8inverse_epi8 (simde__m128i x) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_x_mm256_gf2p8inverse_epi8 (simde__m256i x) {
+  #if !defined(SIMDE_X_GFNI_HAVE_AES) && defined(SIMDE_X_GFNI_HAVE_SHUFFLE) && defined(SIMDE_X86_AVX2_NATIVE)
+    /* Without AES the tower inverse runs at full ymm width. With AES the
+     * 128-bit AES-borrow path below stays cheaper (aesenclast is 128-bit
+     * anyway until a VAES path exists). */
+    return simde_x_mm256_gf2p8inverse_tower(x);
+  #else
     simde__m256i_private
       r_,
       x_ = simde__m256i_to_private(x);
@@ -963,6 +1143,7 @@ simde_x_mm256_gf2p8inverse_epi8 (simde__m256i x) {
     }
 
     return simde__m256i_from_private(r_);
+  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1158,10 +1339,14 @@ simde_mm256_gf2p8affineinv_epi64_epi8 (simde__m256i x, simde__m256i A, int b)
     if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) &&
         SIMDE_CHECK_CONSTANT_(cA_.u64[2]) && SIMDE_CHECK_CONSTANT_(cA_.u64[3]) && SIMDE_CHECK_CONSTANT_(b) &&
         (cA_.u64[0] == cA_.u64[1]) && (cA_.u64[0] == cA_.u64[2]) && (cA_.u64[0] == cA_.u64[3])) {
+    #if defined(SIMDE_X86_AVX2_NATIVE)
+      return simde_x_mm256_gf2p8affineinv_tower_const(x, cA_.u64[0], b);
+    #else
       simde__m256i_private r_, x_ = simde__m256i_to_private(x);
       r_.m128i[0] = simde_x_mm_gf2p8affineinv_tower_const(x_.m128i[0], cA_.u64[0], b);
       r_.m128i[1] = simde_x_mm_gf2p8affineinv_tower_const(x_.m128i[1], cA_.u64[0], b);
       return simde__m256i_from_private(r_);
+    #endif
     }
   #endif
   return simde_mm256_xor_si256(simde_x_mm256_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm256_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
@@ -1200,8 +1385,13 @@ simde_mm512_gf2p8affineinv_epi64_epi8 (simde__m512i x, simde__m512i A, int b)
         (cA_.u64[0] == cA_.u64[1]) && (cA_.u64[0] == cA_.u64[2]) && (cA_.u64[0] == cA_.u64[3]) &&
         (cA_.u64[0] == cA_.u64[4]) && (cA_.u64[0] == cA_.u64[5]) && (cA_.u64[0] == cA_.u64[6]) && (cA_.u64[0] == cA_.u64[7])) {
       simde__m512i_private r_, x_ = simde__m512i_to_private(x);
+    #if defined(SIMDE_X86_AVX2_NATIVE)
+      for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++)
+        r_.m256i[i] = simde_x_mm256_gf2p8affineinv_tower_const(x_.m256i[i], cA_.u64[0], b);
+    #else
       for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++)
         r_.m128i[i] = simde_x_mm_gf2p8affineinv_tower_const(x_.m128i[i], cA_.u64[0], b);
+    #endif
       return simde__m512i_from_private(r_);
     }
   #endif
@@ -1440,6 +1630,26 @@ simde_mm256_gf2p8mul_epi8 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_GFNI_NATIVE) && (defined(SIMDE_X86_AVX512VL_NATIVE) || (defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_X86_AVX512F_NATIVE)))
     return _mm256_gf2p8mul_epi8(a, b);
   #else
+  #if defined(SIMDE_CHECK_CONSTANT_) && defined(SIMDE_X_GFNI_HAVE_SHUFFLE) && defined(SIMDE_X86_AVX2_NATIVE)
+    {
+      /* Same constant-multiplier degeneration as the 128-bit version, kept at
+        * 256-bit width so the matrix multiply takes its ymm nibble path. */
+      simde__m256i_private simde_x_gfni_bc_ = simde__m256i_to_private(b);
+      if (SIMDE_CHECK_CONSTANT_(simde_x_gfni_bc_.u64[0]) &&
+          (simde_x_gfni_bc_.u64[0] == simde_x_gfni_bc_.u64[1]) &&
+          (simde_x_gfni_bc_.u64[0] == simde_x_gfni_bc_.u64[2]) &&
+          (simde_x_gfni_bc_.u64[0] == simde_x_gfni_bc_.u64[3]) &&
+          (simde_x_gfni_bc_.u64[0] == HEDLEY_STATIC_CAST(uint64_t, simde_x_gfni_bc_.u8[0]) * UINT64_C(0x0101010101010101))) {
+        if (simde_x_gfni_bc_.u8[0] == 0x00) return simde_mm256_setzero_si256();  /* a (x) 0 = 0 */
+        if (simde_x_gfni_bc_.u8[0] == 0x01) return a;                            /* a (x) 1 = a */
+        return simde_x_mm256_gf2p8matrix_multiply_epi64_epi8(a,
+          simde_mm256_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, simde_x_gf2p8_mul_matrix_lut[simde_x_gfni_bc_.u8[0]])));
+      }
+    }
+  #endif
+  #if defined(SIMDE_X_GFNI_HAVE_SHUFFLE) && defined(SIMDE_X86_AVX2_NATIVE)
+    return simde_x_mm256_gf2p8mul_tower(a, b);
+  #else
     simde__m256i_private
       r_,
       a_ = simde__m256i_to_private(a),
@@ -1453,6 +1663,7 @@ simde_mm256_gf2p8mul_epi8 (simde__m256i a, simde__m256i b) {
     }
 
     return simde__m256i_from_private(r_);
+  #endif
   #endif
 }
 #if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX_ENABLE_NATIVE_ALIASES)
@@ -1474,8 +1685,8 @@ simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
     #if !defined(__INTEL_COMPILER)
       SIMDE_VECTORIZE
     #endif
-    for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
-      r_.m128i[i] = simde_mm_gf2p8mul_epi8(a_.m128i[i], b_.m128i[i]);
+    for (size_t i = 0 ; i < (sizeof(r_.m256i) / sizeof(r_.m256i[0])) ; i++) {
+      r_.m256i[i] = simde_mm256_gf2p8mul_epi8(a_.m256i[i], b_.m256i[i]);
     }
 
     return simde__m512i_from_private(r_);
