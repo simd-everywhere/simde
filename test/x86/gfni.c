@@ -5070,6 +5070,30 @@ test_simde_mm_gf2p8mul_epi8(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm_gf2p8mul_epi8_const(SIMDE_MUNIT_TEST_ARGS) {
+  /* Multiplying by a compile-time-constant broadcast degenerates to an affine
+   * transform; check it matches the run-time (general) multiply. */
+  #define SIMDE_TEST_GFNI_MUL_CONST(K) \
+    do { \
+      volatile int vk_ = (K); \
+      simde__m128i rc = simde_mm_gf2p8mul_epi8(a, simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, (K)))); \
+      simde__m128i rr = simde_mm_gf2p8mul_epi8(a, simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, vk_))); \
+      simde_assert_m128i_i8(rc, ==, rr); \
+    } while (0)
+
+  for (int t = 0 ; t < 16 ; t++) {
+    simde__m128i a = simde_test_x86_random_i8x16();
+    SIMDE_TEST_GFNI_MUL_CONST(0x00); SIMDE_TEST_GFNI_MUL_CONST(0x01);
+    SIMDE_TEST_GFNI_MUL_CONST(0x02); SIMDE_TEST_GFNI_MUL_CONST(0x1b);
+    SIMDE_TEST_GFNI_MUL_CONST(0x53); SIMDE_TEST_GFNI_MUL_CONST(0x57);
+    SIMDE_TEST_GFNI_MUL_CONST(0x80); SIMDE_TEST_GFNI_MUL_CONST(0xff);
+  }
+
+  #undef SIMDE_TEST_GFNI_MUL_CONST
+  return 0;
+}
+
+static int
 test_simde_mm256_gf2p8mul_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
@@ -7437,6 +7461,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_gf2p8affineinv_epi64_epi8)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8mul_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8mul_epi8_const)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_gf2p8mul_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_gf2p8mul_epi8)
 

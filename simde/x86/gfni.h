@@ -117,6 +117,84 @@ static const union {
   }
 };
 
+/* GFNI matrix (qword) for "multiply by the GF(2^8) constant k": column j is
+ * k (x) 2^j. Lets a constant-operand GF(2^8) multiply degenerate to an affine
+ * transform (then to nibble decomposition). */
+/* Fully precomputed so that, for a compile-time-constant multiplier k, the
+ * matrix simde_x_gf2p8_mul_matrix_lut[k] folds to a literal (verified:
+ * __builtin_constant_p(lut[const]) is true). That lets the constant-operand
+ * GF(2^8) multiply collapse to matrix_multiply's compile-time nibble path
+ * (two shuffles at run time) instead of rebuilding the matrix per call.
+ * Generated for FGP 0x1B; entry k is the GF(2)-affine matrix of "multiply by k". */
+#if defined(SIMDE_CHECK_CONSTANT_) && defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
+static const uint64_t simde_x_gf2p8_mul_matrix_lut[256] = {
+    UINT64_C(0x0000000000000000),UINT64_C(0x0102040810204080),UINT64_C(0x8081028488102040),UINT64_C(0x8183068c983060c0),
+    UINT64_C(0x40c08142c4881020),UINT64_C(0x41c2854ad4a850a0),UINT64_C(0xc04183c64c983060),UINT64_C(0xc14387ce5cb870e0),
+    UINT64_C(0x2060c0a162c48810),UINT64_C(0x2162c4a972e4c890),UINT64_C(0xa0e1c225ead4a850),UINT64_C(0xa1e3c62dfaf4e8d0),
+    UINT64_C(0x60a041e3a64c9830),UINT64_C(0x61a245ebb66cd8b0),UINT64_C(0xe02143672e5cb870),UINT64_C(0xe123476f3e7cf8f0),
+    UINT64_C(0x103060d0b162c488),UINT64_C(0x113264d8a1428408),UINT64_C(0x90b162543972e4c8),UINT64_C(0x91b3665c2952a448),
+    UINT64_C(0x50f0e19275ead4a8),UINT64_C(0x51f2e59a65ca9428),UINT64_C(0xd071e316fdfaf4e8),UINT64_C(0xd173e71eeddab468),
+    UINT64_C(0x3050a071d3a64c98),UINT64_C(0x3152a479c3860c18),UINT64_C(0xb0d1a2f55bb66cd8),UINT64_C(0xb1d3a6fd4b962c58),
+    UINT64_C(0x70902133172e5cb8),UINT64_C(0x7192253b070e1c38),UINT64_C(0xf01123b79f3e7cf8),UINT64_C(0xf11327bf8f1e3c78),
+    UINT64_C(0x889830e858b162c4),UINT64_C(0x899a34e048912244),UINT64_C(0x0819326cd0a14284),UINT64_C(0x091b3664c0810204),
+    UINT64_C(0xc858b1aa9c3972e4),UINT64_C(0xc95ab5a28c193264),UINT64_C(0x48d9b32e142952a4),UINT64_C(0x49dbb72604091224),
+    UINT64_C(0xa8f8f0493a75ead4),UINT64_C(0xa9faf4412a55aa54),UINT64_C(0x2879f2cdb265ca94),UINT64_C(0x297bf6c5a2458a14),
+    UINT64_C(0xe838710bfefdfaf4),UINT64_C(0xe93a7503eeddba74),UINT64_C(0x68b9738f76eddab4),UINT64_C(0x69bb778766cd9a34),
+    UINT64_C(0x98a85038e9d3a64c),UINT64_C(0x99aa5430f9f3e6cc),UINT64_C(0x182952bc61c3860c),UINT64_C(0x192b56b471e3c68c),
+    UINT64_C(0xd868d17a2d5bb66c),UINT64_C(0xd96ad5723d7bf6ec),UINT64_C(0x58e9d3fea54b962c),UINT64_C(0x59ebd7f6b56bd6ac),
+    UINT64_C(0xb8c890998b172e5c),UINT64_C(0xb9ca94919b376edc),UINT64_C(0x3849921d03070e1c),UINT64_C(0x394b961513274e9c),
+    UINT64_C(0xf80811db4f9f3e7c),UINT64_C(0xf90a15d35fbf7efc),UINT64_C(0x7889135fc78f1e3c),UINT64_C(0x798b1757d7af5ebc),
+    UINT64_C(0xc44c98f42c58b162),UINT64_C(0xc54e9cfc3c78f1e2),UINT64_C(0x44cd9a70a4489122),UINT64_C(0x45cf9e78b468d1a2),
+    UINT64_C(0x848c19b6e8d0a142),UINT64_C(0x858e1dbef8f0e1c2),UINT64_C(0x040d1b3260c08102),UINT64_C(0x050f1f3a70e0c182),
+    UINT64_C(0xe42c58554e9c3972),UINT64_C(0xe52e5c5d5ebc79f2),UINT64_C(0x64ad5ad1c68c1932),UINT64_C(0x65af5ed9d6ac59b2),
+    UINT64_C(0xa4ecd9178a142952),UINT64_C(0xa5eedd1f9a3469d2),UINT64_C(0x246ddb9302040912),UINT64_C(0x256fdf9b12244992),
+    UINT64_C(0xd47cf8249d3a75ea),UINT64_C(0xd57efc2c8d1a356a),UINT64_C(0x54fdfaa0152a55aa),UINT64_C(0x55fffea8050a152a),
+    UINT64_C(0x94bc796659b265ca),UINT64_C(0x95be7d6e4992254a),UINT64_C(0x143d7be2d1a2458a),UINT64_C(0x153f7feac182050a),
+    UINT64_C(0xf41c3885fffefdfa),UINT64_C(0xf51e3c8defdebd7a),UINT64_C(0x749d3a0177eeddba),UINT64_C(0x759f3e0967ce9d3a),
+    UINT64_C(0xb4dcb9c73b76edda),UINT64_C(0xb5debdcf2b56ad5a),UINT64_C(0x345dbb43b366cd9a),UINT64_C(0x355fbf4ba3468d1a),
+    UINT64_C(0x4cd4a81c74e9d3a6),UINT64_C(0x4dd6ac1464c99326),UINT64_C(0xcc55aa98fcf9f3e6),UINT64_C(0xcd57ae90ecd9b366),
+    UINT64_C(0x0c14295eb061c386),UINT64_C(0x0d162d56a0418306),UINT64_C(0x8c952bda3871e3c6),UINT64_C(0x8d972fd22851a346),
+    UINT64_C(0x6cb468bd162d5bb6),UINT64_C(0x6db66cb5060d1b36),UINT64_C(0xec356a399e3d7bf6),UINT64_C(0xed376e318e1d3b76),
+    UINT64_C(0x2c74e9ffd2a54b96),UINT64_C(0x2d76edf7c2850b16),UINT64_C(0xacf5eb7b5ab56bd6),UINT64_C(0xadf7ef734a952b56),
+    UINT64_C(0x5ce4c8ccc58b172e),UINT64_C(0x5de6ccc4d5ab57ae),UINT64_C(0xdc65ca484d9b376e),UINT64_C(0xdd67ce405dbb77ee),
+    UINT64_C(0x1c24498e0103070e),UINT64_C(0x1d264d861123478e),UINT64_C(0x9ca54b0a8913274e),UINT64_C(0x9da74f02993367ce),
+    UINT64_C(0x7c84086da74f9f3e),UINT64_C(0x7d860c65b76fdfbe),UINT64_C(0xfc050ae92f5fbf7e),UINT64_C(0xfd070ee13f7ffffe),
+    UINT64_C(0x3c44892f63c78f1e),UINT64_C(0x3d468d2773e7cf9e),UINT64_C(0xbcc58babebd7af5e),UINT64_C(0xbdc78fa3fbf7efde),
+    UINT64_C(0x62a64cfa962c58b1),UINT64_C(0x63a448f2860c1831),UINT64_C(0xe2274e7e1e3c78f1),UINT64_C(0xe3254a760e1c3871),
+    UINT64_C(0x2266cdb852a44891),UINT64_C(0x2364c9b042840811),UINT64_C(0xa2e7cf3cdab468d1),UINT64_C(0xa3e5cb34ca942851),
+    UINT64_C(0x42c68c5bf4e8d0a1),UINT64_C(0x43c48853e4c89021),UINT64_C(0xc2478edf7cf8f0e1),UINT64_C(0xc3458ad76cd8b061),
+    UINT64_C(0x02060d193060c081),UINT64_C(0x0304091120408001),UINT64_C(0x82870f9db870e0c1),UINT64_C(0x83850b95a850a041),
+    UINT64_C(0x72962c2a274e9c39),UINT64_C(0x73942822376edcb9),UINT64_C(0xf2172eaeaf5ebc79),UINT64_C(0xf3152aa6bf7efcf9),
+    UINT64_C(0x3256ad68e3c68c19),UINT64_C(0x3354a960f3e6cc99),UINT64_C(0xb2d7afec6bd6ac59),UINT64_C(0xb3d5abe47bf6ecd9),
+    UINT64_C(0x52f6ec8b458a1429),UINT64_C(0x53f4e88355aa54a9),UINT64_C(0xd277ee0fcd9a3469),UINT64_C(0xd375ea07ddba74e9),
+    UINT64_C(0x12366dc981020409),UINT64_C(0x133469c191224489),UINT64_C(0x92b76f4d09122449),UINT64_C(0x93b56b45193264c9),
+    UINT64_C(0xea3e7c12ce9d3a75),UINT64_C(0xeb3c781adebd7af5),UINT64_C(0x6abf7e96468d1a35),UINT64_C(0x6bbd7a9e56ad5ab5),
+    UINT64_C(0xaafefd500a152a55),UINT64_C(0xabfcf9581a356ad5),UINT64_C(0x2a7fffd482050a15),UINT64_C(0x2b7dfbdc92254a95),
+    UINT64_C(0xca5ebcb3ac59b265),UINT64_C(0xcb5cb8bbbc79f2e5),UINT64_C(0x4adfbe3724499225),UINT64_C(0x4bddba3f3469d2a5),
+    UINT64_C(0x8a9e3df168d1a245),UINT64_C(0x8b9c39f978f1e2c5),UINT64_C(0x0a1f3f75e0c18205),UINT64_C(0x0b1d3b7df0e1c285),
+    UINT64_C(0xfa0e1cc27ffffefd),UINT64_C(0xfb0c18ca6fdfbe7d),UINT64_C(0x7a8f1e46f7efdebd),UINT64_C(0x7b8d1a4ee7cf9e3d),
+    UINT64_C(0xbace9d80bb77eedd),UINT64_C(0xbbcc9988ab57ae5d),UINT64_C(0x3a4f9f043367ce9d),UINT64_C(0x3b4d9b0c23478e1d),
+    UINT64_C(0xda6edc631d3b76ed),UINT64_C(0xdb6cd86b0d1b366d),UINT64_C(0x5aefdee7952b56ad),UINT64_C(0x5beddaef850b162d),
+    UINT64_C(0x9aae5d21d9b366cd),UINT64_C(0x9bac5929c993264d),UINT64_C(0x1a2f5fa551a3468d),UINT64_C(0x1b2d5bad4183060d),
+    UINT64_C(0xa6ead40eba74e9d3),UINT64_C(0xa7e8d006aa54a953),UINT64_C(0x266bd68a3264c993),UINT64_C(0x2769d28222448913),
+    UINT64_C(0xe62a554c7efcf9f3),UINT64_C(0xe72851446edcb973),UINT64_C(0x66ab57c8f6ecd9b3),UINT64_C(0x67a953c0e6cc9933),
+    UINT64_C(0x868a14afd8b061c3),UINT64_C(0x878810a7c8902143),UINT64_C(0x060b162b50a04183),UINT64_C(0x0709122340800103),
+    UINT64_C(0xc64a95ed1c3871e3),UINT64_C(0xc74891e50c183163),UINT64_C(0x46cb9769942851a3),UINT64_C(0x47c9936184081123),
+    UINT64_C(0xb6dab4de0b162d5b),UINT64_C(0xb7d8b0d61b366ddb),UINT64_C(0x365bb65a83060d1b),UINT64_C(0x3759b25293264d9b),
+    UINT64_C(0xf61a359ccf9e3d7b),UINT64_C(0xf7183194dfbe7dfb),UINT64_C(0x769b3718478e1d3b),UINT64_C(0x7799331057ae5dbb),
+    UINT64_C(0x96ba747f69d2a54b),UINT64_C(0x97b8707779f2e5cb),UINT64_C(0x163b76fbe1c2850b),UINT64_C(0x173972f3f1e2c58b),
+    UINT64_C(0xd67af53dad5ab56b),UINT64_C(0xd778f135bd7af5eb),UINT64_C(0x56fbf7b9254a952b),UINT64_C(0x57f9f3b1356ad5ab),
+    UINT64_C(0x2e72e4e6e2c58b17),UINT64_C(0x2f70e0eef2e5cb97),UINT64_C(0xaef3e6626ad5ab57),UINT64_C(0xaff1e26a7af5ebd7),
+    UINT64_C(0x6eb265a4264d9b37),UINT64_C(0x6fb061ac366ddbb7),UINT64_C(0xee336720ae5dbb77),UINT64_C(0xef316328be7dfbf7),
+    UINT64_C(0x0e12244780010307),UINT64_C(0x0f10204f90214387),UINT64_C(0x8e9326c308112347),UINT64_C(0x8f9122cb183163c7),
+    UINT64_C(0x4ed2a50544891327),UINT64_C(0x4fd0a10d54a953a7),UINT64_C(0xce53a781cc993367),UINT64_C(0xcf51a389dcb973e7),
+    UINT64_C(0x3e42843653a74f9f),UINT64_C(0x3f40803e43870f1f),UINT64_C(0xbec386b2dbb76fdf),UINT64_C(0xbfc182bacb972f5f),
+    UINT64_C(0x7e820574972f5fbf),UINT64_C(0x7f80017c870f1f3f),UINT64_C(0xfe0307f01f3f7fff),UINT64_C(0xff0103f80f1f3f7f),
+    UINT64_C(0x1e2244973163c78f),UINT64_C(0x1f20409f2143870f),UINT64_C(0x9ea34613b973e7cf),UINT64_C(0x9fa1421ba953a74f),
+    UINT64_C(0x5ee2c5d5f5ebd7af),UINT64_C(0x5fe0c1dde5cb972f),UINT64_C(0xde63c7517dfbf7ef),UINT64_C(0xdf61c3596ddbb76f)
+};
+#endif /* SIMDE_CHECK_CONSTANT_ && SIMDE_X_GFNI_HAVE_SHUFFLE */
+
 /* Apply one GF(2) affine matrix row-set (a GFNI qword, no constant) to a single
  * byte. Identical to the scalar reference in the matrix-multiply fallback, so
  * it can generate the nibble tables for a compile-time-constant matrix. */
@@ -904,7 +982,26 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
   #if defined(SIMDE_X86_GFNI_NATIVE) && (defined(SIMDE_X86_AVX512VL_NATIVE) || !defined(SIMDE_X86_AVX512F_NATIVE))
     return _mm_gf2p8mul_epi8(a, b);
-  #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+  #else
+    #if defined(SIMDE_CHECK_CONSTANT_) && defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
+      {
+        /* If b is a compile-time constant broadcast of a single byte, multiplying
+        * by it is a GF(2) affine transform, so it degenerates to a matrix
+        * multiply (which itself uses the nibble path).
+        * Gated on SIMDE_X_GFNI_HAVE_SHUFFLE: without a byte-shuffle the matrix
+        * multiply falls back to a movemask loop that is slower than the
+        * schoolbook GF multiply below. */
+        simde__m128i_private simde_x_gfni_bc_ = simde__m128i_to_private(b);
+        if (SIMDE_CHECK_CONSTANT_(simde_x_gfni_bc_.u64[0]) && (simde_x_gfni_bc_.u64[0] == simde_x_gfni_bc_.u64[1]) &&
+            (simde_x_gfni_bc_.u64[0] == HEDLEY_STATIC_CAST(uint64_t, simde_x_gfni_bc_.u8[0]) * UINT64_C(0x0101010101010101))) {
+          if (simde_x_gfni_bc_.u8[0] == 0x00) return simde_mm_setzero_si128();  /* a (x) 0 = 0 */
+          if (simde_x_gfni_bc_.u8[0] == 0x01) return a;                         /* a (x) 1 = a */
+          return simde_x_mm_gf2p8matrix_multiply_epi64_epi8(a,
+            simde_mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, simde_x_gf2p8_mul_matrix_lut[simde_x_gfni_bc_.u8[0]])));
+        }
+      }
+    #endif
+    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     const poly8x16_t pa = vreinterpretq_p8_u8(simde__m128i_to_neon_u8(a));
     const poly8x16_t pb = vreinterpretq_p8_u8(simde__m128i_to_neon_u8(b));
     const uint8x16_t lo = vreinterpretq_u8_p16(vmull_p8(vget_low_p8(pa), vget_low_p8(pb)));
@@ -1177,6 +1274,7 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
     }
 
     return simde__m128i_from_private(r_);
+  #endif
   #endif
 }
 #if defined(SIMDE_X86_GFNI_ENABLE_NATIVE_ALIASES) || defined(SIMDE_X86_AVX512VL_ENABLE_NATIVE_ALIASES)
