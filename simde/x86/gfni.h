@@ -954,28 +954,6 @@ simde_x_mm_gf2p8inverse_epi8 (simde__m128i x) {
   #elif defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
     return simde_x_mm_gf2p8inverse_tower(x);
   #else
-  #if defined(SIMDE_X86_SSE4_1_NATIVE)
-    /* N.B. CM: this fallback may not be faster */
-    simde__m128i r, u, t, test;
-    const simde__m128i sixteens = simde_mm_set1_epi8(16);
-    const simde__m128i masked_x = simde_mm_and_si128(x, simde_mm_set1_epi8(0x0F));
-
-    test = simde_mm_set1_epi8(INT8_MIN /* 0x80 */);
-    x = simde_mm_xor_si128(x, test);
-    r = simde_mm_shuffle_epi8(simde_x_gf2p8inverse_lut.m128i[0], masked_x);
-
-    #if !defined(__INTEL_COMPILER)
-      SIMDE_VECTORIZE
-    #endif
-    for (int i = 1 ; i < 16 ; i++) {
-      t = simde_mm_shuffle_epi8(simde_x_gf2p8inverse_lut.m128i[i], masked_x);
-      test = simde_mm_add_epi8(test, sixteens);
-      u = simde_mm_cmplt_epi8(x, test);
-      r = simde_mm_blendv_epi8(t, r, u);
-    }
-
-    return r;
-  #else
     simde__m128i_private
       r_,
       x_ = simde__m128i_to_private(x);
@@ -989,34 +967,11 @@ simde_x_mm_gf2p8inverse_epi8 (simde__m128i x) {
 
     return simde__m128i_from_private(r_);
   #endif
-  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_x_mm256_gf2p8inverse_epi8 (simde__m256i x) {
-  #if defined(SIMDE_X86_AVX2_NATIVE)
-    /* N.B. CM: this fallback may not be faster */
-    simde__m256i r, u, t, test;
-    const simde__m256i sixteens = simde_mm256_set1_epi8(16);
-    const simde__m256i masked_x = simde_mm256_and_si256(x, simde_mm256_set1_epi8(0x0F));
-
-    test = simde_mm256_set1_epi8(INT8_MIN /* 0x80 */);
-    x = simde_mm256_xor_si256(x, test);
-    r = simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p8inverse_lut.m128i[0]), masked_x);
-
-    #if !defined(__INTEL_COMPILER)
-      SIMDE_VECTORIZE
-    #endif
-    for (int i = 1 ; i < 16 ; i++) {
-      t = simde_mm256_shuffle_epi8(simde_mm256_broadcastsi128_si256(simde_x_gf2p8inverse_lut.m128i[i]), masked_x);
-      test = simde_mm256_add_epi8(test, sixteens);
-      u = simde_mm256_cmpgt_epi8(test, x);
-      r = simde_mm256_blendv_epi8(t, r, u);
-    }
-
-    return r;
-  #else
     simde__m256i_private
       r_,
       x_ = simde__m256i_to_private(x);
@@ -1029,33 +984,11 @@ simde_x_mm256_gf2p8inverse_epi8 (simde__m256i x) {
     }
 
     return simde__m256i_from_private(r_);
-  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_x_mm512_gf2p8inverse_epi8 (simde__m512i x) {
-  /* N.B. CM: TODO: later add VBMI version using just two _mm512_permutex2var_epi8 and friends */
-  /* But except for Cannon Lake all processors with VBMI also have GFNI */
-  #if defined(SIMDE_X86_AVX512BW_NATIVE)
-    /* N.B. CM: this fallback may not be faster */
-    simde__m512i r, test;
-    const simde__m512i sixteens = simde_mm512_set1_epi8(16);
-    const simde__m512i masked_x = simde_mm512_and_si512(x, simde_mm512_set1_epi8(0x0F));
-
-    r = simde_mm512_shuffle_epi8(simde_mm512_broadcast_i32x4(simde_x_gf2p8inverse_lut.m128i[0]), masked_x);
-    test = sixteens;
-
-    #if !defined(__INTEL_COMPILER)
-      SIMDE_VECTORIZE
-    #endif
-    for (int i = 1 ; i < 16 ; i++) {
-      r = simde_mm512_mask_shuffle_epi8(r, simde_mm512_cmpge_epu8_mask(x, test), simde_mm512_broadcast_i32x4(simde_x_gf2p8inverse_lut.m128i[i]), masked_x);
-      test = simde_mm512_add_epi8(test, sixteens);
-    }
-
-    return r;
-  #else
     simde__m512i_private
       r_,
       x_ = simde__m512i_to_private(x);
@@ -1068,7 +1001,6 @@ simde_x_mm512_gf2p8inverse_epi8 (simde__m512i x) {
     }
 
     return simde__m512i_from_private(r_);
-  #endif
 }
 
 #define simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8(x, A) simde_x_mm_gf2p8matrix_multiply_epi64_epi8(simde_x_mm_gf2p8inverse_epi8(x), A)
