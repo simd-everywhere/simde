@@ -252,6 +252,65 @@ static const union { uint8_t u8[16]; simde__m128i m128i; } simde_x_gf2p8_inv_thi
   0x00, 0xa4, 0x49, 0xed, 0x92, 0x36, 0xdb, 0x7f, 0x25, 0x81, 0x6c, 0xc8, 0xb7, 0x13, 0xfe, 0x5a } };
 #endif /* SIMDE_X_GFNI_HAVE_AES */
 
+#if defined(SIMDE_X_GFNI_HAVE_AES)
+/* GFNI qwords (SIMDe convention) for the AES affine matrix and its inverse. */
+#define SIMDE_X_GFNI_AAES_FWD UINT64_C(0xF1E3C78F1F3E7CF8)
+#define SIMDE_X_GFNI_AAES_INV UINT64_C(0xA44992254A942952)
+
+/* Apply M' = M . A_aes^-1 to one byte (composition of two GFNI matrices). */
+SIMDE_FUNCTION_ATTRIBUTES
+uint8_t
+simde_x_gf2p8_apply_mprime (uint64_t M, uint8_t v) {
+  return simde_x_gf2p8_apply_matrix_byte(M, simde_x_gf2p8_apply_matrix_byte(SIMDE_X_GFNI_AAES_INV, v));
+}
+
+/* Fused-affineinv nibble tables: result = M'_lo_c'[s&0xF] ^ M'_hi[s>>4] where
+ * s = SubBytes(x), M' = M . A_aes^-1, c' = M'.0x63 ^ c folded into the low table.
+ * Gives M.inv(x) ^ c directly. Fold to constants when M, c are compile-time. */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_gf2p8_affineinv_nibble_lo (uint64_t M, uint8_t c) {
+  uint8_t cp = HEDLEY_STATIC_CAST(uint8_t, simde_x_gf2p8_apply_mprime(M, 0x63) ^ c);
+  #define SIMDE_X_GFNI_IROW(n) HEDLEY_STATIC_CAST(int8_t, simde_x_gf2p8_apply_mprime(M, HEDLEY_STATIC_CAST(uint8_t, (n))) ^ cp)
+  simde__m128i r = simde_mm_set_epi8(
+    SIMDE_X_GFNI_IROW(15), SIMDE_X_GFNI_IROW(14), SIMDE_X_GFNI_IROW(13), SIMDE_X_GFNI_IROW(12),
+    SIMDE_X_GFNI_IROW(11), SIMDE_X_GFNI_IROW(10), SIMDE_X_GFNI_IROW( 9), SIMDE_X_GFNI_IROW( 8),
+    SIMDE_X_GFNI_IROW( 7), SIMDE_X_GFNI_IROW( 6), SIMDE_X_GFNI_IROW( 5), SIMDE_X_GFNI_IROW( 4),
+    SIMDE_X_GFNI_IROW( 3), SIMDE_X_GFNI_IROW( 2), SIMDE_X_GFNI_IROW( 1), SIMDE_X_GFNI_IROW( 0));
+  #undef SIMDE_X_GFNI_IROW
+  return r;
+}
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_gf2p8_affineinv_nibble_hi (uint64_t M) {
+  #define SIMDE_X_GFNI_IROW(n) HEDLEY_STATIC_CAST(int8_t, simde_x_gf2p8_apply_mprime(M, HEDLEY_STATIC_CAST(uint8_t, (n) << 4)))
+  simde__m128i r = simde_mm_set_epi8(
+    SIMDE_X_GFNI_IROW(15), SIMDE_X_GFNI_IROW(14), SIMDE_X_GFNI_IROW(13), SIMDE_X_GFNI_IROW(12),
+    SIMDE_X_GFNI_IROW(11), SIMDE_X_GFNI_IROW(10), SIMDE_X_GFNI_IROW( 9), SIMDE_X_GFNI_IROW( 8),
+    SIMDE_X_GFNI_IROW( 7), SIMDE_X_GFNI_IROW( 6), SIMDE_X_GFNI_IROW( 5), SIMDE_X_GFNI_IROW( 4),
+    SIMDE_X_GFNI_IROW( 3), SIMDE_X_GFNI_IROW( 2), SIMDE_X_GFNI_IROW( 1), SIMDE_X_GFNI_IROW( 0));
+  #undef SIMDE_X_GFNI_IROW
+  return r;
+}
+
+/* affineinv with a compile-time-constant matrix M and constant c, via the AES
+ * S-box. M=A_aes & c=0x63 collapses to plain SubBytes (2 instructions). */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_gf2p8affineinv_const (simde__m128i x, uint64_t M, int b) {
+  simde__m128i s = simde_mm_shuffle_epi8(simde_mm_aesenclast_si128(x, simde_mm_setzero_si128()), simde_x_gf2p8_inv_undo_sr.m128i);
+  if ((M == SIMDE_X_GFNI_AAES_FWD) && (b == 0x63))
+    return s;
+  {
+    const simde__m128i mlo = simde_x_gf2p8_affineinv_nibble_lo(M, HEDLEY_STATIC_CAST(uint8_t, b));
+    const simde__m128i mhi = simde_x_gf2p8_affineinv_nibble_hi(M);
+    const simde__m128i nmask = simde_mm_set1_epi8(0x0F);
+    return simde_mm_xor_si128(simde_mm_shuffle_epi8(mlo, simde_mm_and_si128(s, nmask)),
+                              simde_mm_shuffle_epi8(mhi, simde_mm_and_si128(simde_mm_srli_epi16(s, 4), nmask)));
+  }
+}
+#endif /* SIMDE_X_GFNI_HAVE_AES */
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
@@ -907,6 +966,14 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_gf2p8affineinv_epi64_epi8 (simde__m128i x, simde__m128i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
+  #if defined(SIMDE_X_GFNI_HAVE_AES) && defined(SIMDE_CHECK_CONSTANT_)
+    /* constant matrix: fuse M into the post-AES nibble tables (one AES + nibble);
+     * M=A_aes & c=0x63 collapses to plain SubBytes. */
+    simde__m128i_private cA_ = simde__m128i_to_private(A);
+    if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) && (cA_.u64[0] == cA_.u64[1]) && SIMDE_CHECK_CONSTANT_(b)) {
+      return simde_x_mm_gf2p8affineinv_const(x, cA_.u64[0], b);
+    }
+  #endif
   return simde_mm_xor_si128(simde_x_mm_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE)
@@ -921,6 +988,17 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_gf2p8affineinv_epi64_epi8 (simde__m256i x, simde__m256i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
+  #if defined(SIMDE_X_GFNI_HAVE_AES) && defined(SIMDE_CHECK_CONSTANT_)
+    simde__m256i_private cA_ = simde__m256i_to_private(A);
+    if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) &&
+        SIMDE_CHECK_CONSTANT_(cA_.u64[2]) && SIMDE_CHECK_CONSTANT_(cA_.u64[3]) && SIMDE_CHECK_CONSTANT_(b) &&
+        (cA_.u64[0] == cA_.u64[1]) && (cA_.u64[0] == cA_.u64[2]) && (cA_.u64[0] == cA_.u64[3])) {
+      simde__m256i_private r_, x_ = simde__m256i_to_private(x);
+      r_.m128i[0] = simde_x_mm_gf2p8affineinv_const(x_.m128i[0], cA_.u64[0], b);
+      r_.m128i[1] = simde_x_mm_gf2p8affineinv_const(x_.m128i[1], cA_.u64[0], b);
+      return simde__m256i_from_private(r_);
+    }
+  #endif
   return simde_mm256_xor_si256(simde_x_mm256_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm256_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
@@ -935,6 +1013,20 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_mm512_gf2p8affineinv_epi64_epi8 (simde__m512i x, simde__m512i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
+  #if defined(SIMDE_X_GFNI_HAVE_AES) && defined(SIMDE_CHECK_CONSTANT_)
+    simde__m512i_private cA_ = simde__m512i_to_private(A);
+    if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) &&
+        SIMDE_CHECK_CONSTANT_(cA_.u64[2]) && SIMDE_CHECK_CONSTANT_(cA_.u64[3]) &&
+        SIMDE_CHECK_CONSTANT_(cA_.u64[4]) && SIMDE_CHECK_CONSTANT_(cA_.u64[5]) &&
+        SIMDE_CHECK_CONSTANT_(cA_.u64[6]) && SIMDE_CHECK_CONSTANT_(cA_.u64[7]) && SIMDE_CHECK_CONSTANT_(b) &&
+        (cA_.u64[0] == cA_.u64[1]) && (cA_.u64[0] == cA_.u64[2]) && (cA_.u64[0] == cA_.u64[3]) &&
+        (cA_.u64[0] == cA_.u64[4]) && (cA_.u64[0] == cA_.u64[5]) && (cA_.u64[0] == cA_.u64[6]) && (cA_.u64[0] == cA_.u64[7])) {
+      simde__m512i_private r_, x_ = simde__m512i_to_private(x);
+      for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++)
+        r_.m128i[i] = simde_x_mm_gf2p8affineinv_const(x_.m128i[i], cA_.u64[0], b);
+      return simde__m512i_from_private(r_);
+    }
+  #endif
   return simde_mm512_xor_si512(simde_x_mm512_gf2p8matrix_multiply_inverse_epi64_epi8(x, A), simde_mm512_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)

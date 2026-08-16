@@ -2620,6 +2620,31 @@ test_simde_mm_gf2p8affineinv_epi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm_gf2p8affineinv_epi64_epi8_const(SIMDE_MUNIT_TEST_ARGS) {
+  /* Exercises the compile-time-constant-matrix AES-fused affineinv path
+   * (incl. M=A_aes,c=0x63 -> SubBytes) vs the run-time (general) path. */
+  #define SIMDE_TEST_GFNI_AINV_CONST(Q, C) \
+    do { \
+      volatile int64_t vm_ = HEDLEY_STATIC_CAST(int64_t, UINT64_C(Q)); \
+      simde__m128i rc = simde_mm_gf2p8affineinv_epi64_epi8(x, simde_mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, UINT64_C(Q))), INT8_C(C)); \
+      simde__m128i rr = simde_mm_gf2p8affineinv_epi64_epi8(x, simde_mm_set1_epi64x(vm_), INT8_C(C)); \
+      simde_assert_m128i_i8(rc, ==, rr); \
+    } while (0)
+
+  for (int t = 0 ; t < 16 ; t++) {
+    simde__m128i x = simde_test_x86_random_i8x16();
+    SIMDE_TEST_GFNI_AINV_CONST(0xF1E3C78F1F3E7CF8, 0x63); /* AES S-box */
+    SIMDE_TEST_GFNI_AINV_CONST(0xF1E3C78F1F3E7CF8, 0x11); /* M=A_aes, c!=0x63 */
+    SIMDE_TEST_GFNI_AINV_CONST(0x0102040810204080, 0x00); /* identity -> inverse */
+    SIMDE_TEST_GFNI_AINV_CONST(0x123456789ABCDEF0, 0x37);
+    SIMDE_TEST_GFNI_AINV_CONST(0xFFFFFFFFFFFFFFFF, 0x5A);
+  }
+
+  #undef SIMDE_TEST_GFNI_AINV_CONST
+  return 0;
+}
+
+static int
 test_simde_mm256_gf2p8affineinv_epi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i x;
@@ -7449,6 +7474,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_gf2p8affine_epi64_epi8)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8affineinv_epi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8affineinv_epi64_epi8_const)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_gf2p8affineinv_epi64_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_gf2p8affineinv_epi64_epi8)
 
