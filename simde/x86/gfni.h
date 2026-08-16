@@ -117,9 +117,67 @@ static const union {
   }
 };
 
+/* Apply one GF(2) affine matrix row-set (a GFNI qword, no constant) to a single
+ * byte. Identical to the scalar reference in the matrix-multiply fallback, so
+ * it can generate the nibble tables for a compile-time-constant matrix. */
+SIMDE_FUNCTION_ATTRIBUTES
+uint8_t
+simde_x_gf2p8_apply_matrix_byte (uint64_t A, uint8_t v) {
+  const uint64_t ones = UINT64_C(0x0101010101010101);
+  const uint64_t mask = UINT64_C(0x0102040810204080);
+  uint64_t q = simde_endian_bswap64_le(A);
+  q &= HEDLEY_STATIC_CAST(uint64_t, v) * ones;
+  q ^= q >> 4; q ^= q >> 2; q ^= q >> 1;
+  q &= ones; q *= 255; q &= mask;
+  q |= q >> 32; q |= q >> 16; q |= q >> 8;
+  return HEDLEY_STATIC_CAST(uint8_t, q);
+}
+
+/* Per-nibble tables for a (compile-time-constant) GF(2) affine matrix M.
+ * M.x == shuffle(lo_table, x & 0xF) ^ shuffle(hi_table, x >> 4). When M is a
+ * constant these fold to constant vectors at compile time. */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_gf2p8_matrix_nibble_lo (uint64_t M) {
+  #define SIMDE_X_GFNI_MROW(n) HEDLEY_STATIC_CAST(int8_t, simde_x_gf2p8_apply_matrix_byte(M, HEDLEY_STATIC_CAST(uint8_t, (n))))
+  simde__m128i r = simde_mm_set_epi8(
+    SIMDE_X_GFNI_MROW(15), SIMDE_X_GFNI_MROW(14), SIMDE_X_GFNI_MROW(13), SIMDE_X_GFNI_MROW(12),
+    SIMDE_X_GFNI_MROW(11), SIMDE_X_GFNI_MROW(10), SIMDE_X_GFNI_MROW( 9), SIMDE_X_GFNI_MROW( 8),
+    SIMDE_X_GFNI_MROW( 7), SIMDE_X_GFNI_MROW( 6), SIMDE_X_GFNI_MROW( 5), SIMDE_X_GFNI_MROW( 4),
+    SIMDE_X_GFNI_MROW( 3), SIMDE_X_GFNI_MROW( 2), SIMDE_X_GFNI_MROW( 1), SIMDE_X_GFNI_MROW( 0));
+  #undef SIMDE_X_GFNI_MROW
+  return r;
+}
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_gf2p8_matrix_nibble_hi (uint64_t M) {
+  #define SIMDE_X_GFNI_MROW(n) HEDLEY_STATIC_CAST(int8_t, simde_x_gf2p8_apply_matrix_byte(M, HEDLEY_STATIC_CAST(uint8_t, (n) << 4)))
+  simde__m128i r = simde_mm_set_epi8(
+    SIMDE_X_GFNI_MROW(15), SIMDE_X_GFNI_MROW(14), SIMDE_X_GFNI_MROW(13), SIMDE_X_GFNI_MROW(12),
+    SIMDE_X_GFNI_MROW(11), SIMDE_X_GFNI_MROW(10), SIMDE_X_GFNI_MROW( 9), SIMDE_X_GFNI_MROW( 8),
+    SIMDE_X_GFNI_MROW( 7), SIMDE_X_GFNI_MROW( 6), SIMDE_X_GFNI_MROW( 5), SIMDE_X_GFNI_MROW( 4),
+    SIMDE_X_GFNI_MROW( 3), SIMDE_X_GFNI_MROW( 2), SIMDE_X_GFNI_MROW( 1), SIMDE_X_GFNI_MROW( 0));
+  #undef SIMDE_X_GFNI_MROW
+  return r;
+}
+
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
+  #if defined(SIMDE_CHECK_CONSTANT_) && defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
+    /* If the matrix is a compile-time constant (the same for both 64-bit
+     * lanes) we can resolve M.x as M_lo[x & 0xF] ^ M_hi[x >> 4] with two byte
+     * shuffles; the per-nibble tables fold to constants at compile time. */
+    simde__m128i_private cA_ = simde__m128i_to_private(A);
+    if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) && (cA_.u64[0] == cA_.u64[1])) {
+      const simde__m128i mlo = simde_x_gf2p8_matrix_nibble_lo(cA_.u64[0]);
+      const simde__m128i mhi = simde_x_gf2p8_matrix_nibble_hi(cA_.u64[0]);
+      const simde__m128i nmask = simde_mm_set1_epi8(0x0F);
+      const simde__m128i lo = simde_mm_and_si128(x, nmask);
+      const simde__m128i hi = simde_mm_and_si128(simde_mm_srli_epi16(x, 4), nmask);
+      return simde_mm_xor_si128(simde_mm_shuffle_epi8(mlo, lo), simde_mm_shuffle_epi8(mhi, hi));
+    }
+  #endif
   #if defined(SIMDE_X86_SSSE3_NATIVE)
     const __m128i byte_select = _mm_setr_epi8(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1);
     const __m128i zero = _mm_setzero_si128();
@@ -403,6 +461,19 @@ simde_x_mm_gf2p8matrix_multiply_epi64_epi8 (simde__m128i x, simde__m128i A) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_x_mm256_gf2p8matrix_multiply_epi64_epi8 (simde__m256i x, simde__m256i A) {
+  #if defined(SIMDE_CHECK_CONSTANT_) && defined(SIMDE_X86_AVX2_NATIVE)
+    simde__m256i_private cA_ = simde__m256i_to_private(A);
+    if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) &&
+        SIMDE_CHECK_CONSTANT_(cA_.u64[2]) && SIMDE_CHECK_CONSTANT_(cA_.u64[3]) &&
+        (cA_.u64[0] == cA_.u64[1]) && (cA_.u64[0] == cA_.u64[2]) && (cA_.u64[0] == cA_.u64[3])) {
+      const simde__m256i mlo = simde_mm256_broadcastsi128_si256(simde_x_gf2p8_matrix_nibble_lo(cA_.u64[0]));
+      const simde__m256i mhi = simde_mm256_broadcastsi128_si256(simde_x_gf2p8_matrix_nibble_hi(cA_.u64[0]));
+      const simde__m256i nmask = simde_mm256_set1_epi8(0x0F);
+      const simde__m256i lo = simde_mm256_and_si256(x, nmask);
+      const simde__m256i hi = simde_mm256_and_si256(simde_mm256_srli_epi16(x, 4), nmask);
+      return simde_mm256_xor_si256(simde_mm256_shuffle_epi8(mlo, lo), simde_mm256_shuffle_epi8(mhi, hi));
+    }
+  #endif
   #if defined(SIMDE_X86_AVX2_NATIVE)
     simde__m256i r, a, p;
     const simde__m256i byte_select = simde_x_mm256_set_epu64x(UINT64_C(0x0303030303030303), UINT64_C(0x0202020202020202),
