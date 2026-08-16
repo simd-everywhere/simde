@@ -677,6 +677,17 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m128i
 simde_mm_gf2p8affine_epi64_epi8 (simde__m128i x, simde__m128i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
+  #if defined(SIMDE_CHECK_CONSTANT_) && defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
+    /* constant matrix: nibble decomposition with c folded into the low table. */
+    simde__m128i_private cA_ = simde__m128i_to_private(A);
+    if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) && (cA_.u64[0] == cA_.u64[1])) {
+      const simde__m128i mlo = simde_mm_xor_si128(simde_x_gf2p8_matrix_nibble_lo(cA_.u64[0]), simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
+      const simde__m128i mhi = simde_x_gf2p8_matrix_nibble_hi(cA_.u64[0]);
+      const simde__m128i nmask = simde_mm_set1_epi8(0x0F);
+      return simde_mm_xor_si128(simde_mm_shuffle_epi8(mlo, simde_mm_and_si128(x, nmask)),
+                                simde_mm_shuffle_epi8(mhi, simde_mm_and_si128(simde_mm_srli_epi16(x, 4), nmask)));
+    }
+  #endif
   return simde_mm_xor_si128(simde_x_mm_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE)
@@ -691,6 +702,18 @@ SIMDE_FUNCTION_ATTRIBUTES
 simde__m256i
 simde_mm256_gf2p8affine_epi64_epi8 (simde__m256i x, simde__m256i A, int b)
     SIMDE_REQUIRE_CONSTANT_RANGE(b, 0, 255) {
+  #if defined(SIMDE_CHECK_CONSTANT_) && defined(SIMDE_X86_AVX2_NATIVE)
+    simde__m256i_private cA_ = simde__m256i_to_private(A);
+    if (SIMDE_CHECK_CONSTANT_(cA_.u64[0]) && SIMDE_CHECK_CONSTANT_(cA_.u64[1]) &&
+        SIMDE_CHECK_CONSTANT_(cA_.u64[2]) && SIMDE_CHECK_CONSTANT_(cA_.u64[3]) &&
+        (cA_.u64[0] == cA_.u64[1]) && (cA_.u64[0] == cA_.u64[2]) && (cA_.u64[0] == cA_.u64[3])) {
+      const simde__m256i mlo = simde_mm256_xor_si256(simde_mm256_broadcastsi128_si256(simde_x_gf2p8_matrix_nibble_lo(cA_.u64[0])), simde_mm256_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
+      const simde__m256i mhi = simde_mm256_broadcastsi128_si256(simde_x_gf2p8_matrix_nibble_hi(cA_.u64[0]));
+      const simde__m256i nmask = simde_mm256_set1_epi8(0x0F);
+      return simde_mm256_xor_si256(simde_mm256_shuffle_epi8(mlo, simde_mm256_and_si256(x, nmask)),
+                                   simde_mm256_shuffle_epi8(mhi, simde_mm256_and_si256(simde_mm256_srli_epi16(x, 4), nmask)));
+    }
+  #endif
   return simde_mm256_xor_si256(simde_x_mm256_gf2p8matrix_multiply_epi64_epi8(x, A), simde_mm256_set1_epi8(HEDLEY_STATIC_CAST(int8_t, b)));
 }
 #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX_NATIVE)
