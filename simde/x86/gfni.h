@@ -900,26 +900,6 @@ simde_x_mm256_gf2p8matrix_multiply_epi64_epi8 (simde__m256i x, simde__m256i A) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde__m512i
 simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
-  #if defined(SIMDE_X86_AVX512BW_NATIVE)
-    simde__m512i r, a, p;
-    const simde__m512i byte_select = simde_x_mm512_set_epu64(UINT64_C(0x0707070707070707), UINT64_C(0x0606060606060606), UINT64_C(0x0505050505050505), UINT64_C(0x0404040404040404),
-                                                             UINT64_C(0x0303030303030303), UINT64_C(0x0202020202020202), UINT64_C(0x0101010101010101), UINT64_C(0X0000000000000000));
-    a = simde_mm512_shuffle_epi8(A, simde_mm512_broadcast_i32x4(simde_x_mm_set_epu64x(UINT64_C(0x08090A0B0C0D0E0F), UINT64_C(0x0001020304050607))));
-    r = simde_mm512_setzero_si512();
-
-    #if !defined(__INTEL_COMPILER)
-      SIMDE_VECTORIZE
-    #endif
-    for (int i = 0 ; i < 8 ; i++) {
-      p = simde_mm512_set1_epi64(HEDLEY_STATIC_CAST(int64_t, simde_mm512_movepi8_mask(a)));
-      p = simde_mm512_maskz_shuffle_epi8(simde_mm512_movepi8_mask(x), p, byte_select);
-      r = simde_mm512_xor_si512(r, p);
-      a = simde_mm512_add_epi8(a, a);
-      x = simde_mm512_add_epi8(x, x);
-    }
-
-    return r;
-  #else
     simde__m512i_private
       r_,
       x_ = simde__m512i_to_private(x),
@@ -933,7 +913,6 @@ simde_x_mm512_gf2p8matrix_multiply_epi64_epi8 (simde__m512i x, simde__m512i A) {
     }
 
     return simde__m512i_from_private(r_);
-  #endif
 }
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1391,153 +1370,6 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
     lo = lo ^ vec_perm(reduceLutHi, reduceLutHi, vec_rli(hi, 4));
     lo = lo ^ vec_perm(reduceLutLo, reduceLutLo, hi);
     return simde__m128i_from_altivec_u8(lo);
-  #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
-    SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) x, y, r, t, m;
-    x = simde__m128i_to_altivec_u8(a);
-    y = simde__m128i_to_altivec_u8(b);
-
-    const SIMDE_POWER_ALTIVEC_VECTOR(signed char) zero = vec_splat_s8(0);
-
-    m = vec_splat_u8(0x01);
-
-    const SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) fgp = vec_splats(HEDLEY_STATIC_CAST(unsigned char, SIMDE_X86_GFNI_FGP));
-    t = vec_and(y, m);
-    t = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmpeq(t, m));
-    r = vec_and(x, t);
-
-    #if !defined(__INTEL_COMPILER)
-      SIMDE_VECTORIZE
-    #endif
-    for (int i = 0 ; i < 7 ; i++) {
-      t = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmplt(HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(signed char), x), zero));
-      x = vec_add(x, x);
-      t = vec_and(fgp, t);
-      x = vec_xor(x, t);
-      m = vec_add(m, m);
-      t = vec_and(y, m);
-      t = HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(unsigned char), vec_cmpeq(t, m));
-      t = vec_and(x, t);
-      r = vec_xor(r, t);
-    }
-
-    return simde__m128i_from_altivec_u8(r);
-  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
-    v128_t x, y, r, t, m;
-    x = simde__m128i_to_wasm_v128(a);
-    y = simde__m128i_to_wasm_v128(b);
-
-    m = wasm_i8x16_splat(0x01);
-
-    const v128_t fgp = wasm_i8x16_splat(SIMDE_X86_GFNI_FGP);
-
-    t = wasm_v128_and(y, m);
-    t = wasm_i8x16_eq(t, m);
-    r = wasm_v128_and(x, t);
-
-    #if !defined(__INTEL_COMPILER)
-      SIMDE_VECTORIZE
-    #endif
-    for (int i = 0 ; i < 7 ; i++) {
-      t = wasm_i8x16_shr(x, 7);
-      x = wasm_i8x16_add(x, x);
-      t = wasm_v128_and(fgp, t);
-      x = wasm_v128_xor(x, t);
-      m = wasm_i8x16_add(m, m);
-      t = wasm_v128_and(y, m);
-      t = wasm_i8x16_eq(t, m);
-      t = wasm_v128_and(x, t);
-      r = wasm_v128_xor(r, t);
-    }
-
-    return simde__m128i_from_wasm_v128(r);
-  #elif defined(SIMDE_X86_AVX512BW_NATIVE)
-    simde__m512i r4, t4, u4;
-    simde__mmask64 ma, mb;
-
-    simde__m512i a4 = simde_mm512_broadcast_i32x4(a);
-    const simde__m512i zero = simde_mm512_setzero_si512();
-    simde__mmask16 m8 = simde_mm512_cmpeq_epi32_mask(zero, zero);
-
-    const simde__m512i b4 = simde_mm512_broadcast_i32x4(b);
-
-    simde__m512i bits = simde_mm512_set_epi64(0x4040404040404040,
-                                              0x4040404040404040,
-                                              0x1010101010101010,
-                                              0x1010101010101010,
-                                              0x0404040404040404,
-                                              0x0404040404040404,
-                                              0x0101010101010101,
-                                              0x0101010101010101);
-
-    const simde__m512i fgp = simde_mm512_set1_epi8(SIMDE_X86_GFNI_FGP);
-
-    for (int i = 0 ; i < 3 ; i++) {
-      m8 = simde_kshiftli_mask16(m8, 4);
-
-      ma = simde_mm512_cmplt_epi8_mask(a4, zero);
-      u4 = simde_mm512_add_epi8(a4, a4);
-      t4 = simde_mm512_maskz_mov_epi8(ma, fgp);
-      u4 = simde_mm512_xor_epi32(u4, t4);
-
-      ma = simde_mm512_cmplt_epi8_mask(u4, zero);
-      u4 = simde_mm512_add_epi8(u4, u4);
-      t4 = simde_mm512_maskz_mov_epi8(ma, fgp);
-      a4 = simde_mm512_mask_xor_epi32(a4, m8, u4, t4);
-    }
-
-    mb = simde_mm512_test_epi8_mask(b4, bits);
-    bits = simde_mm512_add_epi8(bits, bits);
-    ma = simde_mm512_cmplt_epi8_mask(a4, zero);
-    r4 = simde_mm512_maskz_mov_epi8(mb, a4);
-    mb = simde_mm512_test_epi8_mask(b4, bits);
-    a4 = simde_mm512_add_epi8(a4, a4);
-    t4 = simde_mm512_maskz_mov_epi8(ma, fgp);
-    a4 = simde_mm512_xor_si512(a4, t4);
-    t4 = simde_mm512_maskz_mov_epi8(mb, a4);
-    r4 = simde_mm512_xor_si512(r4, t4);
-
-    r4 = simde_mm512_xor_si512(r4, simde_mm512_shuffle_i32x4(r4, r4, (1 << 6) + (0 << 4) + (3 << 2) + 2));
-    r4 = simde_mm512_xor_si512(r4, simde_mm512_shuffle_i32x4(r4, r4, (0 << 6) + (3 << 4) + (2 << 2) + 1));
-
-    return simde_mm512_extracti32x4_epi32(r4, 0);
-  #elif defined(SIMDE_X86_AVX2_NATIVE)
-    simde__m256i r2, t2;
-    simde__m256i a2 = simde_mm256_broadcastsi128_si256(a);
-    const simde__m256i zero = simde_mm256_setzero_si256();
-    const simde__m256i fgp = simde_mm256_set1_epi8(SIMDE_X86_GFNI_FGP);
-    const simde__m256i ones = simde_mm256_set1_epi8(0x01);
-    simde__m256i b2 = simde_mm256_set_m128i(simde_mm_srli_epi64(b, 4), b);
-
-    for (int i = 0 ; i < 4 ; i++) {
-      t2 = simde_mm256_cmpgt_epi8(zero, a2);
-      t2 = simde_mm256_and_si256(fgp, t2);
-      a2 = simde_mm256_add_epi8(a2, a2);
-      a2 = simde_mm256_xor_si256(a2, t2);
-    }
-
-    a2 = simde_mm256_inserti128_si256(a2, a, 0);
-
-    t2 = simde_mm256_and_si256(b2, ones);
-    t2 = simde_mm256_cmpeq_epi8(t2, ones);
-    r2 = simde_mm256_and_si256(a2, t2);
-
-    #if !defined(__INTEL_COMPILER)
-      SIMDE_VECTORIZE
-    #endif
-    for (int i = 0 ; i < 3 ; i++) {
-      t2 = simde_mm256_cmpgt_epi8(zero, a2);
-      t2 = simde_mm256_and_si256(fgp, t2);
-      a2 = simde_mm256_add_epi8(a2, a2);
-      a2 = simde_mm256_xor_si256(a2, t2);
-      b2 = simde_mm256_srli_epi64(b2, 1);
-      t2 = simde_mm256_and_si256(b2, ones);
-      t2 = simde_mm256_cmpeq_epi8(t2, ones);
-      t2 = simde_mm256_and_si256(a2, t2);
-      r2 = simde_mm256_xor_si256(r2, t2);
-    }
-
-    return simde_mm_xor_si128(simde_mm256_extracti128_si256(r2, 1),
-                              simde_mm256_extracti128_si256(r2, 0));
     #elif defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
       return simde_x_mm_gf2p8mul_tower(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
@@ -1607,73 +1439,6 @@ simde__m256i
 simde_mm256_gf2p8mul_epi8 (simde__m256i a, simde__m256i b) {
   #if defined(SIMDE_X86_GFNI_NATIVE) && (defined(SIMDE_X86_AVX512VL_NATIVE) || (defined(SIMDE_X86_AVX_NATIVE) && !defined(SIMDE_X86_AVX512F_NATIVE)))
     return _mm256_gf2p8mul_epi8(a, b);
-  #elif !defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE)
-    simde__mmask64 ma, mb;
-    simde__m512i r, t, s;
-    simde__m512i a2 = simde_mm512_broadcast_i64x4(a);
-    const simde__m512i zero = simde_mm512_setzero_si512();
-
-    const simde__m512i fgp = simde_mm512_set1_epi8(SIMDE_X86_GFNI_FGP);
-
-    s = simde_mm512_set1_epi8(0x01);
-
-    for (int i = 0 ; i < 4 ; i++) {
-      ma = simde_mm512_cmplt_epi8_mask(a2, zero);
-      a2 = simde_mm512_add_epi8(a2, a2);
-      t = simde_mm512_xor_si512(a2, fgp);
-      a2 = simde_mm512_mask_mov_epi8(a2, ma, t);
-    }
-
-    simde__m512i b2 = simde_mm512_inserti64x4(zero, simde_mm256_srli_epi64(b, 4), 1);
-    b2 = simde_mm512_inserti64x4(b2, b, 0);
-    a2 = simde_mm512_inserti64x4(a2, a, 0);
-
-    mb = simde_mm512_test_epi8_mask(b2, s);
-    r = simde_mm512_maskz_mov_epi8(mb, a2);
-
-    #if !defined(__INTEL_COMPILER)
-      SIMDE_VECTORIZE
-    #endif
-    for (int i = 0 ; i < 3 ; i++) {
-      ma = simde_mm512_cmplt_epi8_mask(a2, zero);
-      s = simde_mm512_add_epi8(s, s);
-      mb = simde_mm512_test_epi8_mask(b2, s);
-      a2 = simde_mm512_add_epi8(a2, a2);
-      t = simde_mm512_maskz_mov_epi8(ma, fgp);
-      a2 = simde_mm512_xor_si512(a2, t);
-      t = simde_mm512_maskz_mov_epi8(mb, a2);
-      r = simde_mm512_xor_si512(r, t);
-    }
-
-    return simde_mm256_xor_si256(simde_mm512_extracti64x4_epi64(r, 1),
-                                 simde_mm512_extracti64x4_epi64(r, 0));
-  #elif !defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX2_NATIVE)
-    simde__m256i r, t;
-    const simde__m256i zero = simde_mm256_setzero_si256();
-    const simde__m256i ones = simde_mm256_set1_epi8(0x01);
-
-    const simde__m256i fgp = simde_mm256_set1_epi8(SIMDE_X86_GFNI_FGP);
-
-    t = simde_mm256_and_si256(b, ones);
-    t = simde_mm256_cmpeq_epi8(t, ones);
-    r = simde_mm256_and_si256(a, t);
-
-    #if !defined(__INTEL_COMPILER)
-      SIMDE_VECTORIZE
-    #endif
-    for (int i = 0 ; i < 7 ; i++) {
-      t = simde_mm256_cmpgt_epi8(zero, a);
-      t = simde_mm256_and_si256(fgp, t);
-      a = simde_mm256_add_epi8(a, a);
-      a = simde_mm256_xor_si256(a, t);
-      b = simde_mm256_srli_epi64(b, 1);
-      t = simde_mm256_and_si256(b, ones);
-      t = simde_mm256_cmpeq_epi8(t, ones);
-      t = simde_mm256_and_si256(a, t);
-      r = simde_mm256_xor_si256(r, t);
-    }
-
-    return r;
   #else
     simde__m256i_private
       r_,
@@ -1700,33 +1465,6 @@ simde__m512i
 simde_mm512_gf2p8mul_epi8 (simde__m512i a, simde__m512i b) {
   #if defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512F_NATIVE)
     return _mm512_gf2p8mul_epi8(a, b);
-  #elif !defined(SIMDE_X86_GFNI_NATIVE) && defined(SIMDE_X86_AVX512BW_NATIVE)
-    simde__m512i r, s, t;
-    simde__mmask64 ma, mb;
-    const simde__m512i zero = simde_mm512_setzero_si512();
-
-    const simde__m512i fgp = simde_mm512_set1_epi8(SIMDE_X86_GFNI_FGP);
-
-    s = simde_mm512_set1_epi8(0x01);
-
-    mb = simde_mm512_test_epi8_mask(b, s);
-    r = simde_mm512_maskz_mov_epi8(mb, a);
-
-    #if !defined(__INTEL_COMPILER)
-      SIMDE_VECTORIZE
-    #endif
-    for (int i = 0 ; i < 7 ; i++) {
-      ma = simde_mm512_cmplt_epi8_mask(a, zero);
-      s = simde_mm512_add_epi8(s, s);
-      mb = simde_mm512_test_epi8_mask(b, s);
-      a = simde_mm512_add_epi8(a, a);
-      t = simde_mm512_maskz_mov_epi8(ma, fgp);
-      a = simde_mm512_xor_si512(a, t);
-      t = simde_mm512_maskz_mov_epi8(mb, a);
-      r = simde_mm512_xor_si512(r, t);
-    }
-
-    return r;
   #else
     simde__m512i_private
       r_,
