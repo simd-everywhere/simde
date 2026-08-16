@@ -5101,7 +5101,9 @@ test_simde_mm_gf2p8mul_epi8_const(SIMDE_MUNIT_TEST_ARGS) {
   #define SIMDE_TEST_GFNI_MUL_CONST(K) \
     do { \
       volatile int vk_ = (K); \
-      simde__m128i rc = simde_mm_gf2p8mul_epi8(a, simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, (K)))); \
+      /* Sign-extend K to keep the constant in int8_t range; MSVC warns (C4309)
+       * when a static_cast truncates a constant such as 0x80 or 0xff. */ \
+      simde__m128i rc = simde_mm_gf2p8mul_epi8(a, simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, ((K) ^ 0x80) - 0x80))); \
       simde__m128i rr = simde_mm_gf2p8mul_epi8(a, simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, vk_))); \
       simde_assert_m128i_i8(rc, ==, rr); \
     } while (0)
