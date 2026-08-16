@@ -41,6 +41,7 @@
 #include "ssse3.h"
 #include "avx.h"
 #include "avx2.h"
+#include "aes.h"
 #include "avx512/types.h"
 #include "avx512/add.h"
 #include "avx512/and.h"
@@ -74,6 +75,21 @@ SIMDE_BEGIN_DECLS_
 
 /* The field generator polynomial is 0x11B but we make the 0x100 bit implicit to fit inside 8 bits */
 #define SIMDE_X86_GFNI_FGP 0x1B
+
+/* Feature groups used by the algorithms below.
+ * SIMDE_X_GFNI_HAVE_AES: a hardware AES S-box is reachable through
+ *   simde_mm_aesenclast_si128 (x86 AES-NI, or ARMv8 crypto). We borrow it to
+ *   compute the GF(2^8) inverse.
+ * SIMDE_X_GFNI_HAVE_SHUFFLE: a byte-shuffle (PSHUFB / TBL / vec_perm / swizzle)
+ *   is available, so the nibble-decomposition and GF((2^4)^2) tower-field
+ *   algorithms can run. These are all expressed through simde_mm_shuffle_epi8
+ *   et al. so a single implementation covers every backend. */
+#if defined(SIMDE_X86_AES_NATIVE) || (defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_CRYPTO))
+  #define SIMDE_X_GFNI_HAVE_AES
+#endif
+#if defined(SIMDE_X86_SSSE3_NATIVE) || defined(SIMDE_ARM_NEON_A32V7_NATIVE) || defined(SIMDE_POWER_ALTIVEC_P6_NATIVE) || defined(SIMDE_ZARCH_ZVECTOR_13_NATIVE) || defined(SIMDE_WASM_SIMD128_NATIVE) || defined(SIMDE_MIPS_MSA_NATIVE)
+  #define SIMDE_X_GFNI_HAVE_SHUFFLE
+#endif
 
 /* Computing the inverse of a GF element is expensive so use this LUT for an FGP of 0x11B */
 
