@@ -531,6 +531,20 @@ simde_x_mm_gf2p8affineinv_tower_const (simde__m128i x, uint64_t M, int b) {
   return simde_mm_xor_si128(simde_mm_shuffle_epi8(fused_lo, iL),
                             simde_mm_shuffle_epi8(fused_hi, iH));
 }
+
+/* GF(2^8) multiply via the tower field (Karatsuba over GF(2^4)). */
+SIMDE_FUNCTION_ATTRIBUTES
+simde__m128i
+simde_x_mm_gf2p8mul_tower (simde__m128i a, simde__m128i b) {
+  simde__m128i aL = simde_x_mm_gf2p8_tower_lo(a), aH = simde_x_mm_gf2p8_tower_hi(a);
+  simde__m128i bL = simde_x_mm_gf2p8_tower_lo(b), bH = simde_x_mm_gf2p8_tower_hi(b);
+  simde__m128i p = simde_x_mm_gf2p4_mul(aL, bL);
+  simde__m128i q = simde_x_mm_gf2p4_mul(aH, bH);
+  simde__m128i r = simde_x_mm_gf2p4_mul(simde_mm_xor_si128(aH, aL), simde_mm_xor_si128(bH, bL));
+  simde__m128i oH = simde_mm_xor_si128(r, p);
+  simde__m128i oL = simde_mm_xor_si128(p, simde_mm_shuffle_epi8(simde_x_gf2p4_mulnu.m128i, q));
+  return simde_x_mm_gf2p8_tower_join(oH, oL);
+}
 #endif /* SIMDE_X_GFNI_HAVE_SHUFFLE */
 
 SIMDE_FUNCTION_ATTRIBUTES
@@ -1592,6 +1606,8 @@ simde__m128i simde_mm_gf2p8mul_epi8 (simde__m128i a, simde__m128i b) {
 
     return simde_mm_xor_si128(simde_mm256_extracti128_si256(r2, 1),
                               simde_mm256_extracti128_si256(r2, 0));
+    #elif defined(SIMDE_X_GFNI_HAVE_SHUFFLE)
+      return simde_x_mm_gf2p8mul_tower(a, b);
   #elif defined(SIMDE_X86_SSE2_NATIVE)
     simde__m128i r, t;
     const simde__m128i zero = simde_mm_setzero_si128();
