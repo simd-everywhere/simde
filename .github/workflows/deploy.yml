@@ -45,7 +45,7 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y python3-lxml
     - name: Update
       run: ./implementation-status/scripts/update.sh .
-    - uses: EndBug/add-and-commit@290ea2c423ad77ca9c62ae0f5b224379612c0321 # v10
+    - uses: EndBug/add-and-commit@645ecc0dd0a57f4d86d26c0aa5fc42c0a856fbca # v11.0.0
       with:
         cwd: implementation-status
         message: Sync with latest SIMDe.
