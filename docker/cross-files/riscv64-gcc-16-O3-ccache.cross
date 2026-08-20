@@ -5,7 +5,7 @@ ar = 'riscv64-linux-gnu-ar'
 strip = 'riscv64-linux-gnu-strip'
 objcopy = 'riscv64-linux-gnu-objcopy'
 ld = 'riscv64-linux-gnu-ld'
-exe_wrapper = ['qemu-riscv64-static', '-L', '/usr/riscv64-linux-gnu/']
+exe_wrapper = ['qemu-riscv64', '-L', '/usr/riscv64-linux-gnu/']
 
 [built-in options]
 c_args   = ['-Wextra', '-Werror', '-O3']

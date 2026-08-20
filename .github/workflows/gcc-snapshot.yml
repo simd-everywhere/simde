@@ -16,7 +16,7 @@ permissions: {}
 
 jobs:
   x86:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: false
       matrix:
@@ -31,8 +31,7 @@ jobs:
           - target: tgl
           - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes  # icelake
             target: icl
-          - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes -mpconfig -mwbnoinvd -mclwb -mmovdiri -mmovdir64b -menqcmd -mcldemote -mptwrite -mwaitpkg -mserialize -mtsxldtrk -muintr -mavxvnni -mavx512fp16  # sapphire rapids without bf16
-            # See https://github.com/simd-everywhere/simde/issues/1095
+          - isax: -march=x86-64-v4 -mcx16 -mxsave -mpclmul -mfsgsbase -mrdrnd -mhle -mrdseed -maes -mclflushopt -mxsavec -mxsaves -msgx -mpku -msha -mrdpid -mavx512vpopcntdq -mavx512ifma -mavx512vbmi -mavx512vnni -mavx512vbmi2 -mavx512bitalg -mvpclmulqdq -mgfni -mvaes -mpconfig -mwbnoinvd -mclwb -mmovdiri -mmovdir64b -menqcmd -mcldemote -mptwrite -mwaitpkg -mserialize -mtsxldtrk -muintr -mavxvnni -mavx512fp16 -mavx512bf16 # sapphire rapids
             target: spr
     env:
       CFLAGS: -Wall -Wextra -Werror ${{ matrix.isax }}
@@ -56,9 +55,8 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository -y ppa:misterc/gcc-snapshot-latest-lts
-        # sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends ninja-build pipx
-        sudo apt-get install "${GITHUB_EVENT_CLIENT_PAYLOAD_EXTRA:---yes}" gcc-16 g++-16 # ccache
+        sudo apt-get satisfy "${GITHUB_EVENT_CLIENT_PAYLOAD_EXTRA:---yes}" "gcc-16 (>= 16.2)" "g++-16 (>= 16.2)" # ccache
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-16 /usr/bin/gcc
         sudo ln -s /usr/bin/g++-16 /usr/bin/g++
@@ -87,7 +85,7 @@ jobs:
         meson test -C build --print-errorlogs --wrapper "${GITHUB_WORKSPACE}/test/check-flags.sh sde"  # $(meson test -C build --list | grep -v emul)
 
   x86-xop:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: false
     env:
@@ -111,10 +109,8 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-        # sudo add-apt-repository ppa:stephanosio/ccache
-        sudo apt-get install -y --no-install-recommends ninja-build pipx \
-          qemu-user-static  # ccache
-        sudo apt-get install "${GITHUB_EVENT_CLIENT_PAYLOAD_EXTRA:---yes}" gcc-16 g++-16 # ccache
+        sudo apt-get install -y --no-install-recommends ninja-build pipx
+        sudo apt-get satisfy "${GITHUB_EVENT_CLIENT_PAYLOAD_EXTRA:---yes}" "gcc-16 (>= 16.2)" "g++-16 (>= 16.2)" # ccache
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-16 /usr/bin/gcc
         sudo ln -s /usr/bin/g++-16 /usr/bin/g++
@@ -138,7 +134,7 @@ jobs:
     #   run: meson test -C build --print-errorlogs --wrapper "qemu-amd64-static -cpu Opteron_G5-v1"
 
   sleef:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       CFLAGS: -march=native -Wall -Wextra -Werror
       CXXFLAGS: -march=native -Wall -Wextra -Werror
@@ -162,10 +158,9 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-        # sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends ninja-build pipx \
           libsleef-dev # ccache
-        sudo apt-get install "${GITHUB_EVENT_CLIENT_PAYLOAD_EXTRA:---yes}" gcc-16 g++-16 # ccache
+        sudo apt-get satisfy "${GITHUB_EVENT_CLIENT_PAYLOAD_EXTRA:---yes}" "gcc-16 (>= 16.2)" "g++-16 (>= 16.2)" # ccache
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-16 /usr/bin/gcc
         sudo ln -s /usr/bin/g++-16 /usr/bin/g++
@@ -194,11 +189,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - distro: ubuntu-24.04
+        - distro: ubuntu-26.04
           arch_flags: -ffast-math
-        - distro: ubuntu-24.04
-        - distro: ubuntu-24.04-arm
-        - distro: ubuntu-24.04-arm
+        - distro: ubuntu-26.04
+        - distro: ubuntu-26.04-arm
+        - distro: ubuntu-26.04-arm
           plain: true
         - distro: ubuntu-24.04-arm  # plain armhf
           gcc: arm-linux-gnueabihf
@@ -255,12 +250,11 @@ jobs:
         EXTRA: ${{ github.event.client_payload.extra }} 
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-        # sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get -y install --no-install-recommends pipx ninja-build \
             # ccache
-        sudo apt-get install "${EXTRA:---yes}" \
-          gcc-${{ case(matrix.gcc == '', '16', format('16-{0}', matrix.gcc)) }} \
-          g++-${{ case(matrix.gcc == '', '16', format('16-{0}', matrix.gcc)) }}
+        sudo apt-get satisfy "${EXTRA:---yes}" \
+          "gcc-${{ case(matrix.gcc == '', '16', format('16-{0}', matrix.gcc)) }} (>= 16.2)" \
+          "g++-${{ case(matrix.gcc == '', '16', format('16-{0}', matrix.gcc)) }} (>= 16.2)"
         sudo apt-get -y purge g++ gcc
         pipx install meson==1.3.2
     # - name: ccache
@@ -285,38 +279,37 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        # - version: 16
-        #   cross: armel
-        #   arch_gnu_abi: eabi
-        #   arch_deb: armel
-        #   arch_gnu: arm
-        #   distro: ubuntu-24.04
         - version: 16
           cross: riscv64
           arch_gnu: riscv64
           arch_deb: riscv64
-          distro: ubuntu-24.04
+          distro: ubuntu-26.04
         - extra: -O3
           version: 16
           cross: riscv64
           arch_gnu: riscv64
           arch_deb: riscv64
-          distro: ubuntu-24.04
+          distro: ubuntu-26.04
         - version: 16
           cross: s390x
           arch_gnu: s390x
           arch_deb: s390x
-          distro: ubuntu-24.04
-        # - version: 16
-        #   cross: power9
-        #   arch_gnu: powerpc64le
-        #   arch_deb: ppc64el
-        #   distro: ubuntu-24.04
+          distro: ubuntu-26.04
+        - version: 16
+          cross: power9
+          arch_gnu: powerpc64le
+          arch_deb: ppc64el
+          distro: ubuntu-26.04
+        - version: 16
+          cross: power7
+          arch_gnu: powerpc64le
+          arch_deb: ppc64el
+          distro: ubuntu-26.04
         - version: 16
           cross: loongarch64
           arch_gnu: loongarch64
           arch_deb: loong64
-          distro: ubuntu-24.04
+          distro: ubuntu-26.04
     runs-on: ${{ matrix.distro }}
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -339,10 +332,10 @@ jobs:
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
         sudo apt-get -y --no-install-recommends install ninja-build \
-          binfmt-support qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross
-        sudo apt-get install "${EXTRA:---yes}" \
-          gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
-          g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
+          binfmt-support pipx libc6-${{ matrix.arch_deb }}-cross qemu-user-binfmt-hwe
+        sudo apt-get satisfy "${EXTRA:---yes}" \
+          "gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu (>= 16.2)" \
+          "g++-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu (>= 16.2)" \
           libstdc++-${{ matrix.version }}-dev-${{ matrix.arch_deb }}-cross
         pipx install meson==1.3.2
     # - name: ccache
