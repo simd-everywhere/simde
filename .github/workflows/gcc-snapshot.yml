@@ -55,10 +55,10 @@ jobs:
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
-        sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
+        sudo add-apt-repository -y ppa:misterc/gcc-snapshot-latest-lts
         # sudo add-apt-repository ppa:stephanosio/ccache
         sudo apt-get install -y --no-install-recommends ninja-build pipx
-        sudo apt-get install -y "${GITHUB_EVENT_CLIENT_PAYLOAD_EXTRA}" gcc-16 g++-16 # ccache
+        sudo apt-get install "${GITHUB_EVENT_CLIENT_PAYLOAD_EXTRA:---yes}" gcc-16 g++-16 # ccache
         sudo apt-get purge -y gcc g++
         sudo ln -s /usr/bin/gcc-16 /usr/bin/gcc
         sudo ln -s /usr/bin/g++-16 /usr/bin/g++
