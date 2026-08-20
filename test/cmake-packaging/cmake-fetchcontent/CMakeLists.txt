@@ -5,10 +5,10 @@ include(FetchContent)
 FetchContent_Declare(simde SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../)
 FetchContent_MakeAvailable(simde)
 
-add_executable(consumer-fc-c main.c)
+add_executable(consumer-fc-c ../sources/main.c)
 target_link_libraries(consumer-fc-c PRIVATE simde::simde)
 
-add_executable(consumer-fc-cpp main.cpp)
+add_executable(consumer-fc-cpp ../sources/main.cpp)
 target_link_libraries(consumer-fc-cpp PRIVATE simde::simde)
 
 enable_testing()
