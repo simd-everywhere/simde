@@ -145,6 +145,31 @@ test_simde_mm_gf2p8affine_epi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm_gf2p8affine_epi64_epi8_const(SIMDE_MUNIT_TEST_ARGS) {
+  /* Exercises the compile-time-constant-matrix nibble path and checks it agrees
+   * with the same matrix supplied at run time (which takes the general path). */
+  #define SIMDE_TEST_GFNI_AFF_CONST(Q) \
+    do { \
+      volatile int64_t vm_ = HEDLEY_STATIC_CAST(int64_t, UINT64_C(Q)); \
+      simde__m128i rc = simde_mm_gf2p8affine_epi64_epi8(x, simde_mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, UINT64_C(Q))), INT8_C(0x63)); \
+      simde__m128i rr = simde_mm_gf2p8affine_epi64_epi8(x, simde_mm_set1_epi64x(vm_), INT8_C(0x63)); \
+      simde_assert_m128i_i8(rc, ==, rr); \
+    } while (0)
+
+  for (int t = 0 ; t < 16 ; t++) {
+    simde__m128i x = simde_test_x86_random_i8x16();
+    SIMDE_TEST_GFNI_AFF_CONST(0x0102040810204080); /* identity */
+    SIMDE_TEST_GFNI_AFF_CONST(0xF1E3C78F1F3E7CF8); /* AES forward affine */
+    SIMDE_TEST_GFNI_AFF_CONST(0x12345678ABCDEF01);
+    SIMDE_TEST_GFNI_AFF_CONST(0x0000000000000000);
+    SIMDE_TEST_GFNI_AFF_CONST(0xFFFFFFFFFFFFFFFF);
+  }
+
+  #undef SIMDE_TEST_GFNI_AFF_CONST
+  return 0;
+}
+
+static int
 test_simde_mm256_gf2p8affine_epi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i x;
@@ -2591,6 +2616,31 @@ test_simde_mm_gf2p8affineinv_epi64_epi8(SIMDE_MUNIT_TEST_ARGS) {
     simde_assert_m128i_i8(r, ==, test_vec[i].r);
   }
 
+  return 0;
+}
+
+static int
+test_simde_mm_gf2p8affineinv_epi64_epi8_const(SIMDE_MUNIT_TEST_ARGS) {
+  /* Exercises the compile-time-constant-matrix AES-fused affineinv path
+   * (incl. M=A_aes,c=0x63 -> SubBytes) vs the run-time (general) path. */
+  #define SIMDE_TEST_GFNI_AINV_CONST(Q, C) \
+    do { \
+      volatile int64_t vm_ = HEDLEY_STATIC_CAST(int64_t, UINT64_C(Q)); \
+      simde__m128i rc = simde_mm_gf2p8affineinv_epi64_epi8(x, simde_mm_set1_epi64x(HEDLEY_STATIC_CAST(int64_t, UINT64_C(Q))), INT8_C(C)); \
+      simde__m128i rr = simde_mm_gf2p8affineinv_epi64_epi8(x, simde_mm_set1_epi64x(vm_), INT8_C(C)); \
+      simde_assert_m128i_i8(rc, ==, rr); \
+    } while (0)
+
+  for (int t = 0 ; t < 16 ; t++) {
+    simde__m128i x = simde_test_x86_random_i8x16();
+    SIMDE_TEST_GFNI_AINV_CONST(0xF1E3C78F1F3E7CF8, 0x63); /* AES S-box */
+    SIMDE_TEST_GFNI_AINV_CONST(0xF1E3C78F1F3E7CF8, 0x11); /* M=A_aes, c!=0x63 */
+    SIMDE_TEST_GFNI_AINV_CONST(0x0102040810204080, 0x00); /* identity -> inverse */
+    SIMDE_TEST_GFNI_AINV_CONST(0x123456789ABCDEF0, 0x37);
+    SIMDE_TEST_GFNI_AINV_CONST(0xFFFFFFFFFFFFFFFF, 0x5A);
+  }
+
+  #undef SIMDE_TEST_GFNI_AINV_CONST
   return 0;
 }
 
@@ -5045,6 +5095,32 @@ test_simde_mm_gf2p8mul_epi8(SIMDE_MUNIT_TEST_ARGS) {
 }
 
 static int
+test_simde_mm_gf2p8mul_epi8_const(SIMDE_MUNIT_TEST_ARGS) {
+  /* Multiplying by a compile-time-constant broadcast degenerates to an affine
+   * transform; check it matches the run-time (general) multiply. */
+  #define SIMDE_TEST_GFNI_MUL_CONST(K) \
+    do { \
+      volatile int vk_ = (K); \
+      /* Sign-extend K to keep the constant in int8_t range; MSVC warns (C4309)
+       * when a static_cast truncates a constant such as 0x80 or 0xff. */ \
+      simde__m128i rc = simde_mm_gf2p8mul_epi8(a, simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, ((K) ^ 0x80) - 0x80))); \
+      simde__m128i rr = simde_mm_gf2p8mul_epi8(a, simde_mm_set1_epi8(HEDLEY_STATIC_CAST(int8_t, vk_))); \
+      simde_assert_m128i_i8(rc, ==, rr); \
+    } while (0)
+
+  for (int t = 0 ; t < 16 ; t++) {
+    simde__m128i a = simde_test_x86_random_i8x16();
+    SIMDE_TEST_GFNI_MUL_CONST(0x00); SIMDE_TEST_GFNI_MUL_CONST(0x01);
+    SIMDE_TEST_GFNI_MUL_CONST(0x02); SIMDE_TEST_GFNI_MUL_CONST(0x1b);
+    SIMDE_TEST_GFNI_MUL_CONST(0x53); SIMDE_TEST_GFNI_MUL_CONST(0x57);
+    SIMDE_TEST_GFNI_MUL_CONST(0x80); SIMDE_TEST_GFNI_MUL_CONST(0xff);
+  }
+
+  #undef SIMDE_TEST_GFNI_MUL_CONST
+  return 0;
+}
+
+static int
 test_simde_mm256_gf2p8mul_epi8(SIMDE_MUNIT_TEST_ARGS) {
   const struct {
     simde__m256i a;
@@ -7387,6 +7463,7 @@ test_simde_mm512_maskz_gf2p8mul_epi8(SIMDE_MUNIT_TEST_ARGS) {
 
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8affine_epi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8affine_epi64_epi8_const)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_gf2p8affine_epi64_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_gf2p8affine_epi64_epi8)
 
@@ -7399,6 +7476,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_gf2p8affine_epi64_epi8)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8affineinv_epi64_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8affineinv_epi64_epi8_const)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_gf2p8affineinv_epi64_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_gf2p8affineinv_epi64_epi8)
 
@@ -7411,6 +7489,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_maskz_gf2p8affineinv_epi64_epi8)
 
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8mul_epi8)
+  SIMDE_TEST_FUNC_LIST_ENTRY(mm_gf2p8mul_epi8_const)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm256_gf2p8mul_epi8)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm512_gf2p8mul_epi8)
 
