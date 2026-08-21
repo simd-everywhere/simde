@@ -2664,7 +2664,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
   simde__m128d_private
     a_ = simde__m128d_to_private(a),
     b_ = simde__m128d_to_private(b);
-    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
     simde__m128i t_;
     #endif
 
@@ -2829,7 +2829,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
   simde__m128_private
     a_ = simde__m128_to_private(a),
     b_ = simde__m128_to_private(b);
-    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
     simde__m128i t_;
     #endif
 
@@ -4480,7 +4480,11 @@ simde_mm256_loadu2_m128 (const float hiaddr[HEDLEY_ARRAY_PARAM(4)], const float 
     simde__m256_private r_;
     r_.m128_private[1].lsx_i64 = __lsx_vld(hiaddr, 0);
     r_.m128_private[0].lsx_i64 = __lsx_vld(loaddr, 0);
-    return r_.f256;
+    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      return r_.f256;
+    #else
+      return simde__m256_from_private(r_);
+    #endif
   #else
     return
       simde_mm256_insertf128_ps(simde_mm256_castps128_ps256(simde_mm_loadu_ps(loaddr)),
@@ -4501,7 +4505,11 @@ simde_mm256_loadu2_m128d (const double hiaddr[HEDLEY_ARRAY_PARAM(2)], const doub
     simde__m256d_private r_;
     r_.m128d_private[1].lsx_i64 = __lsx_vld(hiaddr, 0);
     r_.m128d_private[0].lsx_i64 = __lsx_vld(loaddr, 0);
-    return r_.d256;
+    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      return r_.d256;
+    #else
+      return simde__m256d_from_private(r_);
+    #endif
   #else
     return
       simde_mm256_insertf128_pd(simde_mm256_castpd128_pd256(simde_mm_loadu_pd(loaddr)),
@@ -4522,7 +4530,11 @@ simde_mm256_loadu2_m128i (const simde__m128i* hiaddr, const simde__m128i* loaddr
     simde__m256i_private r_;
     r_.m128i[1] = __lsx_vld(hiaddr, 0);
     r_.m128i[0] = __lsx_vld(loaddr, 0);
-    return r_.i256;
+    #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+      return r_.i256;
+    #else
+      return simde__m256i_from_private(r_);
+    #endif
   #else
     return
       simde_mm256_insertf128_si256(simde_mm256_castsi128_si256(simde_mm_loadu_si128(loaddr)),
