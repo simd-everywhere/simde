@@ -47,17 +47,17 @@ SIMDE_BEGIN_DECLS_
       a_ = simde__m128i_to_private(a),
       b_ = simde__m128i_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       uint8_t a1 SIMDE_VECTOR(16) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 16, a_.u8, a_.u8,
+        __builtin_shufflevector(
+          a_.u8, a_.u8,
            0,  1,  0,  1,
            4,  5,  4,  5,
            8,  9,  8,  9,
           12, 13, 12, 13);
       uint8_t b1 SIMDE_VECTOR(16) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 16, b_.u8, b_.u8,
+        __builtin_shufflevector(
+          b_.u8, b_.u8,
             0,  1,  1,  2,
             2,  3,  3,  4,
             8,  9,  9, 10,
@@ -71,15 +71,15 @@ SIMDE_BEGIN_DECLS_
         __builtin_convertvector(__builtin_shufflevector(abd1, abd1, 1, 3, 5, 7, 9, 11, 13, 15), __typeof__(r_.u16));
 
       uint8_t a2 SIMDE_VECTOR(16) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 16, a_.u8, a_.u8,
+        __builtin_shufflevector(
+          a_.u8, a_.u8,
            2,  3,  2,  3,
            6,  7,  6,  7,
           10, 11, 10, 11,
           14, 15, 14, 15);
       uint8_t b2 SIMDE_VECTOR(16) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 16, b_.u8, b_.u8,
+        __builtin_shufflevector(
+          b_.u8, b_.u8,
             2,  3,  3,  4,
             4,  5,  5,  6,
            10, 11, 11, 12,
@@ -153,10 +153,10 @@ SIMDE_BEGIN_DECLS_
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       uint8_t a1 SIMDE_VECTOR(32) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 32, a_.u8, a_.u8,
+        __builtin_shufflevector(
+          a_.u8, a_.u8,
            0,  1,  0,  1,
            4,  5,  4,  5,
            8,  9,  8,  9,
@@ -166,8 +166,8 @@ SIMDE_BEGIN_DECLS_
           24, 25, 24, 25,
           28, 29, 28, 29);
       uint8_t b1 SIMDE_VECTOR(32) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 16, b_.u8, b_.u8,
+        __builtin_shufflevector(
+          b_.u8, b_.u8,
             0,  1,  1,  2,
             2,  3,  3,  4,
             8,  9,  9, 10,
@@ -185,8 +185,8 @@ SIMDE_BEGIN_DECLS_
         __builtin_convertvector(__builtin_shufflevector(abd1, abd1, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31), __typeof__(r_.u16));
 
       uint8_t a2 SIMDE_VECTOR(32) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 32, a_.u8, a_.u8,
+        __builtin_shufflevector(
+          a_.u8, a_.u8,
            2,  3,  2,  3,
            6,  7,  6,  7,
           10, 11, 10, 11,
@@ -196,8 +196,8 @@ SIMDE_BEGIN_DECLS_
           26, 27, 26, 27,
           30, 31, 30, 31);
       uint8_t b2 SIMDE_VECTOR(32) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 16, b_.u8, b_.u8,
+        __builtin_shufflevector(
+          b_.u8, b_.u8,
             2,  3,  3,  4,
             4,  5,  5,  6,
            10, 11, 11, 12,
@@ -275,10 +275,10 @@ SIMDE_BEGIN_DECLS_
       a_ = simde__m512i_to_private(a),
       b_ = simde__m512i_to_private(b);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       uint8_t a1 SIMDE_VECTOR(64) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 64, a_.u8, a_.u8,
+        __builtin_shufflevector(
+          a_.u8, a_.u8,
            0,  1,  0,  1,
            4,  5,  4,  5,
            8,  9,  8,  9,
@@ -296,8 +296,8 @@ SIMDE_BEGIN_DECLS_
           56, 57, 56, 57,
           60, 61, 60, 61);
       uint8_t b1 SIMDE_VECTOR(64) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 64, b_.u8, b_.u8,
+        __builtin_shufflevector(
+          b_.u8, b_.u8,
             0,  1,  1,  2,
             2,  3,  3,  4,
             8,  9,  9, 10,
@@ -323,8 +323,8 @@ SIMDE_BEGIN_DECLS_
         __builtin_convertvector(__builtin_shufflevector(abd1, abd1, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57, 59, 61, 63), __typeof__(r_.u16));
 
       uint8_t a2 SIMDE_VECTOR(64) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 64, a_.u8, a_.u8,
+        __builtin_shufflevector(
+          a_.u8, a_.u8,
            2,  3,  2,  3,
            6,  7,  6,  7,
           10, 11, 10, 11,
@@ -342,8 +342,8 @@ SIMDE_BEGIN_DECLS_
           58, 59, 58, 59,
           62, 63, 62, 63);
       uint8_t b2 SIMDE_VECTOR(64) =
-        SIMDE_SHUFFLE_VECTOR_(
-          8, 64, b_.u8, b_.u8,
+        __builtin_shufflevector(
+          b_.u8, b_.u8,
             2,  3,  3,  4,
             4,  5,  5,  6,
            10, 11, 11, 12,

@@ -50,7 +50,7 @@ simde_mm256_broadcast_f32x2 (simde__m128 a) {
     simde__m256_private r_;
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.f32 = __builtin_shufflevector(a_.f32, a_.f32, 0, 1, 0, 1, 0, 1, 0, 1);
     #else
       SIMDE_VECTORIZE
@@ -105,7 +105,7 @@ simde_mm512_broadcast_f32x2 (simde__m128 a) {
     simde__m512_private r_;
     simde__m128_private a_ = simde__m128_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.f32 = __builtin_shufflevector(a_.f32, a_.f32, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1);
     #else
       SIMDE_VECTORIZE
@@ -160,7 +160,7 @@ simde_mm512_broadcast_f32x8 (simde__m256 a) {
     simde__m512_private r_;
     simde__m256_private a_ = simde__m256_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.f32 = __builtin_shufflevector(a_.f32, a_.f32, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7);
     #else
       SIMDE_VECTORIZE
@@ -221,7 +221,7 @@ simde_mm512_broadcast_f64x2 (simde__m128d a) {
     simde__m512d_private r_;
     simde__m128d_private a_ = simde__m128d_to_private(a);
 
-    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !defined(SIMDE_BUG_CLANG_BAD_VI64_OPS)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !defined(SIMDE_BUG_CLANG_BAD_VI64_OPS)
       r_.f64 = __builtin_shufflevector(a_.f64, a_.f64, 0, 1, 0, 1, 0, 1, 0, 1);
     #else
       SIMDE_VECTORIZE
@@ -279,7 +279,7 @@ simde_mm256_broadcast_f32x4 (simde__m128 a) {
     #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
         r_.m128_private[0] = a_;
         r_.m128_private[1] = a_;
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.f32 = __builtin_shufflevector(a_.f32, a_.f32, 0, 1, 2, 3, 0, 1, 2, 3);
     #else
       SIMDE_VECTORIZE
@@ -338,7 +338,7 @@ simde_mm256_broadcast_f64x2 (simde__m128d a) {
 
     /* I don't have a bug # for this, but when compiled with clang-10 without optimization on aarch64
      * the __builtin_shufflevector version doesn't work correctly.  clang 9 and 11 aren't a problem */
-    #if defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && \
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && \
         (!defined(__clang__) || (SIMDE_DETECT_CLANG_VERSION < 100000 || SIMDE_DETECT_CLANG_VERSION > 100000))
       r_.f64 = __builtin_shufflevector(a_.f64, a_.f64, 0, 1, 0, 1);
     #else

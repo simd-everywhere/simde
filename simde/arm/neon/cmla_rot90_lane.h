@@ -281,8 +281,8 @@ simde_float32x2_t
 simde_vcmla_rot90_laneq_f32(simde_float32x2_t r, simde_float32x2_t a, simde_float32x4_t b, const int lane)
     SIMDE_REQUIRE_CONSTANT_RANGE(lane, 0, 1)
 {
-  simde_float32x2_t b_tmp = simde_vreinterpret_f32_u64(simde_vdup_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane]));
   #if defined(SIMDE_RISCV_V_NATIVE)
+    simde_float32x2_t b_tmp = simde_vreinterpret_f32_u64(simde_vdup_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane]));
     simde_float32x2_private r_ = simde_float32x2_to_private(r),
                             a_ = simde_float32x2_to_private(a),
                             b_ = simde_float32x2_to_private(b_tmp);
@@ -295,6 +295,7 @@ simde_vcmla_rot90_laneq_f32(simde_float32x2_t r, simde_float32x2_t a, simde_floa
     r_.sv64 = __riscv_vfmacc_vv_f32m1(r_.sv64, op1, op2, 2);
     return simde_float32x2_from_private(r_);
   #elif defined(SIMDE_SHUFFLE_VECTOR_) && !defined(SIMDE_BUG_GCC_100760)
+    simde_float32x2_t b_tmp = simde_vreinterpret_f32_u64(simde_vdup_n_u64(simde_uint64x2_to_private(simde_vreinterpretq_u64_f32(b)).values[lane]));
     simde_float32x2_private r_ = simde_float32x2_to_private(r),
                             a_ = simde_float32x2_to_private(a),
                             b_ = simde_float32x2_to_private(b_tmp);

@@ -928,7 +928,7 @@ simde_vextq_u16(simde_uint16x8_t a, simde_uint16x8_t b, const int n)
         HEDLEY_STATIC_CAST(int8_t, ((n) + 6)), HEDLEY_STATIC_CAST(int8_t, ((n) + 7))); \
       simde_uint16x8_from_private(simde_vextq_u16_r_); \
     }))
-#elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !defined(SIMDE_BUG_GCC_121064)
+#elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !defined(SIMDE_BUG_GCC_121064)
   #define simde_vextq_u16(a, b, n) (__extension__ ({ \
     simde_uint16x8_private r_; \
     r_.values = __builtin_shufflevector( \

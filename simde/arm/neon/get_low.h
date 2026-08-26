@@ -74,7 +74,7 @@ simde_vget_low_f32(simde_float32x4_t a) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
-    #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1);
     #else
       SIMDE_VECTORIZE
@@ -102,7 +102,7 @@ simde_vget_low_f64(simde_float64x2_t a) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
-    #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(a_.values, a_.values, 0);
     #else
       SIMDE_VECTORIZE
@@ -133,7 +133,7 @@ simde_vget_low_s8(simde_int8x16_t a) {
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
     #else
-      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3, 4, 5, 6, 7);
       #else
         SIMDE_VECTORIZE
@@ -165,7 +165,7 @@ simde_vget_low_s16(simde_int16x8_t a) {
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
     #else
-      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3);
       #else
         SIMDE_VECTORIZE
@@ -197,7 +197,7 @@ simde_vget_low_s32(simde_int32x4_t a) {
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
     #else
-      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1);
       #else
         SIMDE_VECTORIZE
@@ -229,7 +229,7 @@ simde_vget_low_s64(simde_int64x2_t a) {
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
     #else
-      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0);
       #else
         SIMDE_VECTORIZE
@@ -261,7 +261,7 @@ simde_vget_low_u8(simde_uint8x16_t a) {
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
     #else
-      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3, 4, 5, 6, 7);
       #else
         SIMDE_VECTORIZE
@@ -293,7 +293,7 @@ simde_vget_low_u16(simde_uint16x8_t a) {
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
     #else
-      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1, 2, 3);
       #else
         SIMDE_VECTORIZE
@@ -325,7 +325,7 @@ simde_vget_low_u32(simde_uint32x4_t a) {
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
     #else
-      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0, 1);
       #else
         SIMDE_VECTORIZE
@@ -357,7 +357,7 @@ simde_vget_low_u64(simde_uint64x2_t a) {
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = a_.sv128;
     #else
-      #if HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+      #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
         r_.values = __builtin_shufflevector(a_.values, a_.values, 0);
       #else
         SIMDE_VECTORIZE
