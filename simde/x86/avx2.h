@@ -962,7 +962,7 @@ simde_mm256_broadcastss_ps (simde__m128 a) {
       r_.n = _mm256_insertf128_ps(_mm256_castps128_ps256(tmp), tmp, 1);
     #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
       r_.i256 = __lasx_xvreplgr2vr_w(__lsx_vpickve2gr_w(a_.lsx_i64, 0));
-    #elif HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.f32 = __builtin_shufflevector(a_.f32, a_.f32, 0, 0, 0, 0, 0, 0, 0, 0);
     #elif SIMDE_NATURAL_FLOAT_VECTOR_SIZE_LE(128)
       r_.m128[0] = r_.m128[1] = simde_mm_broadcastss_ps(simde__m128_from_private(a_));
@@ -3145,7 +3145,7 @@ simde_mm256_madd_epi16 (simde__m256i a, simde__m256i b) {
     #if SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
       r_.m128i[0] = simde_mm_madd_epi16(a_.m128i[0], b_.m128i[0]);
       r_.m128i[1] = simde_mm_madd_epi16(a_.m128i[1], b_.m128i[1]);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       SIMDE_ALIGN_TO_32 int32_t product SIMDE_VECTOR(64);
       SIMDE_ALIGN_TO_32 int32_t a32x16 SIMDE_VECTOR(64);
       SIMDE_ALIGN_TO_32 int32_t b32x16 SIMDE_VECTOR(64);

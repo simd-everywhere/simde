@@ -200,7 +200,7 @@ simde_wasm_i32x4_relaxed_trunc_f64x2_zero (simde_v128_t a) {
             )
           );
       #endif
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       int32_t SIMDE_VECTOR(8) z = { 0, 0 };
       __typeof__(z) c = __builtin_convertvector(__builtin_shufflevector(a_.f64, a_.f64, 0, 1), __typeof__(z));
       r_.i32 = __builtin_shufflevector(c, z, 0, 1, 2, 3);
@@ -247,7 +247,7 @@ simde_wasm_u32x4_relaxed_trunc_f64x2_zero (simde_v128_t a) {
         );
     #elif defined(SIMDE_ARM_NEON_A64V8_NATIVE)
       r_.neon_u32 = vcombine_u32(vmovn_u64(vcvtq_u64_f64(a_.neon_f64)), vdup_n_u32(UINT32_C(0)));
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       uint32_t SIMDE_VECTOR(8) z = { 0, 0 };
       __typeof__(z) c = __builtin_convertvector(__builtin_shufflevector(a_.f64, a_.f64, 0, 1), __typeof__(z));
       r_.u32 = __builtin_shufflevector(c, z, 0, 1, 2, 3);

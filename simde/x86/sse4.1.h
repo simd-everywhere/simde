@@ -2160,8 +2160,8 @@ simde_mm_packus_epi32 (simde__m128i a, simde__m128i b) {
       r_.wasm_v128 = wasm_u16x8_narrow_i32x4(a_.wasm_v128, b_.wasm_v128);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.lsx_i64 = __lsx_vssrarni_hu_w(b_.lsx_i64, a_.lsx_i64, 0);
-    #elif defined(SIMDE_CONVERT_VECTOR_) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
-      int32_t v SIMDE_VECTOR(32) = SIMDE_SHUFFLE_VECTOR_(32, 32, a_.i32, b_.i32, 0, 1, 2, 3, 4, 5, 6, 7);
+    #elif defined(SIMDE_CONVERT_VECTOR_) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
+      int32_t v SIMDE_VECTOR(32) = __builtin_shufflevector(a_.i32, b_.i32, 0, 1, 2, 3, 4, 5, 6, 7);
 
       v &= ~(v >> 31);
       v |= HEDLEY_REINTERPRET_CAST(__typeof__(v), v > UINT16_MAX);

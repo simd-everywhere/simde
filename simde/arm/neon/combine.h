@@ -81,7 +81,7 @@ simde_vcombine_f32(simde_float32x2_t low, simde_float32x2_t high) {
      * Using SIMDE_SHUFFLE_VECTOR_ here would not work. */
     #if defined(SIMDE_RISCV_V_NATIVE)
         r_.sv128 = __riscv_vslideup_vx_f32m1(low_.sv64, high_.sv64, 2, 4);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3);
     #else
       size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
@@ -113,7 +113,7 @@ simde_vcombine_f64(simde_float64x1_t low, simde_float64x1_t high) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
         r_.sv128 = __riscv_vslideup_vx_f64m1(low_.sv64, high_.sv64, 1, 2);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1);
     #else
       size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
@@ -145,7 +145,7 @@ simde_vcombine_s8(simde_int8x8_t low, simde_int8x8_t high) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
         r_.sv128 = __riscv_vslideup_vx_i8m1(low_.sv64, high_.sv64, 8, 16);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     #else
       size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
@@ -177,7 +177,7 @@ simde_vcombine_s16(simde_int16x4_t low, simde_int16x4_t high) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
         r_.sv128 = __riscv_vslideup_vx_i16m1(low_.sv64, high_.sv64, 4, 8);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3, 4, 5, 6, 7);
     #else
       size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
@@ -209,7 +209,7 @@ simde_vcombine_s32(simde_int32x2_t low, simde_int32x2_t high) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
         r_.sv128 = __riscv_vslideup_vx_i32m1(low_.sv64, high_.sv64, 2, 4);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3);
     #else
       size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
@@ -241,7 +241,7 @@ simde_vcombine_s64(simde_int64x1_t low, simde_int64x1_t high) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
         r_.sv128 = __riscv_vslideup_vx_i64m1(low_.sv64, high_.sv64, 1, 2);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1);
     #else
       size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
@@ -273,7 +273,7 @@ simde_vcombine_u8(simde_uint8x8_t low, simde_uint8x8_t high) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
         r_.sv128 = __riscv_vslideup_vx_u8m1(low_.sv64, high_.sv64, 8, 16);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     #else
       size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
@@ -305,7 +305,7 @@ simde_vcombine_u16(simde_uint16x4_t low, simde_uint16x4_t high) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
         r_.sv128 = __riscv_vslideup_vx_u16m1(low_.sv64, high_.sv64, 4, 8);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3, 4, 5, 6, 7);
     #else
       size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
@@ -337,7 +337,7 @@ simde_vcombine_u32(simde_uint32x2_t low, simde_uint32x2_t high) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
         r_.sv128 = __riscv_vslideup_vx_u32m1(low_.sv64, high_.sv64, 2, 4);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1, 2, 3);
     #else
       size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
@@ -369,7 +369,7 @@ simde_vcombine_u64(simde_uint64x1_t low, simde_uint64x1_t high) {
 
     #if defined(SIMDE_RISCV_V_NATIVE)
         r_.sv128 = __riscv_vslideup_vx_u64m1(low_.sv64, high_.sv64, 1, 2);
-    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector)
       r_.values = __builtin_shufflevector(low_.values, high_.values, 0, 1);
     #else
       size_t halfway = (sizeof(r_.values) / sizeof(r_.values[0])) / 2;
