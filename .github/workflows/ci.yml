@@ -89,7 +89,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         sudo apt-get install -y --no-install-recommends ninja-build pipx \
           gcc-15 g++-15 ccache
         sudo apt-get satisfy -y 'binutils (>= 2.45)'
@@ -135,7 +135,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         sudo apt-get install -y --no-install-recommends ninja-build pipx \
           g++-15 gcc-15 qemu-user-static ccache
         sudo apt-get satisfy -y 'binutils (>= 2.45)'
@@ -175,7 +175,7 @@ jobs:
         persist-credentials: false
     - name: Install APT Dependencies
       run: |
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         sudo apt-get install -y --no-install-recommends ninja-build pipx ccache
         pipx install meson==1.3.2
     - name: ccache
@@ -221,7 +221,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         sudo apt-get -y --no-install-recommends install libxml2-utils \
           ninja-build pipx ccache gcc-15 g++-15
         sudo apt-get satisfy -y 'binutils (>= 2.45)'
@@ -263,7 +263,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         sudo apt-get install -y --no-install-recommends ninja-build libsleef-dev \
           pipx ccache gcc-15 g++-15
         sudo apt-get satisfy -y 'binutils (>= 2.45)'
@@ -387,7 +387,7 @@ jobs:
       run: sudo dpkg --add-architecture armhf && sudo apt-get update && sudo apt-get install -y libstdc++6:armhf
     - name: Install APT Dependencies
       run: |
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
@@ -482,7 +482,7 @@ jobs:
         sudo add-apt-repository ppa:daawesomep/toolchain-backports-noble
     - name: Install APT Dependencies
       run: |
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
         sudo apt-get -y --no-install-recommends install ccache ninja-build \
           gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }} \
@@ -538,7 +538,7 @@ jobs:
       run: |
         #add-apt-repository ppa:savoury1/virtualisation
         #add-apt-repository ppa:savoury1/display
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         sudo apt-get install -y --no-install-recommends ccache ninja-build pkg-config \
           qemu-user-static clang-${{ matrix.version }} binfmt-support \
           libc6-${{ matrix.arch_deb }}-cross meson llvm-${{ matrix.version }} \
@@ -593,7 +593,7 @@ jobs:
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         sudo apt-get install -y --no-install-recommends \
           ninja-build pkg-config qemu-user-static clang-${{ matrix.version }} \
           binfmt-support libc6-${{ matrix.arch_deb }}-cross meson \
@@ -665,7 +665,7 @@ jobs:
       run: cat /proc/cpuinfo
     - name: Install APT Dependencies
       run: |
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         wget https://apt.llvm.org/llvm.sh
         chmod +x llvm.sh
         sudo ./llvm.sh ${{ matrix.version }}
@@ -904,7 +904,7 @@ jobs:
     - name: Install APT Dependencies
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-        sudo add-apt-repository ppa:stephanosio/ccache
+        sudo add-apt-repository ppa:ccache-backports/ccache-backports-ppa
         sudo add-apt-repository ppa:canonical-x/x-staging
         sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
         sudo apt-get -y --no-install-recommends install ninja-build pipx \

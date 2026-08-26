@@ -338,7 +338,7 @@ jobs:
         EXTRA: ${{ github.event.client_payload.extra }} 
       run: |
         sudo add-apt-repository ppa:misterc/gcc-snapshot-latest-lts
-        sudo apt-get -y --no-install-recommends install ccache ninja-build \
+        sudo apt-get -y --no-install-recommends install ninja-build \
           binfmt-support qemu-user-static pipx libc6-${{ matrix.arch_deb }}-cross
         sudo apt-get install "${EXTRA:---yes}" \
           gcc-${{ matrix.version }}-${{ matrix.arch_gnu }}-linux-gnu \
