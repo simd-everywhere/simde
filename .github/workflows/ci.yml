@@ -703,19 +703,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        # clang-10 is tested on Semaphore-CI https://nemequ.semaphoreci.com/projects/simde
-        - version: "11"
-          distro: ubuntu-22.04
-        - version: "12"
-          distro: ubuntu-22.04
-        - version: "12"
-          distro: ubuntu-22.04
-          arch_flags: -ffast-math
-        - version: "13"
-          distro: ubuntu-22.04
-        - version: "13"
-          distro: ubuntu-22.04
-          arch_flags: -ffast-math
         - version: "14"
           distro: ubuntu-24.04
         - version: "14"
@@ -893,13 +880,6 @@ jobs:
     - name: enable armhf
       if: ${{ matrix.pkg == 'libstdc++-16-dev-armhf-cross' }}
       run: sudo dpkg --add-architecture armhf && sudo apt-get update && sudo apt-get install -y libstdc++6:armhf
-    - name: Install PPAs for Ubuntu 22.04
-      if: ${{ matrix.distro == 'ubuntu-22.04' }}
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo add-apt-repository ppa:savoury1/build-tools
-        sudo add-apt-repository ppa:savoury1/display
-        sudo add-apt-repository ppa:savoury1/llvm-defaults-16
     - name: Install newer clang
       if: ${{ matrix.version == '21' || matrix.version == '22' }}
       run: |
