@@ -1055,7 +1055,7 @@ simde_vld2q_f64(simde_float64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
     return r;
   #else
     #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && \
-        defined(HEDLEY_GCC_VERSION) && defined(SIMDE_ARCH_LOONGARCH)
+        defined(HEDLEY_GCC_VERSION)
       HEDLEY_DIAGNOSTIC_PUSH
       SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_
     #endif
@@ -1072,7 +1072,7 @@ simde_vld2q_f64(simde_float64_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
       simde_float64x2_from_private(r_[1]),
     } };
     #if defined(SIMDE_DIAGNOSTIC_DISABLE_UNINITIALIZED_) && \
-        defined(HEDLEY_GCC_VERSION) && defined(SIMDE_ARCH_LOONGARCH)
+        defined(HEDLEY_GCC_VERSION)
       HEDLEY_DIAGNOSTIC_POP
     #endif
 

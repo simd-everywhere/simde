@@ -4352,7 +4352,7 @@ simde__m256d
 simde_mm256_permute4x64_pd (simde__m256d a, const int imm8)
     SIMDE_REQUIRE_CONSTANT_RANGE(imm8, 0, 255) {
   simde__m256d_private
-    r_,
+    r_ = simde__m256d_to_private(simde_mm256_setzero_pd()),
     a_ = simde__m256d_to_private(a);
 
   r_.f64[0] = (imm8 & 0x02) ? a_.f64[((imm8       ) & 1)+2] : a_.f64[(imm8       ) & 1];
