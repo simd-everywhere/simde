@@ -858,6 +858,28 @@ jobs:
         - version: "22"
           distro: ubuntu-26.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        - version: "23"
+          distro: ubuntu-26.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "23"
+          distro: ubuntu-26.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "23"
+          distro: ubuntu-26.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        # - version: "23"
+        #   distro: ubuntu-26.04-arm
+        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "23"
+          distro: ubuntu-26.04-arm
+          plain: true
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        # - version: "23"
+        #   distro: ubuntu-26.04-arm
+        #   arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "23"
+          distro: ubuntu-26.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} ${{ case(
