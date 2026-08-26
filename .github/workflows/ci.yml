@@ -827,28 +827,6 @@ jobs:
         - version: "21"
           distro: ubuntu-26.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
-        # - version: "22"
-        #   distro: ubuntu-26.04
-        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
-        # - version: "22"
-        #   distro: ubuntu-26.04
-        #   arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
-        # - version: "22"
-        #   distro: ubuntu-26.04
-        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
-        # - version: "22"
-        #   distro: ubuntu-26.04-arm
-        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
-        # - version: "22"
-        #   distro: ubuntu-26.04-arm
-        #   plain: true
-        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
-        # - version: "22"
-        #   distro: ubuntu-26.04-arm
-        #   arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
-        # - version: "22"
-        #   distro: ubuntu-26.04-arm
-        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
         - version: "21"  # armv7
           distro: ubuntu-24.04-arm
           arch_flags: --target=arm-linux-gnueabihf -march=armv7-a -mfpu=neon -isystem=/usr/arm-linux-gnueabihf/include -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
@@ -858,6 +836,28 @@ jobs:
           distro: ubuntu-26.04
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
           plain: true
+        - version: "22"
+          distro: ubuntu-26.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "22"
+          distro: ubuntu-26.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "22"
+          distro: ubuntu-26.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        - version: "22"
+          distro: ubuntu-26.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "22"
+          distro: ubuntu-26.04-arm
+          plain: true
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "22"
+          distro: ubuntu-26.04-arm
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "22"
+          distro: ubuntu-26.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} ${{ case(
@@ -879,7 +879,7 @@ jobs:
       if: ${{ matrix.pkg == 'g++-arm-linux-gnueabihf' }}
       run: sudo dpkg --add-architecture armhf && sudo apt-get update && sudo apt-get install -y libstdc++6:armhf
     - name: Install newer clang
-      if: ${{ matrix.version == '21' || matrix.version == '22' }}
+      if: ${{ fromJSON(matrix.version) >= '21' }}
       run: |
         wget https://apt.llvm.org/llvm.sh
         chmod +x llvm.sh
