@@ -30,6 +30,7 @@
 #define SIMDE_ARM_NEON_ADD_H
 
 #include "types.h"
+#include "arm_nan.h"
 
 HEDLEY_DIAGNOSTIC_PUSH
 SIMDE_DISABLE_UNWANTED_DIAGNOSTICS
@@ -131,6 +132,10 @@ simde_vadd_f32(simde_float32x2_t a, simde_float32x2_t b) {
       }
     #endif
 
+    #if defined(SIMDE_NO_FAST_NANS)
+      r_ = arm_nan_eval_float32x2(a, b, r_);
+    #endif
+
     return simde_float32x2_from_private(r_);
   #endif
 }
@@ -159,6 +164,10 @@ simde_vadd_f64(simde_float64x1_t a, simde_float64x1_t b) {
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         r_.values[i] = a_.values[i] + b_.values[i];
       }
+    #endif
+
+    #if defined(SIMDE_NO_FAST_NANS)
+      r_ = arm_nan_eval_float64x1(a, b, r_);
     #endif
 
     return simde_float64x1_from_private(r_);
@@ -477,6 +486,10 @@ simde_vaddq_f32(simde_float32x4_t a, simde_float32x4_t b) {
       }
     #endif
 
+    #if defined(SIMDE_NO_FAST_NANS)
+      r_ = arm_nan_eval_float32x4(a, b, r_);
+    #endif
+
     return simde_float32x4_from_private(r_);
   #endif
 }
@@ -511,6 +524,10 @@ simde_vaddq_f64(simde_float64x2_t a, simde_float64x2_t b) {
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
         r_.values[i] = a_.values[i] + b_.values[i];
       }
+    #endif
+
+    #if defined(SIMDE_NO_FAST_NANS)
+      r_ = arm_nan_eval_float64x2(a, b, r_);
     #endif
 
     return simde_float64x2_from_private(r_);
