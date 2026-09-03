@@ -11,8 +11,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Check workflow files
-        run: |
-          echo "::add-matcher::.github/actionlint-matcher.json"
-          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
-          ./actionlint -color
-        shell: bash
+        uses: kjanat/actionlint@1ab487e641ac26ed42a8a753158033d55eaae2e4 # v1.14.0
