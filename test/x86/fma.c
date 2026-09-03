@@ -202,7 +202,8 @@ test_simde_mm_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
       simde_mm_set_ps(SIMDE_FLOAT32_C( 31812.13), SIMDE_FLOAT32_C(145756.81), SIMDE_FLOAT32_C(670825.81), SIMDE_FLOAT32_C(320549.81)) }
     // int32 test values below from https://gist.github.com/awxkee/afd3ee135602056a56806db9ddfcb9c9#file-subnormals-rs-L86
     // results from real fma hardware
-    #if !(defined(SIMDE_FAST_MATH) || defined(HEDLEY_EMSCRIPTEN_VERSION))
+    #if !(defined(SIMDE_FAST_MATH) || defined(HEDLEY_EMSCRIPTEN_VERSION)) && !defined(SIMDE_MUSL)
+    // musl has a rounding bug
       ,
       { simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x97000800, 0x97000800, 0x97000800, 0x19ffe002)),
         simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x1cfff001, 0x1cfff001, 0x1cfff001, 0x1a001001)),
@@ -227,17 +228,14 @@ test_simde_mm_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
       { simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x19ffe002, 0x17000800, 0x17000800, 0x17000800)),
         simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x1a001001, 0x1cfff001, 0x1cfff001, 0x1cfff001)),
         simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x80200002, 0x00010000, 0x00040000, 0x00200000)),
-        simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x80200001, 0x00010001, 0x00040001, 0x00200001)) }
-      #if defined(__GLIBC__) // musl has a rounding bug
-        ,
-        // The last two test cases are from
-        // https://github.com/rust-lang/compiler-builtins/pull/1270/changes#diff-7c4faa43a11b9e273cfd91a0f5855816524b96544807e010740fcfa1253cd333R186
-        // "fmaf_subnormal_round_to_odd_parity" & "fmaf_round_to_odd_before_overflow"
-        { simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x97000800, 0x97000800, 0x15efb8d7, 0x5f780000)),
-          simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x1cfff001, 0x1cfff001, 0x9e08b110, 0x5f842108)),
-          simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x00010002, 0x00200002, 0x8004c5ce, 0x80000001)),
-          simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x00010001, 0x00200001, 0x8004c5cf, 0x7F7FFFFF)) }
-      #endif
+        simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x80200001, 0x00010001, 0x00040001, 0x00200001)) },
+      // The last two test cases are from
+      // https://github.com/rust-lang/compiler-builtins/pull/1270/changes#diff-7c4faa43a11b9e273cfd91a0f5855816524b96544807e010740fcfa1253cd333R186
+      // "fmaf_subnormal_round_to_odd_parity" & "fmaf_round_to_odd_before_overflow"
+      { simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x97000800, 0x97000800, 0x15efb8d7, 0x5f780000)),
+        simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x1cfff001, 0x1cfff001, 0x9e08b110, 0x5f842108)),
+        simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x00010002, 0x00200002, 0x8004c5ce, 0x80000001)),
+        simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x00010001, 0x00200001, 0x8004c5cf, 0x7F7FFFFF)) }
     #endif
   };
 
@@ -388,7 +386,8 @@ test_simde_mm256_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
                          SIMDE_FLOAT32_C(  1004.20), SIMDE_FLOAT32_C(   541.56),
                          SIMDE_FLOAT32_C( -3149.06), SIMDE_FLOAT32_C(  -626.76),
                          SIMDE_FLOAT32_C(  -607.06), SIMDE_FLOAT32_C(  6898.45)) },
-    #if !(defined(SIMDE_FAST_MATH) || defined(HEDLEY_EMSCRIPTEN_VERSION))
+    #if !(defined(SIMDE_FAST_MATH) || defined(HEDLEY_EMSCRIPTEN_VERSION)) && !defined(SIMDE_MUSL)
+      // musl has a rounding bug
       // int32 test values below from https://gist.github.com/awxkee/afd3ee135602056a56806db9ddfcb9c9#file-subnormals-rs-L86
       // results from real fma hardware
       { simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x97000800, 0x97000800, 0x97000800, 0x19ffe002, 0x99ffe002, 0x19ffe002, 0x99ffe002, 0x19ffe002)),
@@ -402,17 +401,14 @@ test_simde_mm256_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
       { simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x19ffe002, 0x99ffe002, 0x19ffe002, 0x99ffe002, 0x19ffe002, 0x17000800, 0x17000800, 0x17000800)),
         simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x1a001001, 0x1a001001, 0x1a001001, 0x1a001001, 0x1a001001, 0x1cfff001, 0x1cfff001, 0x1cfff001)),
         simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x80000402, 0x00010002, 0x80010002, 0x00200002, 0x80200002, 0x00010000, 0x00040000, 0x00200000)),
-        simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x80000401, 0x00010001, 0x80010001, 0x00200001, 0x80200001, 0x00010001, 0x00040001, 0x00200001)) }
-      #if defined(__GLIBC__) // musl has a rounding bug
-      ,
-        // The last two test cases are from
-        // https://github.com/rust-lang/compiler-builtins/pull/1270/changes#diff-7c4faa43a11b9e273cfd91a0f5855816524b96544807e010740fcfa1253cd333R186
-        // "fmaf_subnormal_round_to_odd_parity" & "fmaf_round_to_odd_before_overflow"
-        { simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x97000800, 0x97000800, 0x15efb8d7, 0x5f780000, 0, 0, 0, 0)),
-          simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x1cfff001, 0x1cfff001, 0x9e08b110, 0x5f842108, 0, 0, 0, 0)),
-          simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x00010002, 0x00200002, 0x8004c5ce, 0x80000001, 0, 0, 0, 0)),
-          simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x00010001, 0x00200001, 0x8004c5cf, 0x7F7FFFFF, 0, 0, 0, 0)) }
-      #endif
+        simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x80000401, 0x00010001, 0x80010001, 0x00200001, 0x80200001, 0x00010001, 0x00040001, 0x00200001)) },
+      // The last two test cases are from
+      // https://github.com/rust-lang/compiler-builtins/pull/1270/changes#diff-7c4faa43a11b9e273cfd91a0f5855816524b96544807e010740fcfa1253cd333R186
+      // "fmaf_subnormal_round_to_odd_parity" & "fmaf_round_to_odd_before_overflow"
+      { simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x97000800, 0x97000800, 0x15efb8d7, 0x5f780000, 0, 0, 0, 0)),
+        simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x1cfff001, 0x1cfff001, 0x9e08b110, 0x5f842108, 0, 0, 0, 0)),
+        simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x00010002, 0x00200002, 0x8004c5ce, 0x80000001, 0, 0, 0, 0)),
+        simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x00010001, 0x00200001, 0x8004c5cf, 0x7F7FFFFF, 0, 0, 0, 0)) }
     #endif
   };
 
