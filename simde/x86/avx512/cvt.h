@@ -699,7 +699,7 @@ simde_mm512_cvtepu32_ps (simde__m512i a) {
     simde__m512_private r_;
     simde__m512i_private a_ = simde__m512i_to_private(a);
 
-    #if defined(SIMDE_X86_SSE2_NATIVE)
+    #if defined(SIMDE_X86_SSE2_NATIVE) && !(defined(__OPTIMIZE__) && !(defined(HEDLEY_GCC_VERSION) && HEDLEY_GCC_VERSION_CHECK(13,0,0)) && defined(__cplusplus))
       for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) {
         /* https://stackoverflow.com/a/34067907/501126 */
         const __m128 tmp = _mm_cvtepi32_ps(_mm_srli_epi32(a_.m128i[i], 1));
