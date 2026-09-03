@@ -131,12 +131,13 @@ simde_mm_fmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
       r_.neon_f32 = vfmaq_f32(c_.neon_f32, b_.neon_f32, a_.neon_f32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_f32 = vmlaq_f32(c_.neon_f32, b_.neon_f32, a_.neon_f32);
-    #elif defined(simde_math_fmaf) && (defined(__FP_FAST_FMAF) || defined(FP_FAST_FMAF))
+    #elif defined(simde_math_fmaf) && (!defined(SIMDE_FAST_MATH) || (defined(__FP_FAST_FMAF) || defined(FP_FAST_FMAF)))
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
         r_.f32[i] = simde_math_fmaf(a_.f32[i], b_.f32[i], c_.f32[i]);
       }
     #else
+      //todo if !defined(simde_fast_math), implement the correct algo to avoid intermediate rounding
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.f32) / sizeof(r_.f32[0])) ; i++) {
         r_.f32[i] = (a_.f32[i] * b_.f32[i]) + c_.f32[i];
@@ -158,20 +159,19 @@ simde_mm256_fmadd_ps (simde__m256 a, simde__m256 b, simde__m256 c) {
     return _mm256_fmadd_ps(a, b, c);
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
     return __lasx_xvfmadd_s(a, b, c);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+  #elif defined(SIMDE_FAST_MATH) && !SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+     return simde_mm256_add_ps(simde_mm256_mul_ps(a, b), c);
+  #else
     simde__m256_private
       a_ = simde__m256_to_private(a),
       b_ = simde__m256_to_private(b),
       c_ = simde__m256_to_private(c),
       r_;
-
     for (size_t i = 0 ; i < (sizeof(r_.m128) / sizeof(r_.m128[0])) ; i++) {
       r_.m128[i] = simde_mm_fmadd_ps(a_.m128[i], b_.m128[i], c_.m128[i]);
     }
 
     return simde__m256_from_private(r_);
-  #else
-    return simde_mm256_add_ps(simde_mm256_mul_ps(a, b), c);
   #endif
 }
 #if defined(SIMDE_X86_FMA_ENABLE_NATIVE_ALIASES)
