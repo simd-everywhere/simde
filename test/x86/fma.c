@@ -202,7 +202,7 @@ test_simde_mm_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
       simde_mm_set_ps(SIMDE_FLOAT32_C( 31812.13), SIMDE_FLOAT32_C(145756.81), SIMDE_FLOAT32_C(670825.81), SIMDE_FLOAT32_C(320549.81)) }
     // int32 test values below from https://gist.github.com/awxkee/afd3ee135602056a56806db9ddfcb9c9#file-subnormals-rs-L86
     // results from real fma hardware
-    #if !defined(SIMDE_FAST_MATH)
+    #if !(defined(SIMDE_FAST_MATH) || defined(HEDLEY_EMSCRIPTEN_VERSION))
       ,
       { simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x97000800, 0x97000800, 0x97000800, 0x19ffe002)),
         simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x1cfff001, 0x1cfff001, 0x1cfff001, 0x1a001001)),
@@ -243,10 +243,10 @@ test_simde_mm_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
 
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m128 r = simde_mm_fmadd_ps(test_vec[i].a, test_vec[i].b, test_vec[i].c);
-    if (i>7) {
-	    simde_test_x86_assert_equal_u32x4(simde_mm_castps_si128(r), simde_mm_castps_si128(test_vec[i].r));
-    }
     simde_test_x86_assert_equal_f32x4(r, test_vec[i].r, 1);
+    if (i > 7) {
+      simde_test_x86_assert_equal_u32x4(simde_mm_castps_si128(r), simde_mm_castps_si128(test_vec[i].r));
+    }
   }
 
   return 0;
@@ -388,7 +388,7 @@ test_simde_mm256_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
                          SIMDE_FLOAT32_C(  1004.20), SIMDE_FLOAT32_C(   541.56),
                          SIMDE_FLOAT32_C( -3149.06), SIMDE_FLOAT32_C(  -626.76),
                          SIMDE_FLOAT32_C(  -607.06), SIMDE_FLOAT32_C(  6898.45)) },
-    #if !defined(SIMDE_FAST_MATH)
+    #if !(defined(SIMDE_FAST_MATH) || defined(HEDLEY_EMSCRIPTEN_VERSION))
       // int32 test values below from https://gist.github.com/awxkee/afd3ee135602056a56806db9ddfcb9c9#file-subnormals-rs-L86
       // results from real fma hardware
       { simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x97000800, 0x97000800, 0x97000800, 0x19ffe002, 0x99ffe002, 0x19ffe002, 0x99ffe002, 0x19ffe002)),
@@ -419,7 +419,7 @@ test_simde_mm256_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
     simde__m256 r = simde_mm256_fmadd_ps(test_vec[i].a, test_vec[i].b, test_vec[i].c);
     if (i>7) {
-	    simde_test_x86_assert_equal_u32x8(simde_mm256_castps_si256(r), simde_mm256_castps_si256(test_vec[i].r));
+      simde_test_x86_assert_equal_u32x8(simde_mm256_castps_si256(r), simde_mm256_castps_si256(test_vec[i].r));
     }
     simde_test_x86_assert_equal_f32x8(r, test_vec[i].r, 1);
   }

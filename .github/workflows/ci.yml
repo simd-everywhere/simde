@@ -160,6 +160,7 @@ jobs:
   emscripten:
     runs-on: ubuntu-26.04
     strategy:
+      fail-fast: false
       matrix:
         variant:
           - "32"
@@ -185,8 +186,8 @@ jobs:
       run: |
         git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk
         cd /opt/emsdk
-        ./emsdk install latest  # FIXME, revert to tot
-        ./emsdk activate latest  # FIXME, revert to tot
+        ./emsdk install tot
+        ./emsdk activate tot
         source emsdk_env.sh
     - name: Install v8
       run: |
