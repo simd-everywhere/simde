@@ -131,7 +131,7 @@ simde_mm_fmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
       r_.altivec_f32 = vec_madd(a_.altivec_f32, b_.altivec_f32, c_.altivec_f32);
     #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_FMA)
       r_.neon_f32 = vfmaq_f32(c_.neon_f32, b_.neon_f32, a_.neon_f32);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_FAST_MATH)
       r_.neon_f32 = vmlaq_f32(c_.neon_f32, b_.neon_f32, a_.neon_f32);
     #elif defined(SIMDE_WASM_RELAXED_SIMD_NATIVE) && defined(SIMDE_FAST_MATH)
       r_.wasm_v128 = wasm_f32x4_relaxed_madd(a_.wasm_v128, b_.wasm_v128, c_.wasm_v128);
@@ -594,7 +594,7 @@ simde_mm_fnmadd_ps (simde__m128 a, simde__m128 b, simde__m128 c) {
 
     #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_ARCH_ARM_FMA)
       r_.neon_f32 = vfmsq_f32(c_.neon_f32, a_.neon_f32, b_.neon_f32);
-    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE) && defined(SIMDE_FAST_MATH)
       r_.neon_f32 = vmlsq_f32(c_.neon_f32, a_.neon_f32, b_.neon_f32);
     #elif defined(SIMDE_WASM_RELAXED_SIMD_NATIVE)
       r_.wasm_v128 = wasm_f32x4_relaxed_nmadd(a_.wasm_v128, b_.wasm_v128, c_.wasm_v128);
