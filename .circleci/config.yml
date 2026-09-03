@@ -255,7 +255,7 @@ jobs:
             ccache -z
       - run: |
           export PATH=/usr/lib/ccache:${PATH}
-          meson setup build -Dc_args="-DSIMDE_NO_NATIVE -Wextra -Werror" -Dcpp_args="-DSIMDE_NO_NATIVE -Wextra -Werror"
+          meson setup build -Dc_args="-DSIMDE_NO_NATIVE -DSIMDE_MUSL -Wextra -Werror" -Dcpp_args="-DSIMDE_NO_NATIVE -DSIMDE_MUSL -Wextra -Werror"
           meson compile -C build --verbose -j 5
       - run: /usr/bin/ccache -s
       - save_cache:

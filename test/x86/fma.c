@@ -228,7 +228,7 @@ test_simde_mm_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
         simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x1a001001, 0x1cfff001, 0x1cfff001, 0x1cfff001)),
         simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x80200002, 0x00010000, 0x00040000, 0x00200000)),
         simde_mm_castsi128_ps(simde_x_mm_set_epu32(0x80200001, 0x00010001, 0x00040001, 0x00200001)) }
-      #if defined(__GLIBC__) // musl has a rounding bug
+      #if !defined(SIMDE_MUSL) // musl has a rounding bug
         ,
         // The last two test cases are from
         // https://github.com/rust-lang/compiler-builtins/pull/1270/changes#diff-7c4faa43a11b9e273cfd91a0f5855816524b96544807e010740fcfa1253cd333R186
@@ -403,7 +403,7 @@ test_simde_mm256_fmadd_ps(SIMDE_MUNIT_TEST_ARGS) {
         simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x1a001001, 0x1a001001, 0x1a001001, 0x1a001001, 0x1a001001, 0x1cfff001, 0x1cfff001, 0x1cfff001)),
         simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x80000402, 0x00010002, 0x80010002, 0x00200002, 0x80200002, 0x00010000, 0x00040000, 0x00200000)),
         simde_mm256_castsi256_ps(simde_x_mm256_set_epu32(0x80000401, 0x00010001, 0x80010001, 0x00200001, 0x80200001, 0x00010001, 0x00040001, 0x00200001)) }
-      #if defined(__GLIBC__) // musl has a rounding bug
+      #if !defined(SIMDE_MUSL) // musl has a rounding bug
       ,
         // The last two test cases are from
         // https://github.com/rust-lang/compiler-builtins/pull/1270/changes#diff-7c4faa43a11b9e273cfd91a0f5855816524b96544807e010740fcfa1253cd333R186
