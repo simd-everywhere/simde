@@ -402,7 +402,7 @@ SIMDE_BEGIN_DECLS_
       int       type;
     } simde_svbool_t;
 
-    #if defined(__BMI2__)
+    #if defined(SIMDE_X86_BMI2_NATIVE) && defined(SIMDE_ARCH_AMD64)
       static const uint64_t simde_arm_sve_mask_bp_lo_ = UINT64_C(0x5555555555555555);
       static const uint64_t simde_arm_sve_mask_bp_hi_ = UINT64_C(0xaaaaaaaaaaaaaaaa);
 
