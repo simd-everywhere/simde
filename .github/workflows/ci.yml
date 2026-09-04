@@ -688,6 +688,8 @@ jobs:
           binutils-${{ matrix.arch_gnu }}-linux-gnu${{ matrix.arch_gnu_abi }}
         sudo apt-get -y --no-install-recommends satisfy 'qemu-user-static | qemu-user-binfmt'
         pipx install meson
+    - if: ${{ matrix.arch_deb == 's390x' }}
+      run: sudo dpkg --add-architecture s390x && sudo apt-get update && sudo apt-get install -y libclang-rt-${{ matrix.version }}-dev:s390x
     - name: ccache
       uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
       with:
