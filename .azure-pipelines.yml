@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'ubuntu-26.04'
+  vmImage: 'ubuntu-24.04'
 
 trigger:
   branches:
