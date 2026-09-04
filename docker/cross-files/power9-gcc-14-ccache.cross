@@ -5,7 +5,7 @@ ar = 'powerpc64le-linux-gnu-ar'
 strip = 'powerpc64le-linux-gnu-strip'
 objcopy = 'powerpc64le-linux-gnu-objcopy'
 ld = 'powerpc64le-linux-gnu-ld'
-exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power9', '-L', '/usr/powerpc64le-linux-gnu/']
+exe_wrapper = ['qemu-ppc64le', '-cpu', 'power9', '-L', '/usr/powerpc64le-linux-gnu/']
 
 [built-in options]
 c_args = ['-mcpu=power9', '-Wextra', '-Werror']

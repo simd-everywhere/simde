@@ -6,7 +6,7 @@ strip = 'llvm-strip-20'
 objcopy = 'llvm-objcopy-20'
 c_ld = 'lld'
 cpp_ld = 'lld'
-exe_wrapper = ['qemu-s390x-static', '-L', '/usr/s390x-linux-gnu/']
+exe_wrapper = ['qemu-s390x', '-L', '/usr/s390x-linux-gnu/']
 
 [built-in options]
 c_args        = ['--target=s390x-linux-gnu', '-isystem=/usr/s390x-linux-gnu/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage', '-Wno-switch-default']

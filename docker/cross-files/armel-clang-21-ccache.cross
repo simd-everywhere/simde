@@ -6,7 +6,7 @@ strip = 'llvm-strip-21'
 objcopy = 'llvm-objcopy-21'
 c_ld = 'lld'
 cpp_ld = 'lld'
-exe_wrapper = ['qemu-arm-static', '-L', '/usr/arm-linux-gnueabi']
+exe_wrapper = ['qemu-arm', '-L', '/usr/arm-linux-gnueabi']
 
 [built-in options]
 c_args = ['--target=arm-linux-gnueabi', '-isystem=/usr/arm-linux-gnueabi/include', '-Weverything', '-fno-lax-vector-conversions', '-Werror', '-Wno-unsafe-buffer-usage', '-Wno-switch-default', '-Wno-c++-keyword']

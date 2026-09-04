@@ -9,7 +9,7 @@ ld = 'powerpc64le-linux-gnu-ld'
 # ppc64el userspace (glibc) has a POWER8 baseline, so emulating a real
 # power7 would SIGILL inside libc. Code compiled with -mcpu=power7 uses
 # only a subset ISA and runs fine on the newer CPU model.
-exe_wrapper = ['qemu-ppc64le-static', '-cpu', 'power9', '-L', '/usr/powerpc64le-linux-gnu/']
+exe_wrapper = ['qemu-ppc64le', '-cpu', 'power9', '-L', '/usr/powerpc64le-linux-gnu/']
 
 [built-in options]
 c_args = ['-mcpu=power7', '-Wextra', '-Werror']
