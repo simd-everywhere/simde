@@ -27,4 +27,4 @@ jobs:
     trigger: commit
     # Run except the "master*" and "dependabot*" branches.
     # https://github.com/packit/packit/issues/1986
-    branch: '(?!master)(?!dependabot)'
+    branch: '(?!master)(?!dependabot)(?!ci/circleci)(?!ci/azure)(?!ci/gha)(?!ci/appveyor)(!?ci/travis)(!?ci/semaphore)'
