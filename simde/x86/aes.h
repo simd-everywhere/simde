@@ -319,6 +319,7 @@ simde__m128i simde_mm_aesenc_si128(simde__m128i a, simde__m128i round_key) {
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
+  #undef _mm_aesenc_si128
   #define _mm_aesenc_si128(a, b) simde_mm_aesenc_si128(a, b)
 #endif
 
@@ -341,6 +342,7 @@ simde__m128i simde_mm_aesdec_si128(simde__m128i a, simde__m128i round_key) {
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
+  #undef _mm_aesdec_si128
   #define _mm_aesdec_si128(a, b) simde_mm_aesdec_si128(a, b)
 #endif
 
@@ -362,6 +364,7 @@ simde__m128i simde_mm_aesenclast_si128(simde__m128i a, simde__m128i round_key) {
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
+  #undef _mm_aesenclast_si128
   #define _mm_aesenclast_si128(a, b) simde_mm_aesenclast_si128(a, b)
 #endif
 
@@ -384,6 +387,7 @@ simde__m128i simde_mm_aesdeclast_si128(simde__m128i a, simde__m128i round_key) {
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
+  #undef _mm_aesdeclast_si128
   #define _mm_aesdeclast_si128(a, b) simde_mm_aesdeclast_si128(a, b)
 #endif
 
@@ -419,6 +423,7 @@ simde__m128i simde_mm_aesimc_si128(simde__m128i a) {
   #endif
 }
 #if defined(SIMDE_X86_AES_ENABLE_NATIVE_ALIASES)
+  #undef _mm_aesimc_si128
   #define _mm_aesimc_si128(a) simde_mm_aesimc_si128(a)
 #endif
 
