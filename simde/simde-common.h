@@ -1056,7 +1056,9 @@ HEDLEY_DIAGNOSTIC_POP
 #    if defined(SIMDE_ARCH_ARM) && !defined(SIMDE_ARCH_AARCH64)
 #      define SIMDE_BUG_GCC_95399
 #      define SIMDE_BUG_GCC_95471
-#      define SIMDE_BUG_GCC_111609
+#      if !HEDLEY_GCC_VERSION_CHECK(17,0,0)
+#        define SIMDE_BUG_GCC_111609
+#      endif
 #      if SIMDE_ARCH_ARM_CHECK(8,0)
 #        define SIMDE_BUG_GCC_113065
 #      endif
