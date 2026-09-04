@@ -73,7 +73,7 @@ simde_pext_u64(uint64_t a, uint64_t mask)
   return r;
 #endif
 }
-#if defined(SIMDE_X86_BMI2_NATIVE)
+#if defined(SIMDE_X86_BMI2_NATIVE) && defined(SIMDE_ARCH_AMD64)
 #define simde_pext_u64(a, mask) _pext_u64(a, mask)
 #endif
 #if defined(SIMDE_X86_BMI2_ENABLE_NATIVE_ALIASES)
@@ -129,7 +129,7 @@ simde_pdep_u64(uint64_t a, uint64_t mask)
   return r;
 #endif
 }
-#if defined(SIMDE_X86_BMI2_NATIVE)
+#if defined(SIMDE_X86_BMI2_NATIVE) && defined(SIMDE_ARCH_AMD64)
 #define simde_pdep_u64(a, mask) _pdep_u64(a, mask)
 #endif
 #if defined(SIMDE_X86_BMI2_ENABLE_NATIVE_ALIASES)
@@ -161,7 +161,7 @@ simde_bextr_u64(uint64_t a, unsigned int start, unsigned int len) {
   if (len > 64 - start) len = 64 - start;
   return (a >> start) & (mask  >> (64 - len));
 }
-#if defined(SIMDE_X86_BMI1_NATIVE)
+#if defined(SIMDE_X86_BMI1_NATIVE) && defined(SIMDE_ARCH_AMD64)
 #define simde_bextr_u64(a, start, len) _bextr_u64(a, start, len)
 #endif
 #if defined(SIMDE_X86_BMI1_ENABLE_NATIVE_ALIASES)
