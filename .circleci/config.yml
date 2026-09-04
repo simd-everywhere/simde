@@ -10,7 +10,51 @@ jobs:
       CC: gcc
       CXX: g++
     steps:
-      - run: sudo apt-get update && sudo apt-get install -y git ninja-build pipx gcc-14 g++-14 libxml2-utils ccache
+      - run:
+          name: Update Ubuntu mirror
+          command: |
+            sudo sed -i 's=http://us-east-1.ec2.ports.ubuntu.com/ubuntu-ports/=http://ports.ubuntu.com/ubuntu-ports/=g' /etc/apt/sources.list.d/ubuntu.sources
+      - run:
+          name: install dependencies
+          command: |
+            function retry_command() {
+              local retries="$1"
+              local timeout_duration="$2"
+              local original_command="$3"
+              local command="timeout -k 10s $timeout_duration $original_command"
+              local options="$-" # Get the current "set" options
+
+              # Disable set -e
+              if [[ $options == *e* ]]; then
+                >&2 echo "Temporarily disabling set -e"
+                set +e
+              fi
+
+              # Run the command, and save the exit code
+              >&2 echo "Running command: $command"
+              $command
+              local exit_code=$?
+              >&2 echo "Command exited with code: $exit_code"
+
+              # restore initial options
+              if [[ $options == *e* ]]; then
+                >&2 echo "Restoring set -e"
+                set -e
+              fi
+
+              # If the exit code is non-zero (i.e. command failed), and we have not
+              # reached the maximum number of retries, run the command again
+              if [[ $exit_code -ne 0 && $retries -gt 0 ]]; then
+                >&2 echo "Command failed, retrying in 10 seconds..."
+                sleep 10s
+                retry_command $(($retries - 1)) "$timeout_duration" "$original_command"
+              else
+                >&2 echo "No more retries, returning exit code: $exit_code"
+                return $exit_code
+              fi
+            }
+            retry_command 5 1m "sudo apt-get update -y"
+            retry_command 5 2m "sudo apt-get install -y git ninja-build pipx gcc-14 g++-14 libxml2-utils ccache"
       - checkout
       - restore_cache:
          keys:
@@ -308,42 +352,18 @@ workflows:
   test:
     jobs:
       - native-aliases-arm64:
-          filters:
-            branches:
-              ignore:
-              - /^ci/(?!circleci).*$/
+          filters: not (pipeline.git.branch starts-with "ci/") or (pipeline.git.branch starts-with "ci/circleci")
       - portable-memfunctions:
-          filters:
-            branches:
-              ignore:
-              - /^ci/(?!circleci).*$/
+          filters: not (pipeline.git.branch starts-with "ci/") or (pipeline.git.branch starts-with "ci/circleci")
       - gcc:
-          filters:
-            branches:
-              ignore:
-              - /^ci/(?!circleci).*$/
+          filters: not (pipeline.git.branch starts-with "ci/") or (pipeline.git.branch starts-with "ci/circleci")
       - clang:
-          filters:
-            branches:
-              ignore:
-              - /^ci/(?!circleci).*$/
+          filters: not (pipeline.git.branch starts-with "ci/") or (pipeline.git.branch starts-with "ci/circleci")
       # - i686:
-      #     filters:
-      #       branches:
-      #         ignore:
-      #         - /^ci/(?!circleci).*$/
+      #     filters: not (pipeline.git.branch starts-with "ci/") or (pipeline.git.branch starts-with "ci/circleci")
       - i686-gcc12-O2:
-          filters:
-            branches:
-              ignore:
-              - /^ci/(?!circleci).*$/
+          filters: not (pipeline.git.branch starts-with "ci/") or (pipeline.git.branch starts-with "ci/circleci")
       - alpine:
-          filters:
-            branches:
-              ignore:
-              - /^ci/(?!circleci).*$/
+          filters: not (pipeline.git.branch starts-with "ci/") or (pipeline.git.branch starts-with "ci/circleci")
       - sanitizers:
-          filters:
-            branches:
-              ignore:
-              - /^ci/(?!circleci).*$/
+          filters: not (pipeline.git.branch starts-with "ci/") or (pipeline.git.branch starts-with "ci/circleci")
