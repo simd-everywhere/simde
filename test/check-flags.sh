@@ -23,7 +23,7 @@ fi
 NATIVE_SUPPORT=1
 for FLAG in $CFLAGS; do
   if echo "$FLAG" | grep -q '\-march=x86-64$' ; then
-    if grep -qP " x86_64 \(supported" <(${LD} --help) ; then
+    if grep -qP "x86_64" <(${LD} --help) ; then
       continue
     else
       NATIVE_SUPPORT=0
@@ -39,7 +39,6 @@ for FLAG in $CFLAGS; do
   fi
   echo "$FLAG" | grep -qP '^\-m[0-9a-zA-Z\.-]+$' || continue
   case "${FLAG:2}" in
-    # sse3 doesn't show up in /proc/cpuinfo (?!?!)
     "avx512bf16")
       grep -qP " avx512_bf16 " /proc/cpuinfo || NATIVE_SUPPORT=0
       ;;
@@ -52,7 +51,11 @@ for FLAG in $CFLAGS; do
     "avx512vnni")
       grep -qP " avx512_vnni " /proc/cpuinfo || NATIVE_SUPPORT=0
       ;;
+    "pclmul")
+      grep -qP " pclmulqdq " /proc/cpuinfo || NATIVE_SUPPORT=0
+      ;;
     "sse3")
+      grep -qP " pni " /proc/cpuinfo || NATIVE_SUPPORT=0
       ;;
     *)
       grep -qP " ${FLAG:2} " /proc/cpuinfo || NATIVE_SUPPORT=0
