@@ -1,13 +1,13 @@
 pool:
-  vmImage: 'ubuntu-24.04'
+  vmImage: 'ubuntu-26.04'
 
 trigger:
   branches:
+    include:
+     - ci/azure*
     exclude:
     - master
-    # - ci/*
-    # include:
-    # - ci/azure*
+    - ci/*
 
 jobs:
   # # meson isn't invoking scan-build correctly (it still compiles with GCC)
