@@ -6,7 +6,7 @@ on:
 
 jobs:
   cleanup:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-26.04-arm
     permissions:
       actions: write
     steps:
