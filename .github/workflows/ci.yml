@@ -628,13 +628,13 @@ jobs:
         #   arch_gnu: mips64el
         #   arch_gnu_abi: abi64
         #   distro: ubuntu-24.04-arm
-        - version: 21
+        - version: 23
           cross: armel
           arch_gnu_abi: eabi
           arch_deb: armel
           arch_gnu: arm
           distro: ubuntu-26.04-arm
-        - version: 21
+        - version: 23
           cross: riscv64
           arch_gnu: riscv64
           arch_deb: riscv64
@@ -644,23 +644,23 @@ jobs:
           arch_gnu: s390x
           arch_deb: s390x
           distro: ubuntu-24.04-arm
-        - version: 21
+        - version: 23
           cross: ppc64el
           arch_deb: ppc64el
           arch_gnu: powerpc64le
           distro: ubuntu-26.04-arm
-        - version: 21
+        - version: 23
           cross: loongarch64
           arch_deb: loong64
           arch_gnu: loongarch64
           distro: ubuntu-26.04-arm
-        - version: 21
+        - version: 23
           cross: loongarch64
           extra: -fastmath
           arch_deb: loong64
           arch_gnu: loongarch64
           distro: ubuntu-26.04-arm
-        - version: 22
+        - version: 23
           cross: loongarch64
           extra: -fastmath
           arch_deb: loong64
@@ -978,6 +978,14 @@ jobs:
               # "-Wno-poison-system-directories": due to meson test
           - xcode: "26.5"  # clang 21?
             os: macos-26-intel
+            arch_flags: -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword
+              # "-Wno-poison-system-directories": due to meson test
+          - xcode: "26.6"  # clang 21?
+            os: macos-26
+            arch_flags: -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword
+              # "-Wno-poison-system-directories": due to meson test
+          - xcode: "27.0"  # clang 21?
+            os: xcode-27
             arch_flags: -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword
               # "-Wno-poison-system-directories": due to meson test
     runs-on: ${{ matrix.os }}
