@@ -940,25 +940,10 @@ jobs:
       fail-fast: false
       matrix:
         # https://www.jessesquires.com/blog/2020/01/06/selecting-an-xcode-version-on-github-ci/
-        # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md#xcode
         # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md#xcode
         # https://trac.macports.org/wiki/XcodeVersionInfo
+        # https://en.wikipedia.org/wiki/Xcode#Xcode_26.0_(since_version_number_change)_2
         include:
-          - xcode: "15.2"
-            os: macos-14  # arm64
-            arch_flags: -march=native -Wno-poison-system-directories
-              # "-Wno-poison-system-directories": due to meson test
-              # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
-          - xcode: "15.3"
-            os: macos-14  # arm64
-            arch_flags: -march=native -Wno-poison-system-directories
-              # "-Wno-poison-system-directories": due to meson test
-              # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
-          - xcode: "15.4"  # clang 15?
-            os: macos-14  # arm64
-            arch_flags: -march=native -Wno-poison-system-directories
-              # "-Wno-poison-system-directories": due to meson test
-              # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
           - xcode: "16.0"  # clang 16?
             os: macos-15  # arm64
             arch_flags: -march=native -Wno-poison-system-directories
