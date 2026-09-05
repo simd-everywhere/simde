@@ -628,13 +628,13 @@ jobs:
         #   arch_gnu: mips64el
         #   arch_gnu_abi: abi64
         #   distro: ubuntu-24.04-arm
-        - version: 21
+        - version: 23
           cross: armel
           arch_gnu_abi: eabi
           arch_deb: armel
           arch_gnu: arm
           distro: ubuntu-26.04-arm
-        - version: 21
+        - version: 23
           cross: riscv64
           arch_gnu: riscv64
           arch_deb: riscv64
@@ -644,23 +644,23 @@ jobs:
           arch_gnu: s390x
           arch_deb: s390x
           distro: ubuntu-24.04-arm
-        - version: 21
+        - version: 23
           cross: ppc64el
           arch_deb: ppc64el
           arch_gnu: powerpc64le
           distro: ubuntu-26.04-arm
-        - version: 21
+        - version: 23
           cross: loongarch64
           arch_deb: loong64
           arch_gnu: loongarch64
           distro: ubuntu-26.04-arm
-        - version: 21
+        - version: 23
           cross: loongarch64
           extra: -fastmath
           arch_deb: loong64
           arch_gnu: loongarch64
           distro: ubuntu-26.04-arm
-        - version: 22
+        - version: 23
           cross: loongarch64
           extra: -fastmath
           arch_deb: loong64
@@ -858,6 +858,28 @@ jobs:
         - version: "22"
           distro: ubuntu-26.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        - version: "23"
+          distro: ubuntu-26.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "23"
+          distro: ubuntu-26.04
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "23"
+          distro: ubuntu-26.04
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        # - version: "23"
+        #   distro: ubuntu-26.04-arm
+        #   arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "23"
+          distro: ubuntu-26.04-arm
+          plain: true
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        # - version: "23"
+        #   distro: ubuntu-26.04-arm
+        #   arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "23"
+          distro: ubuntu-26.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
     runs-on: ${{ matrix.distro }}
     env:
       CFLAGS: ${{ matrix.arch_flags }} ${{ case(
@@ -918,25 +940,10 @@ jobs:
       fail-fast: false
       matrix:
         # https://www.jessesquires.com/blog/2020/01/06/selecting-an-xcode-version-on-github-ci/
-        # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md#xcode
         # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md#xcode
         # https://trac.macports.org/wiki/XcodeVersionInfo
+        # https://en.wikipedia.org/wiki/Xcode#Xcode_26.0_(since_version_number_change)_2
         include:
-          - xcode: "15.2"
-            os: macos-14  # arm64
-            arch_flags: -march=native -Wno-poison-system-directories
-              # "-Wno-poison-system-directories": due to meson test
-              # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
-          - xcode: "15.3"
-            os: macos-14  # arm64
-            arch_flags: -march=native -Wno-poison-system-directories
-              # "-Wno-poison-system-directories": due to meson test
-              # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
-          - xcode: "15.4"  # clang 15?
-            os: macos-14  # arm64
-            arch_flags: -march=native -Wno-poison-system-directories
-              # "-Wno-poison-system-directories": due to meson test
-              # "-march=native": without, or with -mcpu=apple-m1 then unavailable __ARM_FEATURE_s get enabled
           - xcode: "16.0"  # clang 16?
             os: macos-15  # arm64
             arch_flags: -march=native -Wno-poison-system-directories
@@ -957,6 +964,14 @@ jobs:
           - xcode: "26.5"  # clang 21?
             os: macos-26-intel
             arch_flags: -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword
+              # "-Wno-poison-system-directories": due to meson test
+          - xcode: "26.6"  # clang 21?
+            os: macos-26  # arm64
+            arch_flags: -march=native -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword
+              # "-Wno-poison-system-directories": due to meson test
+          - xcode: "27.0"  # clang 21?
+            os: xcode-27  # arm64
+            arch_flags: -Wno-poison-system-directories -Wno-switch-default -Wno-c++-keyword -fno-lax-vector-conversions
               # "-Wno-poison-system-directories": due to meson test
     runs-on: ${{ matrix.os }}
     env:
