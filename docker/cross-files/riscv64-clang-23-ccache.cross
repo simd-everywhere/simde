@@ -6,7 +6,7 @@ strip = 'llvm-strip-23'
 objcopy = 'llvm-objcopy-23'
 c_ld = 'lld'
 cpp_ld = 'lld'
-exe_wrapper = ['qemu-riscv64-static', '-L', '/usr/riscv64-linux-gnu/']
+exe_wrapper = ['qemu-riscv64', '-L', '/usr/riscv64-linux-gnu/']
 
 [built-in options]
 c_args   = ['--target=riscv64-linux-gnu', '-isystem=/usr/riscv64-linux-gnu/include', '-Wextra', '-Werror', '-Wno-unsafe-buffer-usage']
