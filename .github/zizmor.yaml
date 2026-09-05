@@ -1,0 +1,4 @@
+rules:
+  dangerous-triggers:
+    ignore:
+      - pr-cleanup.yml:2:1
