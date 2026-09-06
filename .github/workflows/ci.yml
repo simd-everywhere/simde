@@ -1045,3 +1045,44 @@ jobs:
       run: |
         # shellcheck disable=SC2046
         meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+
+  msvc-arm64:
+    name: Windows MSVC-AArch64
+    runs-on: ${{ matrix.runner }}
+    env:
+      CC: ccache.exe cl.exe
+      CCXX: ccache.exe cl.exe
+      CFLAGS: /WX /Z7 /arch:armv9.0
+      CXXFLAGS: /WX /Z7 /arch:armv9.0
+      CPPFLAGS: /Zc:preprocessor
+      LDFLAGS: /WX
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-11-arm
+            vcvarsall: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+          - runner: windows-11-vs2026-arm
+            vcvarsall: C:\Program Files\Microsoft Visual Studio\18\Enterprise
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
+        with:
+          key: ${{ matrix.runner }}-${{ github.job }}
+          verbose: 2
+      - name: CPU information
+        shell: pwsh
+        run: Get-WmiObject Win32_Processor
+      - name: Setup / configure / build / test
+        shell: cmd
+        run: |
+          call "${{ matrix.vcvarsall }}\VC\Auxiliary\Build\vcvarsall.bat" arm64
+          python3 -m pip install --upgrade ninja meson
+          meson setup --backend=ninja build
+          meson build -C build --verbose
+          meson test -C build --print-errorlogs
