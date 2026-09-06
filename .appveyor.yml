@@ -1,19 +1,26 @@
 environment:
-  MESON_EXE_WRAPPER: "['C:\\Program Files\\OpenCppCoverage\\OpenCppCoverage.exe', '--export_type=cobertura', '--']"
+  # MESON_EXE_WRAPPER: "['C:\\Program Files\\OpenCppCoverage\\OpenCppCoverage.exe', '--export_type=cobertura', '--']"
   CCACHE_MAXSIZE: '500Mi'
   matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2026
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python314-x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
-      PYTHON_DIR: C:\Python311-x64
+      PYTHON_DIR: C:\Python314-x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
-      PYTHON_DIR: C:\Python311-x64
+      PYTHON_DIR: C:\Python314-x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2026
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python314-x64
+      FLAGS: /arch:AVX
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
       PYTHON_DIR: C:\Python311-x64
@@ -30,6 +37,10 @@ environment:
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
       FLAGS: /arch:AVX
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2026
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python314-x64
+      FLAGS: /arch:AVX2
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
       PYTHON_DIR: C:\Python311-x64
@@ -46,6 +57,10 @@ environment:
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
       FLAGS: /arch:AVX2
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2026
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python314-x64
+      FLAGS: /arch:AVX512
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
       PYTHON_DIR: C:\Python311-x64
@@ -58,6 +73,14 @@ environment:
       VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
       PYTHON_DIR: C:\Python38-x64
       FLAGS: /arch:AVX512
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2026
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python314-x64
+      FLAGS: /arch:AVX10.2 /vlen=512
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+      VCVARSALL: C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+      PYTHON_DIR: C:\Python311-x64
+      FLAGS: /arch:AVX10.1
 branches:
   except:
     - /^ci/(?!appveyor)(/.+)?/
@@ -70,6 +93,7 @@ cache:
 init:
   - pwsh: |
       $Env:APPVEYOR_SAVE_CACHE_ON_ERROR = 'true'
+  - ps: Get-WmiObject Win32_Processor
 
 on_failure:
 - appveyor PushArtifact build\meson-logs\meson-log.txt
@@ -78,7 +102,8 @@ on_failure:
 install:
   - cmd: set PATH=%PYTHON_DIR%;%PYTHON_DIR%\scripts;%PATH%
   - cmd: pip install --upgrade ninja meson
-  - cmd: choco install opencppcoverage codecov ccache
+  # - cmd: choco install opencppcoverage codecov ccache
+  - cmd: choco install ccache
   - cmd: call "%VCVARSALL%" amd64
 
 before_build:
