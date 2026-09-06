@@ -336,31 +336,31 @@
 #      define SIMDE_ARCH_X86_AVX 1
 #    endif
 #  endif
-#  if defined(__AVX512VP2INTERSECT__)
+#  if defined(__AVX512VP2INTERSECT__) // Intel Tiger Lake only
 #    define SIMDE_ARCH_X86_AVX512VP2INTERSECT 1
 #  endif
-#  if defined(__AVX512BITALG__)
+#  if defined(__AVX512BITALG__) || (defined(__AVX10_VER__) && __AVX10_VER__ >= 1)
 #    define SIMDE_ARCH_X86_AVX512BITALG 1
 #  endif
-#  if defined(__AVX512VPOPCNTDQ__)
+#  if defined(__AVX512VPOPCNTDQ__) || (defined(__AVX10_VER__) && __AVX10_VER__ >= 1)
 #    define SIMDE_ARCH_X86_AVX512VPOPCNTDQ 1
 #  endif
-#  if defined(__AVX512VBMI__)
+#  if defined(__AVX512VBMI__) || (defined(__AVX10_VER__) && __AVX10_VER__ >= 1)
 #    define SIMDE_ARCH_X86_AVX512VBMI 1
 #  endif
-#  if defined(__AVX512VBMI2__)
+#  if defined(__AVX512VBMI2__) || (defined(__AVX10_VER__) && __AVX10_VER__ >= 1)
 #    define SIMDE_ARCH_X86_AVX512VBMI2 1
 #  endif
-#  if defined(__AVX512VNNI__)
+#  if defined(__AVX512VNNI__) || (defined(__AVX10_VER__) && __AVX10_VER__ >= 1)
 #    define SIMDE_ARCH_X86_AVX512VNNI 1
 #  endif
-#  if defined(__AVX5124VNNIW__)
+#  if defined(__AVX5124VNNIW__)  // Intel Xeon Phi only
 #    define SIMDE_ARCH_X86_AVX5124VNNIW 1
 #  endif
 #  if defined(__AVX512BW__)
 #    define SIMDE_ARCH_X86_AVX512BW 1
 #  endif
-#  if defined(__AVX512BF16__)
+#  if defined(__AVX512BF16__) || (defined(__AVX10_VER__) && __AVX10_VER__ >= 1)
 #    define SIMDE_ARCH_X86_AVX512BF16 1
 #  endif
 #  if defined(__AVX512CD__)
@@ -375,7 +375,7 @@
 #  if defined(__AVX512VL__)
 #    define SIMDE_ARCH_X86_AVX512VL 1
 #  endif
-#  if defined(__AVX512FP16__)
+#  if defined(__AVX512FP16__) || (defined(__AVX10_VER__) && __AVX10_VER__ >= 1)
 #    define SIMDE_ARCH_X86_AVX512FP16 1
 #  endif
 #  if defined(__GFNI__)
