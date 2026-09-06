@@ -1045,3 +1045,27 @@ jobs:
       run: |
         # shellcheck disable=SC2046
         meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+
+  msvc-arm64:
+    name: Windows MSVC-AArch64
+    runs-on: [windows-latest]
+    env:
+      CFLAGS: /WX /Z7
+      CXXFLAGS: /WX /Z7
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - name: Install Meson, Ninja and coverage
+        run: |
+          python3 -m pip install --upgrade ninja meson
+      - name: Use ARM64 Developer Command Prompt
+        uses: TheMrMilchmann/setup-msvc-dev@368ef7d1ee4d1171b31d4a7f67f4d954f903f5a9  # v4.1.0
+        with:
+          arch: amd64_arm64
+      - name: Configure and Build
+        run: |
+          meson --backend=ninja build --cross-file test/arm64cl.txt
+          ninja -C build test
