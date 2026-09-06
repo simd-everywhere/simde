@@ -1045,3 +1045,53 @@ jobs:
       run: |
         # shellcheck disable=SC2046
         meson test -C build --print-errorlogs $(meson test -C build --list | grep -v emul)
+
+  msvc-arm64:
+    name: Windows MSVC-AArch64
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [ armv9.0 ]
+        # armv8.0, armv8.1, armv8.2, armv8.3, armv8.4, armv8.5, armv8.6, armv8.7, armv8.8, armv8.9
+        runner:
+         # - name: windows-11-arm
+         #   vcvarsall: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+         - name: windows-11-vs2026-arm
+           vcvarsall: C:\Program Files\Microsoft Visual Studio\18\Enterprise
+    runs-on: ${{ matrix.runner.name }}
+    env:
+      CC: ccache.exe cl.exe
+      CCXX: ccache.exe cl.exe
+      CFLAGS: /WX /Z7 /arch:${{ matrix.arch }}
+      CXXFLAGS: /WX /Z7 /arch:${{ matrix.arch }}
+      CPPFLAGS: /Zc:preprocessor
+      LDFLAGS: /WX
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
+        with:
+          key: ${{ matrix.runner.name }}-${{matrix.arch}}-${{ github.job }}
+          verbose: 2
+      # - name: CPU information
+      #   shell: pwsh
+      #   run: Get-WmiObject Win32_Processor
+      #   # 2026-09-07 snapshot
+      #   # Caption           : ARMv8 (64-bit) Family 8 Model D49 Revision   0
+      #   # DeviceID          : CPU0
+      #   # Manufacturer      : MICROSOFT CORPORATION
+      #   # MaxClockSpeed     : 3399
+      #   # Name              : Cobalt 100
+      #   # SocketDesignation : None
+      - name: Setup / configure / build / test
+        shell: cmd
+        run: |
+          call "${{ matrix.runner.vcvarsall }}\VC\Auxiliary\Build\vcvarsall.bat" arm64
+          python3 -m pip install --upgrade ninja meson
+          meson setup --backend=ninja build
+          meson compile -C build --verbose
+          meson test -C build --print-errorlogs
