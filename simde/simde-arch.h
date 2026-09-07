@@ -375,7 +375,7 @@
 #  if defined(__AVX512VL__)
 #    define SIMDE_ARCH_X86_AVX512VL 1
 #  endif
-#  if defined(__AVX512FP16__) || (defined(__AVX10_VER__) && __AVX10_VER__ >= 1)
+#  if defined(__AVX512FP16__) // || (defined(__AVX10_VER__) && __AVX10_VER__ >= 1)
 #    define SIMDE_ARCH_X86_AVX512FP16 1
 #  endif
 #  if defined(__GFNI__)
