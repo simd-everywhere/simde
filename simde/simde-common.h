@@ -1187,6 +1187,11 @@ HEDLEY_DIAGNOSTIC_POP
 #  elif defined(HEDLEY_MSVC_VERSION)
 #    if defined(SIMDE_ARCH_X86)
 #      define SIMDE_BUG_MSVC_ROUND_EXTRACT
+#    elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+#      define SIMDE_BUG_MSVC_11148617
+#    endif
+#    if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#      define SIMDE_BUG_MSVC_11148967
 #    endif
 #  elif defined(HEDLEY_INTEL_VERSION)
 #    define SIMDE_BUG_INTEL_857088
