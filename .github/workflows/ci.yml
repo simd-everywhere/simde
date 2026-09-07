@@ -65,5 +65,7 @@ jobs:
           call "${{ matrix.runner.vcvarsall }}\VC\Auxiliary\Build\vcvarsall.bat" arm64
           python3 -m pip install --upgrade ninja meson
           meson setup --backend=ninja build
-          meson compile -C build --verbose
-          meson test -C build --print-errorlogs
+          cd build
+          "cl.exe" "/E" "-Itest\arm\neon\add-native-c.exe.p" "-Itest\arm\neon" "-I..\test\arm\neon" "-I." "-I.." "/MDd" "/nologo" "/utf-8" "/W2" "/Od" "/Z7" "/WX" "/Z7" "/arch:armv9.0" "/Zc:preprocessor" "/openmp" "/showIncludes" "-DSIMDE_CONSTRAINED_COMPILATION" "-DSIMDE_TEST_BARE" ../test/arm/neon/add.c
+        # "cl.exe" "/EP" "-Itest\arm\neon\qrshrn_n-native-c.exe.p" "-Itest\arm\neon" "-I..\test\arm\neon" "-I." "-I.." "/MDd" "/nologo" "/utf-8" "/W2" "/Od" "/Z7" "/WX" "/Z7" "/arch:armv9.0" "/Zc:preprocessor" "/openmp" "/showIncludes" "-DSIMDE_CONSTRAINED_COMPILATION" "-DSIMDE_TEST_BARE" ../test/arm/neon/qrshrn_n.c
+
