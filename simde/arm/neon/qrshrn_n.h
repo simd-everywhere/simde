@@ -46,12 +46,13 @@ SIMDE_BEGIN_DECLS_
   #define vqrshrnh_n_s16(a, n) simde_vqrshrnh_n_s16(a, n)
 #endif
 
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(SIMDE_BUG_MSVC_11148967)
   #define simde_vqrshrnh_n_u16(a, n) vqrshrnh_n_u16(a, n)
 #else
   #define simde_vqrshrnh_n_u16(a, n) simde_vqmovnh_u16(simde_x_vrshrh_n_u16(a, n))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
+    defined(SIMDE_BUG_MSVC_11148967))
   #undef vqrshrnh_n_u16
   #define vqrshrnh_n_u16(a, n) simde_vqrshrnh_n_u16(a, n)
 #endif
