@@ -46,13 +46,12 @@ SIMDE_BEGIN_DECLS_
   #define vqrshrnh_n_s16(a, n) simde_vqrshrnh_n_s16(a, n)
 #endif
 
-#if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !defined(HEDLEY_MSVC_VERSION)
+#if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
   #define simde_vqrshrnh_n_u16(a, n) vqrshrnh_n_u16(a, n)
 #else
   #define simde_vqrshrnh_n_u16(a, n) simde_vqmovnh_u16(simde_x_vrshrh_n_u16(a, n))
 #endif
-#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
-    defined(HEDLEY_MSVC_VERSION))
+#if defined(SIMDE_ARM_NEON_A64V8_ENABLE_NATIVE_ALIASES)
   #undef vqrshrnh_n_u16
   #define vqrshrnh_n_u16(a, n) simde_vqrshrnh_n_u16(a, n)
 #endif

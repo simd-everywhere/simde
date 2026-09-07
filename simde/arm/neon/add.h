@@ -796,7 +796,7 @@ simde_vaddq_u64(simde_uint64x2_t a, simde_uint64x2_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly8x8_t
 simde_vadd_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H) && !defined(HEDLEY_MSVC_VERSION)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H)
     return vadd_p8(a, b);
   #else
     simde_poly8x8_private
@@ -813,7 +813,7 @@ simde_vadd_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
-    (defined(_GCC_ARM_NEON_H) || defined(HEDLEY_MSVC_VERSION)))
+    defined(_GCC_ARM_NEON_H))
   #undef vadd_p8
   #define vadd_p8(a, b) simde_vadd_p8((a), (b))
 #endif
@@ -821,7 +821,7 @@ simde_vadd_p8(simde_poly8x8_t a, simde_poly8x8_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly16x4_t
 simde_vadd_p16(simde_poly16x4_t a, simde_poly16x4_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H) && !defined(HEDLEY_MSVC_VERSION)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H)
     return vadd_p16(a, b);
   #else
     simde_poly16x4_private
@@ -838,7 +838,7 @@ simde_vadd_p16(simde_poly16x4_t a, simde_poly16x4_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
-    (defined(_GCC_ARM_NEON_H) || defined(HEDLEY_MSVC_VERSION)))
+    defined(_GCC_ARM_NEON_H))
   #undef vadd_p16
   #define vadd_p16(a, b) simde_vadd_p16((a), (b))
 #endif
@@ -873,7 +873,7 @@ simde_vadd_p64(simde_poly64x1_t a, simde_poly64x1_t b) {
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly8x16_t
 simde_vaddq_p8(simde_poly8x16_t a, simde_poly8x16_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H) && !defined(HEDLEY_MSVC_VERSION)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H)
     return vaddq_p8(a, b);
   #else
     simde_poly8x16_private
@@ -890,14 +890,15 @@ simde_vaddq_p8(simde_poly8x16_t a, simde_poly8x16_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
-    (defined(_GCC_ARM_NEON_H) || defined(HEDLEY_MSVC_VERSION)))
+    defined(_GCC_ARM_NEON_H))
+  #undef vaddq_p8
   #define vaddq_p8(a, b) simde_vaddq_p8((a), (b))
 #endif
 
 SIMDE_FUNCTION_ATTRIBUTES
 simde_poly16x8_t
 simde_vaddq_p16(simde_poly16x8_t a, simde_poly16x8_t b) {
-  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H) && !defined(HEDLEY_MSVC_VERSION)
+  #if defined(SIMDE_ARM_NEON_A32V7_NATIVE) && !defined(_GCC_ARM_NEON_H)
     return vaddq_p16(a, b);
   #else
     simde_poly16x8_private
@@ -914,7 +915,7 @@ simde_vaddq_p16(simde_poly16x8_t a, simde_poly16x8_t b) {
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES) || (defined(SIMDE_ENABLE_NATIVE_ALIASES) && \
-    (defined(_GCC_ARM_NEON_H) || defined(HEDLEY_MSVC_VERSION)))
+    defined(_GCC_ARM_NEON_H))
   #undef vaddq_p16
   #define vaddq_p16(a, b) simde_vaddq_p16((a), (b))
 #endif
