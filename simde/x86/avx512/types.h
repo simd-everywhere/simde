@@ -675,7 +675,8 @@ typedef union {
   typedef uint16_t simde__mmask16;
 #endif
 
-#if (defined(_AVX512BF16INTRIN_H_INCLUDED) || defined(__AVX512BF16INTRIN_H)) && (defined(SIMDE_X86_AVX512BF16_NATIVE) || !defined(HEDLEY_INTEL_VERSION))
+#if ((defined(_AVX512BF16INTRIN_H_INCLUDED) || defined(__AVX512BF16INTRIN_H)) && (defined(SIMDE_X86_AVX512BF16_NATIVE) || !defined(HEDLEY_INTEL_VERSION)) \
+     || defined(SIMDE_X86_AVX512BF16_NATIVE) && defined(HEDLEY_MSVC_VERSION))
   typedef __m128bh simde__m128bh;
   typedef __m256bh simde__m256bh;
   typedef __m512bh simde__m512bh;
