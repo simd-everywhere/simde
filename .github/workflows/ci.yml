@@ -49,9 +49,6 @@ jobs:
         with:
           key: ${{ matrix.runner.name }}-${{matrix.arch}}-${{ github.job }}
           verbose: 2
-      - name: add ccache to the PATH
-        shell: bash
-        run: echo "%USERPROFILE%\.cargo\bin" >> "$GITHUB_PATH"
       # - name: CPU information
       #   shell: pwsh
       #   run: Get-WmiObject Win32_Processor
@@ -63,11 +60,10 @@ jobs:
       #   # Name              : Cobalt 100
       #   # SocketDesignation : None
       - name: Setup / configure / build / test
-        shell: bash
+        shell: pwsh
         run: |
-          printenv
-          "${{ matrix.runner.vcvarsall }}\VC\Auxiliary\Build\vcvarsall.bat" arm64
-          printenv
+          Get-Childitem -Path '${{ matrix.runner.vcvarsall }}' -Filter Launch-VsDevShell.ps1 -File -Recurse -ErrorAction SilentlyContinue -Force
+          & '${{ matrix.runner.vcvarsall }}\Common7\Tools\Launch-VsDevShell.ps1' -Arch arm64 -SkipAutomaticLocation
           python3 -m pip install --upgrade ninja meson
           meson setup --backend=ninja build
           meson compile -C build --verbose
