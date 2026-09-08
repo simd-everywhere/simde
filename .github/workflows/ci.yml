@@ -51,7 +51,7 @@ jobs:
           verbose: 2
       - name: add ccache to the PATH
         shell: bash
-        run: echo %USERPROFILE%\.cargo\bin >> "$GITHUB_PATH"
+        run: echo "%USERPROFILE%\.cargo\bin" >> "$GITHUB_PATH"
       # - name: CPU information
       #   shell: pwsh
       #   run: Get-WmiObject Win32_Processor
@@ -65,7 +65,9 @@ jobs:
       - name: Setup / configure / build / test
         shell: bash
         run: |
+          printenv
           "${{ matrix.runner.vcvarsall }}\VC\Auxiliary\Build\vcvarsall.bat" arm64
+          printenv
           python3 -m pip install --upgrade ninja meson
           meson setup --backend=ninja build
           meson compile -C build --verbose
