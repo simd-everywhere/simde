@@ -1077,6 +1077,9 @@ jobs:
         with:
           key: ${{ matrix.runner.name }}-${{matrix.arch}}-${{ github.job }}
           verbose: 2
+      - name: add ccache to the PATH
+        shell: bash
+        run: echo %USERPROFILE%\.cargo\bin >> "$GITHUB_PATH"
       # - name: CPU information
       #   shell: pwsh
       #   run: Get-WmiObject Win32_Processor
