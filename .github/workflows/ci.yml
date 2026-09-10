@@ -3,8 +3,6 @@ name: CI
 on:
   push:
     branches-ignore:
-      - 'ci/**'
-      - '!ci/gha**'
       - 'dependabot/**'
   pull_request:
     branches:
@@ -327,6 +325,13 @@ jobs:
           arch_flags: -ffast-math
         - version: 14
           distro: ubuntu-26.04-arm
+        - version: 14
+          distro: ubuntu-24.04-riscv
+          plain: true
+        - version: 14
+          distro: ubuntu-24.04-riscv
+          plain: true
+          arch_flags: -O3
         - version: 15
           distro: ubuntu-26.04
         - version: 15
@@ -426,17 +431,6 @@ jobs:
           arch_deb: armel
           arch_gnu: arm
           distro: ubuntu-26.04
-        - version: 15
-          cross: riscv64
-          arch_gnu: riscv64
-          arch_deb: riscv64
-          distro: ubuntu-26.04-arm
-        - extra: -O3
-          version: 15
-          cross: riscv64
-          arch_gnu: riscv64
-          arch_deb: riscv64
-          distro: ubuntu-26.04-arm
         - version: 15
           cross: s390x
           arch_gnu: s390x
@@ -773,6 +767,18 @@ jobs:
         - version: "18"
           distro: ubuntu-26.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+        - version: "18"
+          distro: ubuntu-24.04-riscv
+          plain: true
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
+        - version: "18"
+          distro: ubuntu-24.04-riscv
+          plain: true
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
+        - version: "18"
+          distro: ubuntu-24.04-riscv
+          plain: true
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
         - version: "19"
           distro: ubuntu-26.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
