@@ -315,9 +315,13 @@ simde_vclzq_s16(simde_int16x8_t a) {
       a_ = simde_int16x8_to_private(a),
       r_;
 
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_x_vclzh_s16(a_.values[i]);
-    }
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vclz_h(a_.m128i);
+    #else
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_x_vclzh_s16(a_.values[i]);
+      }
+    #endif
 
     return simde_int16x8_from_private(r_);
   #endif

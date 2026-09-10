@@ -168,6 +168,11 @@ simde_vaddv_u8(simde_uint8x8_t a) {
       vuint8m1_t zero = __riscv_vmv_v_x_u8m1(0 , 1);
       vuint8m1_t sum = __riscv_vredsum_vs_u8m1_u8m1(a_.sv64 , zero , 8);
       r = __riscv_vmv_x_s_u8m1_u8 (sum);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i tmp = __lsx_vhaddw_hu_bu(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&a_.values));
+      tmp = __lsx_vhaddw_wu_hu(tmp, tmp);
+      tmp = __lsx_vhaddw_du_wu(tmp, tmp);
+      r = HEDLEY_STATIC_CAST(uint8_t, __lsx_vpickve2gr_b(tmp, 0));
     #else
       r = 0;
       SIMDE_VECTORIZE_REDUCTION(+:r)

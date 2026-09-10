@@ -221,6 +221,17 @@ simde_vld1q_u8_x4(uint8_t const ptr[HEDLEY_ARRAY_PARAM(64)]) {
       (!defined(HEDLEY_GCC_VERSION) || (HEDLEY_GCC_VERSION_CHECK(8,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE))) && \
       (!defined(__clang__) || (SIMDE_DETECT_CLANG_VERSION_CHECK(7,0,0) && defined(SIMDE_ARM_NEON_A64V8_NATIVE)))
     return vld1q_u8_x4(ptr);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint8x16_private a_[4];
+    a_[0].m128i = __lsx_vld(ptr, 0);
+    a_[1].m128i = __lsx_vld(ptr + 16, 0);
+    a_[2].m128i = __lsx_vld(ptr + 32, 0);
+    a_[3].m128i = __lsx_vld(ptr + 48, 0);
+    simde_uint8x16x4_t s_ = { { simde_uint8x16_from_private(a_[0]),
+                                simde_uint8x16_from_private(a_[1]),
+                                simde_uint8x16_from_private(a_[2]),
+                                simde_uint8x16_from_private(a_[3]) } };
+    return s_;
   #else
     simde_uint8x16_t a_[4];
     for (size_t i = 0; i < 4; i++) {

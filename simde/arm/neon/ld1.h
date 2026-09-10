@@ -125,6 +125,8 @@ simde_vld1_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(4)]) {
     simde_int16x4_private r_;
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vle16_v_i16m1(ptr , 4);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_memcpy(&r_.values, ptr, sizeof(r_.values));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -185,6 +187,8 @@ simde_vld1_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
     simde_uint8x8_private r_;
     #if defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vle8_v_u8m1(ptr , 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_memcpy(&r_.values, ptr, sizeof(r_.values));
     #else
       simde_memcpy(&r_, ptr, sizeof(r_));
     #endif
@@ -339,6 +343,8 @@ simde_vld1q_s8(int8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle8_v_i8m1(ptr , 16);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*, ptr), 0);
     #elif defined(SIMDE_X86_SSE3_NATIVE)
       r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
@@ -365,6 +371,8 @@ simde_vld1q_s16(int16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle16_v_i16m1(ptr , 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*, ptr), 0);
     #elif defined(SIMDE_X86_SSE3_NATIVE)
       r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
@@ -443,6 +451,8 @@ simde_vld1q_u8(uint8_t const ptr[HEDLEY_ARRAY_PARAM(16)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle8_v_u8m1(ptr , 16);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*, ptr), 0);
     #elif defined(SIMDE_X86_SSE3_NATIVE)
       r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #elif defined(SIMDE_X86_SSE2_NATIVE)
@@ -469,6 +479,8 @@ simde_vld1q_u16(uint16_t const ptr[HEDLEY_ARRAY_PARAM(8)]) {
       r_.v128 = wasm_v128_load(ptr);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vle16_v_u16m1(ptr , 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vld(HEDLEY_REINTERPRET_CAST(const void*, ptr), 0);
     #elif defined(SIMDE_X86_SSE3_NATIVE)
       r_.m128i = _mm_lddqu_si128(SIMDE_ALIGN_CAST(__m128i const *, ptr));
     #elif defined(SIMDE_X86_SSE2_NATIVE)

@@ -118,6 +118,10 @@ simde_vtstq_s16(simde_int16x8_t a, simde_int16x8_t b) {
 
     #if defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.v128 = wasm_i16x8_ne(wasm_v128_and(a_.v128, b_.v128), wasm_i16x8_splat(0));
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i tmp = __lsx_vand_v(a_.m128i, b_.m128i);
+      tmp = __lsx_vseq_h(tmp, __lsx_vreplgr2vr_h(0));
+      r_.m128i = __lsx_vnor_v(tmp, tmp);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       r_.values = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), (a_.values & b_.values) != 0);
     #else

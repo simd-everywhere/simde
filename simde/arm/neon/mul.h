@@ -186,6 +186,8 @@ simde_vmul_s16(simde_int16x4_t a, simde_int16x4_t b) {
       r_.m64 = _m_pmullw(a_.m64, b_.m64);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv64 = __riscv_vmul_vv_i16m1(a_.sv64, b_.sv64, 4);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vmul_h(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values)));
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS) && !defined(SIMDE_BUG_GCC_100762)
       r_.values = a_.values * b_.values;
     #else
@@ -529,6 +531,8 @@ simde_vmulq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       r_.m128i = _mm_mullo_epi16(a_.m128i, b_.m128i);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vmul_vv_i16m1(a_.sv128, b_.sv128, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vmul_h(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values * b_.values;
     #else

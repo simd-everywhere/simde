@@ -93,10 +93,14 @@ simde_vcnt_u8(simde_uint8x8_t a) {
       r_,
       a_ = simde_uint8x8_to_private(a);
 
-    SIMDE_VECTORIZE
-    for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
-      r_.values[i] = simde_x_arm_neon_cntb(a_.values[i]);
-    }
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_x_lsx_store64(&r_.values, __lsx_vpcnt_b(simde_x_lsx_load64(&a_.values)));
+    #else
+      SIMDE_VECTORIZE
+      for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
+        r_.values[i] = simde_x_arm_neon_cntb(a_.values[i]);
+      }
+    #endif
 
     return simde_uint8x8_from_private(r_);
   #endif

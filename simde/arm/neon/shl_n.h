@@ -104,6 +104,8 @@ simde_vshl_n_s16 (const simde_int16x4_t a, const int n)
 
   #if defined(SIMDE_RISCV_V_NATIVE)
     r_.sv64 =  __riscv_vsll_vx_i16m1 (a_.sv64, n, 4);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_x_lsx_store64(&r_.values, __lsx_vsll_h(simde_x_lsx_load64(&a_.values), __lsx_vreplgr2vr_h(HEDLEY_STATIC_CAST(int16_t, (n)))));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.values = a_.values << HEDLEY_STATIC_CAST(int16_t, n);
   #else
@@ -364,6 +366,8 @@ simde_vshlq_n_s16 (const simde_int16x8_t a, const int n)
     r_.v128 = wasm_i16x8_shl(a_.v128, HEDLEY_STATIC_CAST(uint32_t, n));
   #elif defined(SIMDE_RISCV_V_NATIVE)
     r_.sv128 =  __riscv_vsll_vx_i16m1 (a_.sv128, n, 8);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.m128i = __lsx_vsll_h(a_.m128i, __lsx_vreplgr2vr_h(HEDLEY_STATIC_CAST(int16_t, (n))));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.values = a_.values << HEDLEY_STATIC_CAST(int16_t, n);
   #else

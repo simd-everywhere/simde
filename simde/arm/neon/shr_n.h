@@ -425,6 +425,8 @@ simde_vshrq_n_s16 (const simde_int16x8_t a, const int n)
   #elif defined(SIMDE_RISCV_V_NATIVE)
     int32_t n_ = (n == 16) ? 15 : n;
     r_.sv128 =  __riscv_vsra_vx_i16m1 (a_.sv128, n_, 8);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    r_.m128i = __lsx_vsra_h(a_.m128i, __lsx_vreplgr2vr_h(HEDLEY_STATIC_CAST(int16_t, ((n) == 16) ? 15 : (n))));
   #elif defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
     r_.values = a_.values >> ((n == 16) ? 15 : n);
   #else

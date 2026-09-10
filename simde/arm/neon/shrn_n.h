@@ -49,6 +49,8 @@ simde_vshrn_n_s16 (const simde_int16x8_t a, const int n)
   #if defined(SIMDE_RISCV_V_NATIVE)
     vint16m1_t shift = __riscv_vand_vx_i16m1(__riscv_vsll_vx_i16m1 (a_.sv128, n, 8), UINT8_MAX, 8);
     r_.sv64 = __riscv_vlmul_ext_v_i8mf2_i8m1(__riscv_vncvt_x_x_w_i8mf2(shift, 8));
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_x_lsx_store64(&r_.values, __lsx_vsran_b_h(a_.m128i, __lsx_vreplgr2vr_h(HEDLEY_STATIC_CAST(int16_t, n))));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -76,6 +78,8 @@ simde_vshrn_n_s32 (const simde_int32x4_t a, const int n)
   #if defined(SIMDE_RISCV_V_NATIVE)
     vint32m1_t shift = __riscv_vand_vx_i32m1(__riscv_vsll_vx_i32m1 (a_.sv128, n, 4), UINT16_MAX, 4);
     r_.sv64 = __riscv_vlmul_ext_v_i16mf2_i16m1(__riscv_vncvt_x_x_w_i16mf2(shift, 4));
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_x_lsx_store64(&r_.values, __lsx_vsran_h_w(a_.m128i, __lsx_vreplgr2vr_w(n)));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -104,6 +108,8 @@ simde_vshrn_n_s64 (const simde_int64x2_t a, const int n)
   #if defined(SIMDE_RISCV_V_NATIVE)
     vint64m1_t shift = __riscv_vand_vx_i64m1(__riscv_vsll_vx_i64m1 (a_.sv128, n, 2), UINT32_MAX, 2);
     r_.sv64 = __riscv_vlmul_ext_v_i32mf2_i32m1(__riscv_vncvt_x_x_w_i32mf2(shift, 2));
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_x_lsx_store64(&r_.values, __lsx_vsran_w_d(a_.m128i, __lsx_vreplgr2vr_d(n)));
   #else
     SIMDE_VECTORIZE
     for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {

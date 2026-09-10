@@ -348,6 +348,8 @@ simde_veorq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       r_.v128 = wasm_v128_xor(a_.v128, b_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vxor_vv_i16m1(a_.sv128, b_.sv128, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vxor_v(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values ^ b_.values;
     #else
@@ -492,6 +494,8 @@ simde_veorq_u16(simde_uint16x8_t a, simde_uint16x8_t b) {
       r_.v128 = wasm_v128_xor(a_.v128, b_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vxor_vv_u16m1(a_.sv128, b_.sv128, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vxor_v(a_.m128i, b_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = a_.values ^ b_.values;
     #else

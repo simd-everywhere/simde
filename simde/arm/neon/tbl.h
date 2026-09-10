@@ -117,6 +117,11 @@ simde_vtbl2_u8(simde_uint8x8x2_t a, simde_uint8x8_t b) {
       vbool8_t mask = __riscv_vmsgeu_vx_u8m1_b8 (b_.sv64 , 16 , 8);
       vuint8m1_t r_tmp = __riscv_vrgather_vv_u8m1(t_combine , b_.sv64 , 8);
       r_.sv64 = __riscv_vmerge_vxm_u8m1(r_tmp, 0, mask, 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i table = __lsx_vilvl_d(simde_x_lsx_load64(&a_[1].values), simde_x_lsx_load64(&a_[0].values));
+      simde_x_lsx_store64(&r_.values, __lsx_vshuf_b(table, table, simde_x_lsx_load64(&b_.values)));
+      simde_x_lsx_store64(&r_.values, __lsx_vand_v(simde_x_lsx_load64(&r_.values),
+        __lsx_vsle_bu(simde_x_lsx_load64(&b_.values), __lsx_vreplgr2vr_b(15))));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
