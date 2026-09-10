@@ -765,15 +765,6 @@ jobs:
           distro: ubuntu-26.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -O2
         - version: "18"
-          distro: ubuntu-26.04
-          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
-        - version: "18"
-          distro: ubuntu-26.04
-          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-nan-infinity-disabled
-        - version: "18"
-          distro: ubuntu-26.04
-          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -O2
-        - version: "18"
           distro: ubuntu-26.04-arm
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default
         - version: "18"
