@@ -3,8 +3,6 @@ name: CI
 on:
   push:
     branches-ignore:
-      - 'ci/**'
-      - '!ci/gha**'
       - 'dependabot/**'
   pull_request:
     branches:
@@ -337,6 +335,14 @@ jobs:
         - version: 15
           distro: ubuntu-26.04-arm
           plain: true
+        - version: 15
+          distro: ubuntu-26.04-riscv
+        - version: 15
+          distro: ubuntu-26.04-riscv
+          arch_flags: -O3
+        - version: 15
+          distro: ubuntu-26.04-riscv
+          plain: true
         - version: 15  # plain armhf
           distro: ubuntu-24.04-arm
           gcc: arm-linux-gnueabihf
@@ -426,17 +432,6 @@ jobs:
           arch_deb: armel
           arch_gnu: arm
           distro: ubuntu-26.04
-        - version: 15
-          cross: riscv64
-          arch_gnu: riscv64
-          arch_deb: riscv64
-          distro: ubuntu-26.04-arm
-        - extra: -O3
-          version: 15
-          cross: riscv64
-          arch_gnu: riscv64
-          arch_deb: riscv64
-          distro: ubuntu-26.04-arm
         - version: 15
           cross: s390x
           arch_gnu: s390x
@@ -848,6 +843,19 @@ jobs:
           arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
         - version: "22"
           distro: ubuntu-26.04-arm
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
+        - version: "22"
+          distro: ubuntu-26.04-riscv
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "22"
+          distro: ubuntu-26.04-riscv
+          plain: true
+          arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword
+        - version: "22"
+          distro: ubuntu-26.04-riscv
+          arch_flags: -ffast-math -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -Wno-nan-infinity-disabled
+        - version: "22"
+          distro: ubuntu-26.04-riscv
           arch_flags: -Wno-unsafe-buffer-usage -Wno-switch-default -Wno-c++-keyword -O2
         - version: "23"
           distro: ubuntu-26.04
