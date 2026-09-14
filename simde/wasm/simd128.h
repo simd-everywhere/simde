@@ -6430,7 +6430,9 @@ simde_wasm_i8x16_swizzle (simde_v128_t a, simde_v128_t b) {
       b_ = simde_v128_to_private(b),
       r_;
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+      r_.neon_i8 = vqtbl1q_s8(a_.neon_i8, b_.neon_u8);
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       int8x8x2_t tmp = { { vget_low_s8(a_.neon_i8), vget_high_s8(a_.neon_i8) } };
       r_.neon_i8 = vcombine_s8(
         vtbl2_s8(tmp, vget_low_s8(b_.neon_i8)),
