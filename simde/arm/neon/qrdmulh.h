@@ -128,7 +128,16 @@ simde_vqrdmulhq_s16(simde_int16x8_t a, simde_int16x8_t b) {
       a_ = simde_int16x8_to_private(a),
       b_ = simde_int16x8_to_private(b);
 
-    #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i hi = __lsx_vmuh_h(a_.m128i, b_.m128i);
+      __m128i lo = __lsx_vmul_h(a_.m128i, b_.m128i);
+      __m128i base = __lsx_vor_v(__lsx_vslli_h(hi, 1), __lsx_vsrli_h(lo, 15));
+      __m128i lo15 = __lsx_vand_v(lo, __lsx_vreplgr2vr_h(INT16_C(0x7FFF)));
+      __m128i carry = __lsx_vsrli_h(__lsx_vadd_h(lo15, __lsx_vreplgr2vr_h(INT16_C(0x4000))), 15);
+      __m128i rounded = __lsx_vadd_h(base, carry);
+      r_.m128i = __lsx_vbitsel_v(rounded, __lsx_vreplgr2vr_h(INT16_MAX),
+        __lsx_vseq_h(rounded, __lsx_vreplgr2vr_h(INT16_MIN)));
+    #elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
       r_.neon_i16 = vqrdmulhq_s16(a_.neon_i16, b_.neon_i16);
     #else
       SIMDE_VECTORIZE

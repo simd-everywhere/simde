@@ -583,6 +583,8 @@ simde_vzip1q_u8(simde_uint8x16_t a, simde_uint8x16_t b) {
       r_.v128 = wasm_i8x16_shuffle(a_.v128, b_.v128, 0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_unpacklo_epi8(a_.m128i, b_.m128i);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vilvl_b(b_.m128i, a_.m128i);
     #elif defined(SIMDE_SHUFFLE_VECTOR_)
       r_.values = SIMDE_SHUFFLE_VECTOR_(8, 16, a_.values, b_.values, 0, 16, 1, 17, 2, 18, 3, 19, 4, 20, 5, 21, 6, 22, 7, 23);
     #else

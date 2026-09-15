@@ -431,6 +431,8 @@ simde_vabsq_s16(simde_int16x8_t a) {
       r_.v128 = wasm_i16x8_abs(a_.v128);
     #elif defined(SIMDE_RISCV_V_NATIVE)
       r_.sv128 = __riscv_vmax_vv_i16m1(a_.sv128 , __riscv_vneg_v_i16m1(a_.sv128 , 8) , 8);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vsigncov_h(a_.m128i, a_.m128i);
     #elif (SIMDE_NATURAL_VECTOR_SIZE > 0) && defined(SIMDE_VECTOR_SUBSCRIPT_SCALAR)
       __typeof__(r_.values) m = HEDLEY_REINTERPRET_CAST(__typeof__(r_.values), a_.values < INT16_C(0));
       r_.values = (-a_.values & m) | (a_.values & ~m);

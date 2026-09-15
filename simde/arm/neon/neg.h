@@ -385,6 +385,8 @@ simde_vnegq_s16(simde_int16x8_t a) {
       r_.v128 = wasm_i16x8_neg(a_.v128);
     #elif defined(SIMDE_X86_SSE2_NATIVE)
       r_.m128i = _mm_sub_epi16(_mm_setzero_si128(), a_.m128i);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vneg_h(a_.m128i);
     #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
       r_.values = -a_.values;
     #else

@@ -41,6 +41,13 @@ simde_int32x4_t
 simde_vmull_n_s16(simde_int16x4_t a, int16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmull_n_s16(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int32x4_private r_;
+    simde_int16x4_private a_ = simde_int16x4_to_private(a);
+    r_.m128i = __lsx_vmul_w(
+      __lsx_vsllwil_w_h(simde_x_lsx_load64(&a_.values), 0),
+      __lsx_vreplgr2vr_w(HEDLEY_STATIC_CAST(int32_t, b)));
+    return simde_int32x4_from_private(r_);
   #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
     return simde_vmulq_n_s32(simde_vmovl_s16(a), b);
   #else
@@ -71,6 +78,13 @@ simde_int64x2_t
 simde_vmull_n_s32(simde_int32x2_t a, int32_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmull_n_s32(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int64x2_private r_;
+    simde_int32x2_private a_ = simde_int32x2_to_private(a);
+    r_.m128i = __lsx_vmul_d(
+      __lsx_vsllwil_d_w(simde_x_lsx_load64(&a_.values), 0),
+      __lsx_vreplgr2vr_d(HEDLEY_STATIC_CAST(int64_t, b)));
+    return simde_int64x2_from_private(r_);
   #else
     simde_int64x2_private r_;
     simde_int32x2_private a_ = simde_int32x2_to_private(a);
@@ -99,6 +113,11 @@ simde_uint32x4_t
 simde_vmull_n_u16(simde_uint16x4_t a, uint16_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmull_n_u16(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint32x4_private r_;
+    simde_uint16x4_private a_ = simde_uint16x4_to_private(a);
+    r_.m128i = __lsx_vmul_w(__lsx_vsllwil_wu_hu(simde_x_lsx_load64(&a_.values), 0), __lsx_vreplgr2vr_w(b));
+    return simde_uint32x4_from_private(r_);
   #elif SIMDE_NATURAL_VECTOR_SIZE_GE(128)
     return simde_vmulq_n_u32(simde_vmovl_u16(a), b);
   #else
@@ -129,6 +148,13 @@ simde_uint64x2_t
 simde_vmull_n_u32(simde_uint32x2_t a, uint32_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vmull_n_u32(a, b);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint64x2_private r_;
+    simde_uint32x2_private a_ = simde_uint32x2_to_private(a);
+    r_.m128i = __lsx_vmul_d(
+      __lsx_vsllwil_du_wu(simde_x_lsx_load64(&a_.values), 0),
+      __lsx_vreplgr2vr_d(HEDLEY_STATIC_CAST(uint64_t, b)));
+    return simde_uint64x2_from_private(r_);
   #else
     simde_uint64x2_private r_;
     simde_uint32x2_private a_ = simde_uint32x2_to_private(a);

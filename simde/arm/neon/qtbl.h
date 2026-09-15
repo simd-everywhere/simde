@@ -328,6 +328,10 @@ simde_vqtbl1q_u8(simde_uint8x16_t t, simde_uint8x16_t idx) {
       vbool8_t mask = __riscv_vmsgeu_vx_u8m1_b8 (idx_.sv128, 16, 16);
       r_.sv128 = __riscv_vrgather_vv_u8m1(t_.sv128 , idx_.sv128 , 16);
       r_.sv128 = __riscv_vmerge_vxm_u8m1(r_.sv128, 0, mask, 16);
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      r_.m128i = __lsx_vshuf_b(t_.m128i, t_.m128i, idx_.m128i);
+      r_.m128i = __lsx_vand_v(r_.m128i,
+        __lsx_vsle_bu(idx_.m128i, __lsx_vreplgr2vr_b(15)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -475,6 +479,14 @@ simde_vqtbl3q_u8(simde_uint8x16x3_t t, simde_uint8x16_t idx) {
       vbool2_t mask = __riscv_vmsgeu_vx_u8m4_b2 (idxm4, 48, 16);
       vuint8m4_t r_tmp = __riscv_vrgather_vv_u8m4(t_combine , idxm4 , 16);
       r_.sv128 = __riscv_vlmul_trunc_v_u8m4_u8m1(__riscv_vmerge_vxm_u8m4(r_tmp, 0, mask, 16));
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i r01 = __lsx_vshuf_b(t_[1].m128i, t_[0].m128i, idx_.m128i);
+      __m128i r2  = __lsx_vshuf_b(t_[2].m128i, t_[2].m128i, idx_.m128i);
+      __m128i bit5 = __lsx_vand_v(idx_.m128i, __lsx_vreplgr2vr_b(0x20));
+      __m128i sel  = __lsx_vseq_b(bit5, __lsx_vreplgr2vr_b(0x20));
+      r_.m128i = __lsx_vbitsel_v(r01, r2, sel);
+      r_.m128i = __lsx_vand_v(r_.m128i,
+        __lsx_vsle_bu(idx_.m128i, __lsx_vreplgr2vr_b(47)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
@@ -561,6 +573,14 @@ simde_vqtbl4q_u8(simde_uint8x16x4_t t, simde_uint8x16_t idx) {
       vbool2_t mask = __riscv_vmsgeu_vx_u8m4_b2 (idxm4, 64, 16);
       vuint8m4_t r_tmp = __riscv_vrgather_vv_u8m4(t_combine , idxm4 , 16);
       r_.sv128 = __riscv_vlmul_trunc_v_u8m4_u8m1(__riscv_vmerge_vxm_u8m4(r_tmp, 0, mask, 16));
+    #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      __m128i r01 = __lsx_vshuf_b(t_[1].m128i, t_[0].m128i, idx_.m128i);
+      __m128i r23 = __lsx_vshuf_b(t_[3].m128i, t_[2].m128i, idx_.m128i);
+      __m128i bit5 = __lsx_vand_v(idx_.m128i, __lsx_vreplgr2vr_b(0x20));
+      __m128i sel  = __lsx_vseq_b(bit5, __lsx_vreplgr2vr_b(0x20));
+      r_.m128i = __lsx_vbitsel_v(r01, r23, sel);
+      r_.m128i = __lsx_vand_v(r_.m128i,
+        __lsx_vsle_bu(idx_.m128i, __lsx_vreplgr2vr_b(63)));
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.values) / sizeof(r_.values[0])) ; i++) {
