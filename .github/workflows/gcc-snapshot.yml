@@ -194,8 +194,11 @@ jobs:
         - distro: ubuntu-26.04-arm
           plain: true
         - distro: ubuntu-24.04-riscv
-          arch_flags: -O3
+          arch_flags: -O3 -mcpu=xt-c910
+          plain: true
         - distro: ubuntu-24.04-riscv
+          arch_flags: -mcpu=xt-c910
+          plain: true
         - distro: ubuntu-24.04-riscv
           plain: true
         - distro: ubuntu-24.04-arm  # plain armhf
