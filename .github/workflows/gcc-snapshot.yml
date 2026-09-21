@@ -86,8 +86,6 @@ jobs:
 
   x86-xop:
     runs-on: ubuntu-26.04
-    strategy:
-      fail-fast: false
     env:
       CFLAGS: -Wall -Wextra -Werror -march=bdver2
       CXXFLAGS: -Wall -Wextra -Werror -march=bdver2
@@ -195,6 +193,11 @@ jobs:
         - distro: ubuntu-26.04-arm
         - distro: ubuntu-26.04-arm
           plain: true
+        - distro: ubuntu-24.04-riscv
+          arch_flags: -O3
+        - distro: ubuntu-24.04-riscv
+        - distro: ubuntu-24.04-riscv
+          plain: true
         - distro: ubuntu-24.04-arm  # plain armhf
           gcc: arm-linux-gnueabihf
           plain: true
@@ -280,17 +283,6 @@ jobs:
       matrix:
         include:
         - version: 16
-          cross: riscv64
-          arch_gnu: riscv64
-          arch_deb: riscv64
-          distro: ubuntu-26.04
-        - extra: -O3
-          version: 16
-          cross: riscv64
-          arch_gnu: riscv64
-          arch_deb: riscv64
-          distro: ubuntu-26.04
-        - version: 16
           cross: s390x
           arch_gnu: s390x
           arch_deb: s390x
@@ -344,7 +336,7 @@ jobs:
     #     key: ${{ github.job }}-${{ matrix.version}}${{ matrix.extra }}-${{ matrix.distro }}-${{ matrix.cross }}
     #     verbose: 2
     - name: Configure
-      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}${{ matrix.extra}}-ccache.cross build || (cat build/meson-logs/meson-log.txt ; false)
+      run: meson setup --cross-file=docker/cross-files/${{ matrix.cross }}-gcc-${{ matrix.version }}-ccache.cross build || (cat build/meson-logs/meson-log.txt ; false)
     - name: Build
       run: ninja -C build -v
     - name: Test
