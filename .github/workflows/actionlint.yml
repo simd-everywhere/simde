@@ -11,4 +11,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Check workflow files
-        uses: kjanat/actionlint@662318dd6bbd9c0c120e35b03168bc1be69bf428 # v1.16.1
+        uses: kjanat/actionlint@08bb2c4f0d039744455b87aef1c647fb8b66d37b # v1.17.0
