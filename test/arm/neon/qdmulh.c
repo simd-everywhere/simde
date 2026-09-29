@@ -162,6 +162,17 @@ test_simde_vqdmulh_s16 (SIMDE_MUNIT_TEST_ARGS) {
     { {  INT16_C( 23230), -INT16_C( 28704),  INT16_C( 29505),  INT16_C( 16417) },
       {  INT16_C(  1837),  INT16_C( 21103),  INT16_C(  3050), -INT16_C(  6921) },
       {  INT16_C(  1302), -INT16_C( 18486),  INT16_C(  2746), -INT16_C(  3468) } },
+    /* Saturation edges.  (2 * a * b) >> 16 reaches 32768 only when
+     * a == b == INT16_MIN -- the product is 2^30, and that is the sole
+     * factorisation of 2^30 that fits in int16_t.  The result must saturate
+     * to INT16_MAX; computing it as ((a*b) >> 16 << 1) | (((a*b) & 0xFFFF) >> 15)
+     * with a plain left shift wraps this case to INT16_MIN instead. */
+    { {        INT16_MIN,        INT16_MIN,  INT16_C( 32767),  INT16_C( 32767) },
+      {        INT16_MIN,  INT16_C( 32767),  INT16_C( 32767),        INT16_MIN },
+      {        INT16_MAX, -INT16_C( 32767),  INT16_C( 32766), -INT16_C( 32767) } },
+    { {        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN },
+      {  INT16_C( 16384),  INT16_C(     1),  INT16_C(     2), -INT16_C(     1) },
+      { -INT16_C( 16384), -INT16_C(     1), -INT16_C(     2),  INT16_C(     1) } },
 
   };
 
@@ -280,6 +291,10 @@ test_simde_vqdmulhq_s16 (SIMDE_MUNIT_TEST_ARGS) {
     { {  INT16_C( 19851), -INT16_C( 20269), -INT16_C( 22930), -INT16_C( 17856), -INT16_C( 25409), -INT16_C( 12370),  INT16_C( 17124),  INT16_C( 27512) },
       {  INT16_C(  7337),  INT16_C( 22062), -INT16_C( 20000),  INT16_C(   129), -INT16_C( 24152), -INT16_C(  1253), -INT16_C( 17266),  INT16_C(  6782) },
       {  INT16_C(  4444), -INT16_C( 13647),  INT16_C( 13995), -INT16_C(    71),  INT16_C( 18727),  INT16_C(   473), -INT16_C(  9023),  INT16_C(  5694) } },
+    /* Saturation edges -- see the comment on vqdmulh_s16 above. */
+    { {        INT16_MIN,        INT16_MIN,  INT16_C( 32767),  INT16_C( 32767),        INT16_MIN,        INT16_MIN,        INT16_MIN,        INT16_MIN },
+      {        INT16_MIN,  INT16_C( 32767),  INT16_C( 32767),        INT16_MIN,  INT16_C( 16384),  INT16_C(     1),  INT16_C(     2), -INT16_C(     1) },
+      {        INT16_MAX, -INT16_C( 32767),  INT16_C( 32766), -INT16_C( 32767), -INT16_C( 16384), -INT16_C(     1), -INT16_C(     2),  INT16_C(     1) } },
 
   };
 
