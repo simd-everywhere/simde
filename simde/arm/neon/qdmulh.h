@@ -69,7 +69,13 @@ simde_vqdmulh_s16(simde_int16x4_t a, simde_int16x4_t b) {
       simde_int16x4_private b_ = simde_int16x4_to_private(b);
       __m128i hi = __lsx_vmuh_h(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values));
       __m128i lo = __lsx_vmul_h(simde_x_lsx_load64(&a_.values), simde_x_lsx_load64(&b_.values));
-      simde_x_lsx_store64(&r_.values, __lsx_vor_v(__lsx_vslli_h(hi, 1), __lsx_vsrli_h(lo, 15)));
+      /* (2 * a * b) >> 16, evaluated as ((a * b) >> 16 << 1) |
+       * (((a * b) & 0xFFFF) >> 15) but with the doubling saturated.  Doubling
+       * with a saturating add rather than a shift folds the saturation in for
+       * free: the only product that reaches 2^30 is INT16_MIN * INT16_MIN,
+       * whose low half is zero, so the OR below cannot disturb the clamped
+       * 0x7FFF.  A plain left shift would wrap that case to INT16_MIN. */
+      simde_x_lsx_store64(&r_.values, __lsx_vor_v(__lsx_vsadd_h(hi, hi), __lsx_vsrli_h(lo, 15)));
     #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && !defined(SIMDE_ARCH_ZARCH)
       simde_int16x8_private tmp_ =
         simde_int16x8_to_private(
@@ -152,8 +158,25 @@ simde_vqdmulhq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vqdmulhq_s16(a, b);
   #else
-    return simde_vcombine_s16(simde_vqdmulh_s16(simde_vget_low_s16(a), simde_vget_low_s16(b)),
-                              simde_vqdmulh_s16(simde_vget_high_s16(a), simde_vget_high_s16(b)));
+    simde_int16x8_private r_;
+
+    #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+      simde_int16x8_private
+        a_ = simde_int16x8_to_private(a),
+        b_ = simde_int16x8_to_private(b);
+
+      /* Same saturating doubling as vqdmulh_s16 above, applied to the whole
+       * 128-bit vector instead of to two 64-bit halves. */
+      __m128i hi = __lsx_vmuh_h(a_.m128i, b_.m128i);
+      __m128i lo = __lsx_vmul_h(a_.m128i, b_.m128i);
+      r_.m128i = __lsx_vor_v(__lsx_vsadd_h(hi, hi), __lsx_vsrli_h(lo, 15));
+    #else
+      r_ = simde_int16x8_to_private(
+        simde_vcombine_s16(simde_vqdmulh_s16(simde_vget_low_s16(a), simde_vget_low_s16(b)),
+                           simde_vqdmulh_s16(simde_vget_high_s16(a), simde_vget_high_s16(b))));
+    #endif
+
+    return simde_int16x8_from_private(r_);
   #endif
 }
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
