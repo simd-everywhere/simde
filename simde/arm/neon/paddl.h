@@ -138,6 +138,15 @@ simde_int16x8_t
 simde_vpaddlq_s8(simde_int8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vpaddlq_s8(a);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    /* Add adjacent elements pairwise, widening one step.  LSX's horizontal
+     * add - vhaddw_<wide>_<narrow> - does exactly this over all sixteen
+     * bytes of both operands, so passing the same register twice yields the
+     * eight pairwise sums in one instruction. */
+    simde_int8x16_private a_ = simde_int8x16_to_private(a);
+    simde_int16x8_private r_;
+    r_.m128i = __lsx_vhaddw_h_b(a_.m128i, a_.m128i);
+    return simde_int16x8_from_private(r_);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(signed char) one = vec_splat_s8(1);
     return
@@ -177,6 +186,11 @@ simde_int32x4_t
 simde_vpaddlq_s16(simde_int16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vpaddlq_s16(a);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_int16x8_private a_ = simde_int16x8_to_private(a);
+    simde_int32x4_private r_;
+    r_.m128i = __lsx_vhaddw_w_h(a_.m128i, a_.m128i);
+    return simde_int32x4_from_private(r_);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(signed short) one = vec_splat_s16(1);
     return
@@ -236,6 +250,11 @@ simde_uint16x8_t
 simde_vpaddlq_u8(simde_uint8x16_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vpaddlq_u8(a);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint8x16_private a_ = simde_uint8x16_to_private(a);
+    simde_uint16x8_private r_;
+    r_.m128i = __lsx_vhaddw_hu_bu(a_.m128i, a_.m128i);
+    return simde_uint16x8_from_private(r_);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned char) one = vec_splat_u8(1);
     return
@@ -272,6 +291,11 @@ simde_uint32x4_t
 simde_vpaddlq_u16(simde_uint16x8_t a) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vpaddlq_u16(a);
+  #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
+    simde_uint16x8_private a_ = simde_uint16x8_to_private(a);
+    simde_uint32x4_private r_;
+    r_.m128i = __lsx_vhaddw_wu_hu(a_.m128i, a_.m128i);
+    return simde_uint32x4_from_private(r_);
   #elif defined(SIMDE_POWER_ALTIVEC_P6_NATIVE)
     SIMDE_POWER_ALTIVEC_VECTOR(unsigned short) one = vec_splat_u16(1);
     return
