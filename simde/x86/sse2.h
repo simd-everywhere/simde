@@ -6392,14 +6392,21 @@ simde_mm_shuffle_pd (simde__m128d a, simde__m128d b, const int imm8)
   #define simde_mm_shuffle_pd(a, b, imm8)  \
       ({ \
           simde__m128d res; \
-          if ((imm8) & 0x01) { \
-            res = (simde__m128d)__lsx_vshuf4i_d(simde__m128d_to_private(a).lsx_i64, simde__m128d_to_private(b).lsx_i64, 0b1001); \
-          } else if ((imm8) & 0x02) { \
-            res = (simde__m128d)__lsx_vshuf4i_d(simde__m128d_to_private(a).lsx_i64, simde__m128d_to_private(b).lsx_i64, 0b1100); \
-          } else if ((imm8) & 0x03) { \
-            res = (simde__m128d)__lsx_vshuf4i_d(simde__m128d_to_private(a).lsx_i64, simde__m128d_to_private(b).lsx_i64, 0b1101); \
-          } else { \
-            res = (simde__m128d)__lsx_vshuf4i_d(simde__m128d_to_private(a).lsx_i64, simde__m128d_to_private(b).lsx_i64, 0b1000); \
+          /* imm8 == 3 must be dispatched before imm8 == 1; testing bit 0 first \
+           * sent it to the 0b1001 case and made it behave like imm8 == 1. */ \
+          switch ((imm8) & 0x03) { \
+            case 0x00: \
+              res = (simde__m128d)__lsx_vshuf4i_d(simde__m128d_to_private(a).lsx_i64, simde__m128d_to_private(b).lsx_i64, 0b1000); \
+              break; \
+            case 0x01: \
+              res = (simde__m128d)__lsx_vshuf4i_d(simde__m128d_to_private(a).lsx_i64, simde__m128d_to_private(b).lsx_i64, 0b1001); \
+              break; \
+            case 0x02: \
+              res = (simde__m128d)__lsx_vshuf4i_d(simde__m128d_to_private(a).lsx_i64, simde__m128d_to_private(b).lsx_i64, 0b1100); \
+              break; \
+            default: \
+              res = (simde__m128d)__lsx_vshuf4i_d(simde__m128d_to_private(a).lsx_i64, simde__m128d_to_private(b).lsx_i64, 0b1101); \
+              break; \
           } \
           res; \
       })

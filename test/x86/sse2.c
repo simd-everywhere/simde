@@ -7227,6 +7227,50 @@ test_simde_mm_shuffle_pd(SIMDE_MUNIT_TEST_ARGS) {
     simde_assert_m128d_close(r, test_vec[i].r, 1);
   }
 
+  /* imm8[0] selects the element of a and imm8[1] the element of b, so all four
+   * immediates have to be covered: the vectors above only pass imm8 == 0, and
+   * that is the one value the LSX dispatch got right by accident, since it
+   * tested bit 0 before the two bit value and so sent imm8 == 3 down the
+   * imm8 == 1 path. */
+  {
+    const simde__m128d test_vec_1[8] = {
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -595.93), SIMDE_FLOAT64_C(  897.05)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -126.52), SIMDE_FLOAT64_C( -684.88)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -103.97), SIMDE_FLOAT64_C( -871.69)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -328.63), SIMDE_FLOAT64_C( -377.03)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(  106.67), SIMDE_FLOAT64_C(  238.70)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(   -8.02), SIMDE_FLOAT64_C(  571.83)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -162.29), SIMDE_FLOAT64_C( -214.27)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -855.93), SIMDE_FLOAT64_C( -528.33))
+    };
+    const simde__m128d test_vec_2[8] = {
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -346.39), SIMDE_FLOAT64_C(  524.15)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(  765.70), SIMDE_FLOAT64_C(   62.45)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -923.31), SIMDE_FLOAT64_C( -753.55)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -672.47), SIMDE_FLOAT64_C(  701.23)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -429.19), SIMDE_FLOAT64_C(  837.56)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(  447.48), SIMDE_FLOAT64_C( -389.51)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -967.02), SIMDE_FLOAT64_C(  549.07)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -959.95), SIMDE_FLOAT64_C(  376.34))
+    };
+    const simde__m128d test_vec_3[8] = {
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -346.39), SIMDE_FLOAT64_C(  897.05)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(  765.70), SIMDE_FLOAT64_C( -684.88)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -923.31), SIMDE_FLOAT64_C( -871.69)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -672.47), SIMDE_FLOAT64_C( -377.03)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -429.19), SIMDE_FLOAT64_C(  238.70)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C(  447.48), SIMDE_FLOAT64_C(  571.83)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -967.02), SIMDE_FLOAT64_C( -214.27)),
+      simde_mm_set_pd(SIMDE_FLOAT64_C( -959.95), SIMDE_FLOAT64_C( -528.33))
+    };
+
+    for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])); i++) {
+      simde_assert_m128d_close(simde_mm_shuffle_pd(test_vec[i].a, test_vec[i].b, 1), test_vec_1[i], 1);
+      simde_assert_m128d_close(simde_mm_shuffle_pd(test_vec[i].a, test_vec[i].b, 2), test_vec_2[i], 1);
+      simde_assert_m128d_close(simde_mm_shuffle_pd(test_vec[i].a, test_vec[i].b, 3), test_vec_3[i], 1);
+    }
+  }
+
   return 0;
 }
 
