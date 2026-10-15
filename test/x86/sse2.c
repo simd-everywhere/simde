@@ -10722,6 +10722,48 @@ test_simde_x_mm_mod_epi64(SIMDE_MUNIT_TEST_ARGS) {
   return 0;
 }
 
+static int
+test_simde_x_mm_negate_pd (SIMDE_MUNIT_TEST_ARGS) {
+  static const struct {
+    const simde_float64 a[2];
+    const simde_float64 r[2];
+  } test_vec[] = {
+    { { SIMDE_FLOAT64_C(  -128.06), SIMDE_FLOAT64_C(   686.05) },
+      { SIMDE_FLOAT64_C(   128.06), SIMDE_FLOAT64_C(  -686.05) } },
+    { { SIMDE_FLOAT64_C(   481.93), SIMDE_FLOAT64_C(  -158.32) },
+      { SIMDE_FLOAT64_C(  -481.93), SIMDE_FLOAT64_C(   158.32) } },
+    { { SIMDE_FLOAT64_C(  -811.29), SIMDE_FLOAT64_C(  -207.51) },
+      { SIMDE_FLOAT64_C(   811.29), SIMDE_FLOAT64_C(   207.51) } },
+    { { SIMDE_FLOAT64_C(   984.62), SIMDE_FLOAT64_C(   619.36) },
+      { SIMDE_FLOAT64_C(  -984.62), SIMDE_FLOAT64_C(  -619.36) } },
+    { { SIMDE_FLOAT64_C(  -115.52), SIMDE_FLOAT64_C(   361.32) },
+      { SIMDE_FLOAT64_C(   115.52), SIMDE_FLOAT64_C(  -361.32) } },
+    { { SIMDE_FLOAT64_C(  -706.12), SIMDE_FLOAT64_C(  -334.31) },
+      { SIMDE_FLOAT64_C(   706.12), SIMDE_FLOAT64_C(   334.31) } },
+    { { SIMDE_FLOAT64_C(  -579.45), SIMDE_FLOAT64_C(   193.33) },
+      { SIMDE_FLOAT64_C(   579.45), SIMDE_FLOAT64_C(  -193.33) } },
+    { { SIMDE_FLOAT64_C(   828.05), SIMDE_FLOAT64_C(  -287.66) },
+      { SIMDE_FLOAT64_C(  -828.05), SIMDE_FLOAT64_C(   287.66) } }
+  };
+
+  for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
+    simde__m128d a = simde_mm_loadu_pd(test_vec[i].a);
+    simde__m128d r = simde_x_mm_negate_pd(a);
+    simde_test_x86_assert_equal_f64x2(r, simde_mm_loadu_pd(test_vec[i].r), INT_MAX);
+  }
+
+  {
+    /* Negating zero only changes its sign bit, so a tolerance-based comparison
+     * cannot tell a correct implementation from an "0.0 - x" substitute or
+     * from an integer negate; check the whole vector as bit patterns instead. */
+    simde__m128d a = simde_mm_castsi128_pd(simde_mm_set_epi64x(INT64_C(0), INT64_MIN));
+    simde__m128i r = simde_mm_castpd_si128(simde_x_mm_negate_pd(a));
+    simde_assert_m128i_i64(r, ==, simde_mm_set_epi64x(INT64_MIN, INT64_C(0)));
+  }
+
+  return 0;
+}
+
 SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_set1_pd)
   SIMDE_TEST_FUNC_LIST_ENTRY(mm_set_pd)
@@ -10992,6 +11034,7 @@ SIMDE_TEST_FUNC_LIST_BEGIN
   SIMDE_TEST_FUNC_LIST_ENTRY(x_mm_sub_epu32)
   SIMDE_TEST_FUNC_LIST_ENTRY(x_mm_mul_epi64)
   SIMDE_TEST_FUNC_LIST_ENTRY(x_mm_mod_epi64)
+  SIMDE_TEST_FUNC_LIST_ENTRY(x_mm_negate_pd)
 SIMDE_TEST_FUNC_LIST_END
 
 #include <test/x86/test-x86-footer.h>
