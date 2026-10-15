@@ -8661,7 +8661,9 @@ simde_x_mm_negate_pd(simde__m128d a) {
     #elif defined(SIMDE_WASM_SIMD128_NATIVE)
       r_.wasm_v128 = wasm_f64x2_neg(a_.wasm_v128);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      r_.lsx_i64 = __lsx_vneg_d(a_.lsx_i64);
+      /* vneg_d is an integer two's-complement negate: it rewrites the exponent
+       * and mantissa too, so it is not a floating-point sign flip. */
+      r_.lsx_i64 = __lsx_vxor_v(a_.lsx_i64, __lsx_vreplgr2vr_d(INT64_C(0x8000000000000000)));
     #elif defined(SIMDE_VECTOR_NEGATE)
       r_.f64 = -a_.f64;
     #else
