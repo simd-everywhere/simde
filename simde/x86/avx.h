@@ -3100,7 +3100,7 @@ simde_mm256_cmp_pd
     case SIMDE_CMP_NLT_UQ:
     case SIMDE_CMP_NLT_US:
       #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-        t_ = __lasx_xvfcmp_cult_d(a_.d256, b_.d256);
+        t_ = __lasx_xvfcmp_clt_d(a_.d256, b_.d256);
         r_.i256 = __lasx_xvnor_v(t_, t_);
       #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
         r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), ~(a_.f64 < b_.f64));
@@ -3115,7 +3115,7 @@ simde_mm256_cmp_pd
     case SIMDE_CMP_NLE_UQ:
     case SIMDE_CMP_NLE_US:
       #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-        t_ = __lasx_xvfcmp_cule_d(a_.d256, b_.d256);
+        t_ = __lasx_xvfcmp_cle_d(a_.d256, b_.d256);
         r_.i256 = __lasx_xvnor_v(t_, t_);
       #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
         r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), ~(a_.f64 <= b_.f64));
@@ -3191,7 +3191,7 @@ simde_mm256_cmp_pd
     case SIMDE_CMP_GE_OQ:
     case SIMDE_CMP_GE_OS:
       #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-        t_ = __lasx_xvfcmp_clt_d(a_.d256, b_.d256);
+        t_ = __lasx_xvfcmp_cult_d(a_.d256, b_.d256);
         r_.i256 = __lasx_xvnor_v(t_, t_);
       #elif defined(SIMDE_VECTOR_SUBSCRIPT_OPS)
         r_.i64 = HEDLEY_REINTERPRET_CAST(__typeof__(r_.i64), (a_.f64 >= b_.f64));
