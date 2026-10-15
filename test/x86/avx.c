@@ -5843,6 +5843,31 @@ test_simde_mm_cmp_sd(SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm_cmp_sd(a, b, 31);
   simde_assert_m128i_u64(simde_mm_castpd_si128(r), ==, simde_mm_castpd_si128(e));
 
+  /* The negated predicates have to be true for unordered operands, and their
+   * non-negated counterparts false; only NaN inputs tell the two apart. */
+  a = simde_mm_setr_pd(SIMDE_MATH_NAN, SIMDE_FLOAT64_C(  987.65));
+  b = simde_mm_setr_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(  123.45));
+
+  e = simde_mm_move_sd(a, simde_x_mm_setone_pd());
+  r = simde_mm_cmp_sd(a, b, 5);
+  simde_assert_m128i_u64(simde_mm_castpd_si128(r), ==, simde_mm_castpd_si128(e));
+
+  r = simde_mm_cmp_sd(a, b, 6);
+  simde_assert_m128i_u64(simde_mm_castpd_si128(r), ==, simde_mm_castpd_si128(e));
+
+  e = simde_mm_move_sd(a, simde_mm_setzero_pd());
+  r = simde_mm_cmp_sd(a, b, 13);
+  simde_assert_m128i_u64(simde_mm_castpd_si128(r), ==, simde_mm_castpd_si128(e));
+
+  /* The always-false and always-true predicates still have to pass the upper
+   * element through. */
+  r = simde_mm_cmp_sd(a, b, 11);
+  simde_assert_m128i_u64(simde_mm_castpd_si128(r), ==, simde_mm_castpd_si128(e));
+
+  e = simde_mm_move_sd(a, simde_x_mm_setone_pd());
+  r = simde_mm_cmp_sd(a, b, 31);
+  simde_assert_m128i_u64(simde_mm_castpd_si128(r), ==, simde_mm_castpd_si128(e));
+
   return 0;
 }
 
@@ -6039,6 +6064,31 @@ test_simde_mm_cmp_ss(SIMDE_MUNIT_TEST_ARGS) {
   a = simde_mm_set_ps(SIMDE_FLOAT32_C( -851.42), SIMDE_FLOAT32_C(  716.28), SIMDE_FLOAT32_C(  257.21), SIMDE_FLOAT32_C(  191.16));
   b = simde_mm_set_ps(SIMDE_FLOAT32_C( -758.42), SIMDE_FLOAT32_C(  731.61), SIMDE_FLOAT32_C(   23.45), SIMDE_FLOAT32_C(  503.57));
   e = simde_mm_move_ss(simde_mm_set_ps(SIMDE_FLOAT32_C( -851.42), SIMDE_FLOAT32_C(  716.28), SIMDE_FLOAT32_C(  257.21), SIMDE_FLOAT32_C(     0.0)), simde_x_mm_setone_ps());
+  r = simde_mm_cmp_ss(a, b, 31);
+  simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
+
+  /* The negated predicates have to be true for unordered operands, and their
+   * non-negated counterparts false; only NaN inputs tell the two apart. */
+  a = simde_mm_setr_ps(SIMDE_MATH_NAN, SIMDE_FLOAT32_C(    1.00), SIMDE_FLOAT32_C(    2.00), SIMDE_FLOAT32_C(    3.00));
+  b = simde_mm_setr_ps(SIMDE_FLOAT32_C(    0.00), SIMDE_FLOAT32_C(    1.00), SIMDE_FLOAT32_C(    5.00), SIMDE_FLOAT32_C(    3.00));
+
+  e = simde_mm_move_ss(a, simde_x_mm_setone_ps());
+  r = simde_mm_cmp_ss(a, b, 5);
+  simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
+
+  r = simde_mm_cmp_ss(a, b, 6);
+  simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
+
+  e = simde_mm_move_ss(a, simde_mm_setzero_ps());
+  r = simde_mm_cmp_ss(a, b, 13);
+  simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
+
+  /* The always-false and always-true predicates still have to pass the upper
+   * elements through. */
+  r = simde_mm_cmp_ss(a, b, 11);
+  simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
+
+  e = simde_mm_move_ss(a, simde_x_mm_setone_ps());
   r = simde_mm_cmp_ss(a, b, 31);
   simde_assert_m128i_u32(simde_mm_castps_si128(r), ==, simde_mm_castps_si128(e));
 
