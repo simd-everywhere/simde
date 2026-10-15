@@ -102,7 +102,8 @@ simde_mm256_cmov_si256 (simde__m256i a, simde__m256i b, simde__m256i c) {
       b_ = simde__m256i_to_private(b),
       c_ = simde__m256i_to_private(c);
 
-    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+    /* LoongArch: the 128-bit halves have LSX implementations, LASX does not. */
+    #if SIMDE_NATURAL_VECTOR_SIZE_LE(128) || defined(SIMDE_LOONGARCH_LSX_NATIVE)
       for (size_t i = 0 ; i < (sizeof(r_.m128i) / sizeof(r_.m128i[0])) ; i++) {
         r_.m128i[i] = simde_mm_cmov_si128(a_.m128i[i], b_.m128i[i], c_.m128i[i]);
       }
