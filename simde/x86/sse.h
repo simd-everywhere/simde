@@ -3828,8 +3828,10 @@ simde_x_mm_negate_ps(simde__m128 a) {
     #elif defined(SIMDE_POWER_ALTIVEC_P8_NATIVE)
       r_.altivec_f32 = vec_neg(a_.altivec_f32);
     #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
-      const v4f32 f32 = {0.0f, 0.0f, 0.0f, 0.0f};
-      r_.lsx_f32 = __lsx_vfsub_s(f32, a_.lsx_f32);
+      /* vfsub_s(0.0f, x) is a subtraction, not a sign flip: 0.0f - (+0.0f) is
+       * +0.0f, where a negate has to produce -0.0f.  Flip the sign bit, which
+       * is bit 31 of each of the four elements. */
+      r_.lsx_i64 = __lsx_vxor_v(a_.lsx_i64, __lsx_vreplgr2vr_d(HEDLEY_STATIC_CAST(int64_t, UINT64_C(0x8000000080000000))));
     #elif defined(SIMDE_VECTOR_NEGATE)
       r_.f32 = -a_.f32;
     #else

@@ -4432,7 +4432,16 @@ test_simde_x_mm_negate_ps (SIMDE_MUNIT_TEST_ARGS) {
   for (size_t i = 0 ; i < (sizeof(test_vec) / sizeof(test_vec[0])) ; i++) {
     simde__m128 a = simde_mm_loadu_ps(test_vec[i].a);
     simde__m128 r = simde_x_mm_negate_ps(a);
-    simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[i].r), 1);
+    simde_test_x86_assert_equal_f32x4(r, simde_mm_loadu_ps(test_vec[i].r), INT_MAX);
+  }
+
+  {
+    /* Negating zero only changes its sign bit, so a tolerance-based comparison
+     * cannot tell a correct implementation from an "0.0f - x" substitute or
+     * from an integer negate; check the whole vector as bit patterns instead. */
+    simde__m128 a = simde_mm_castsi128_ps(simde_mm_set_epi32(INT32_C(0), INT32_MIN, INT32_C(0), INT32_MIN));
+    simde__m128i r = simde_mm_castps_si128(simde_x_mm_negate_ps(a));
+    simde_assert_m128i_i32(r, ==, simde_mm_set_epi32(INT32_MIN, INT32_C(0), INT32_MIN, INT32_C(0)));
   }
 
   return 0;
