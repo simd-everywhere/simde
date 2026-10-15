@@ -6337,6 +6337,28 @@ test_simde_mm256_cmp_pd(SIMDE_MUNIT_TEST_ARGS) {
   r = simde_mm256_cmp_pd(a, b, 31);
   simde_test_x86_assert_equal_i64x4(simde_mm256_castpd_si256(r), simde_mm256_castpd_si256(e));
 
+  /* The negated predicates have to report true for unordered operands, and
+   * their non-negated counterparts false; only NaN inputs tell the two apart. */
+  a = simde_mm256_set_pd(           SIMDE_MATH_NAN, SIMDE_FLOAT64_C(  318.70),
+                         SIMDE_MATH_NAN, SIMDE_FLOAT64_C(  971.38));
+  b = simde_mm256_set_pd(           SIMDE_MATH_NAN, SIMDE_FLOAT64_C(  318.70),
+                         SIMDE_FLOAT64_C(  683.13),            SIMDE_MATH_NAN);
+
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET,
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
+  r = simde_mm256_cmp_pd(a, b, 5);
+  simde_test_x86_assert_equal_i64x4(simde_mm256_castpd_si256(r), simde_mm256_castpd_si256(e));
+
+  e = simde_mm256_set_pd(SIMDE_F64_ALL_SET, SIMDE_FLOAT64_C(    0.00),
+                         SIMDE_F64_ALL_SET, SIMDE_F64_ALL_SET);
+  r = simde_mm256_cmp_pd(a, b, 6);
+  simde_test_x86_assert_equal_i64x4(simde_mm256_castpd_si256(r), simde_mm256_castpd_si256(e));
+
+  e = simde_mm256_set_pd(SIMDE_FLOAT64_C(    0.00), SIMDE_F64_ALL_SET,
+                         SIMDE_FLOAT64_C(    0.00), SIMDE_FLOAT64_C(    0.00));
+  r = simde_mm256_cmp_pd(a, b, 13);
+  simde_test_x86_assert_equal_i64x4(simde_mm256_castpd_si256(r), simde_mm256_castpd_si256(e));
+
   return 0;
 }
 
