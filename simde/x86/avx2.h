@@ -603,7 +603,7 @@ simde_mm_blend_epi32(simde__m128i a, simde__m128i b, const int imm8)
 #  define simde_mm_blend_epi32(a, b, imm8) _mm_blend_epi32(a, b, imm8)
 #elif defined(SIMDE_LOONGARCH_LSX_NATIVE)
 #  define simde_mm_blend_epi32(a, b, imm8)  __lsx_vbitsel_v(a, b, \
-  simde_mm_set_epi32(-((imm8 >> 3) & 1), -((imm8 >> 2) & 1), -((imm8 >> 1)& 1), -(imm8 & 1)))
+  simde_mm_set_epi32(-(((imm8) >> 3) & 1), -(((imm8) >> 2) & 1), -(((imm8) >> 1) & 1), -((imm8) & 1)))
 #elif SIMDE_NATURAL_FLOAT_VECTOR_SIZE_LE(128)
 #  define simde_mm_blend_epi32(a, b, imm8) \
   simde_mm_castps_si128(simde_mm_blend_ps(simde_mm_castsi128_ps(a), simde_mm_castsi128_ps(b), (imm8)))
