@@ -108,7 +108,7 @@ simde_uint16x8_t
 simde_vtstq_s16(simde_int16x8_t a, simde_int16x8_t b) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     return vtstq_s16(a, b);
-  #elif SIMDE_NATURAL_VECTOR_SIZE > 0
+  #elif SIMDE_NATURAL_VECTOR_SIZE > 0 && !defined(SIMDE_LOONGARCH_LSX_NATIVE)
     return simde_vmvnq_u16(simde_vceqzq_s16(simde_vandq_s16(a, b)));
   #else
     simde_int16x8_private

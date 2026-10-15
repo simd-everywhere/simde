@@ -5968,7 +5968,8 @@ simde_mm256_storeu_pd (simde_float64 mem_addr[4], simde__m256d a) {
     _mm256_storeu_pd(mem_addr, a);
   #elif defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_BUG_GCC_123766)
     return __lasx_xvst(a, mem_addr, 0);
-  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128)
+  /* LoongArch: the 128-bit halves have LSX implementations, LASX does not. */
+  #elif SIMDE_NATURAL_VECTOR_SIZE_LE(128) || defined(SIMDE_LOONGARCH_LSX_NATIVE)
     simde__m256d_private a_ = simde__m256d_to_private(a);
     for (size_t i = 0 ; i < (sizeof(a_.m128d) / sizeof(a_.m128d[0])) ; i++) {
       simde_mm_storeu_pd(mem_addr + 2*i, a_.m128d[i]);

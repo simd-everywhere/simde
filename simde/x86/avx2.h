@@ -317,7 +317,8 @@ simde_mm256_alignr_epi8 (simde__m256i a, simde__m256i b, int count)
 }
 #if defined(SIMDE_X86_AVX2_NATIVE) && !defined(SIMDE_BUG_PGI_30106)
 #  define simde_mm256_alignr_epi8(a, b, count) _mm256_alignr_epi8(a, b, count)
-#elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
+/* LoongArch: the 128-bit halves have LSX implementations, LASX does not. */
+#elif SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128) || defined(SIMDE_LOONGARCH_LSX_NATIVE)
 #  define simde_mm256_alignr_epi8(a, b, count) \
       simde_mm256_set_m128i( \
           simde_mm_alignr_epi8(simde_mm256_extracti128_si256(a, 1), simde_mm256_extracti128_si256(b, 1), (count)), \
@@ -4440,7 +4441,8 @@ simde_mm256_sad_epu8 (simde__m256i a, simde__m256i b) {
       a_ = simde__m256i_to_private(a),
       b_ = simde__m256i_to_private(b);
 
-    #if SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128)
+    /* LoongArch: the 128-bit halves have LSX implementations, LASX does not. */
+    #if SIMDE_NATURAL_INT_VECTOR_SIZE_LE(128) || defined(SIMDE_LOONGARCH_LSX_NATIVE)
       r_.m128i[0] = simde_mm_sad_epu8(a_.m128i[0], b_.m128i[0]);
       r_.m128i[1] = simde_mm_sad_epu8(a_.m128i[1], b_.m128i[1]);
     #else

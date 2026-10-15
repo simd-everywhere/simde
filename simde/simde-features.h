@@ -547,6 +547,25 @@
   #include <msa.h>
 #endif
 
+#if !defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_LOONGARCH_LASX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_LOONGARCH_LASX)
+    #define SIMDE_LOONGARCH_LASX_NATIVE
+  #endif
+#endif
+
+#if !defined(SIMDE_LOONGARCH_LSX_NATIVE) && !defined(SIMDE_LOONGARCH_LSX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
+  #if defined(SIMDE_ARCH_LOONGARCH_LSX)
+    #define SIMDE_LOONGARCH_LSX_NATIVE
+  #endif
+#endif
+
+#if defined(SIMDE_LOONGARCH_LASX_NATIVE)
+  #include <lasxintrin.h>
+#endif
+#if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+  #include <lsxintrin.h>
+#endif
+
 /* This is used to determine whether or not to fall back on a vector
  * function in an earlier ISA extensions, as well as whether
  * we expected any attempts at vectorization to be fruitful or if we
@@ -566,6 +585,8 @@
     #define SIMDE_NATURAL_FLOAT_VECTOR_SIZE (256)
     #define SIMDE_NATURAL_INT_VECTOR_SIZE (128)
     #define SIMDE_NATURAL_DOUBLE_VECTOR_SIZE (128)
+  #elif defined(SIMDE_LOONGARCH_LASX_NATIVE)
+    #define SIMDE_NATURAL_VECTOR_SIZE (256)
   #elif \
       defined(SIMDE_X86_SSE2_NATIVE) || \
       defined(SIMDE_ARM_NEON_A32V7_NATIVE) || \
@@ -771,25 +792,6 @@
 
 #if defined(SIMDE_ARCH_ARM_NEON_BF16)
   #define SIMDE_ARM_NEON_BF16
-#endif
-
-#if !defined(SIMDE_LOONGARCH_LASX_NATIVE) && !defined(SIMDE_LOONGARCH_LASX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-  #if defined(SIMDE_ARCH_LOONGARCH_LASX)
-    #define SIMDE_LOONGARCH_LASX_NATIVE
-  #endif
-#endif
-
-#if !defined(SIMDE_LOONGARCH_LSX_NATIVE) && !defined(SIMDE_LOONGARCH_LSX_NO_NATIVE) && !defined(SIMDE_NO_NATIVE)
-  #if defined(SIMDE_ARCH_LOONGARCH_LSX)
-    #define SIMDE_LOONGARCH_LSX_NATIVE
-  #endif
-#endif
-
-#if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-  #include <lasxintrin.h>
-#endif
-#if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-  #include <lsxintrin.h>
 #endif
 
 #endif /* !defined(SIMDE_FEATURES_H) */

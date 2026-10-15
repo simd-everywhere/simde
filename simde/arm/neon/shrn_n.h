@@ -61,7 +61,7 @@ simde_vshrn_n_s16 (const simde_int16x8_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrn_n_s16(a, n) vshrn_n_s16((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE > 0
+#elif SIMDE_NATURAL_VECTOR_SIZE > 0 && !defined(SIMDE_LOONGARCH_LSX_NATIVE)
   #define simde_vshrn_n_s16(a, n) simde_vmovn_s16(simde_vshrq_n_s16((a), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -90,7 +90,7 @@ simde_vshrn_n_s32 (const simde_int32x4_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrn_n_s32(a, n) vshrn_n_s32((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE > 0
+#elif SIMDE_NATURAL_VECTOR_SIZE > 0 && !defined(SIMDE_LOONGARCH_LSX_NATIVE)
   #define simde_vshrn_n_s32(a, n) simde_vmovn_s32(simde_vshrq_n_s32((a), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
@@ -120,7 +120,7 @@ simde_vshrn_n_s64 (const simde_int64x2_t a, const int n)
 }
 #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
   #define simde_vshrn_n_s64(a, n) vshrn_n_s64((a), (n))
-#elif SIMDE_NATURAL_VECTOR_SIZE > 0
+#elif SIMDE_NATURAL_VECTOR_SIZE > 0 && !defined(SIMDE_LOONGARCH_LSX_NATIVE)
   #define simde_vshrn_n_s64(a, n) simde_vmovn_s64(simde_vshrq_n_s64((a), (n)))
 #endif
 #if defined(SIMDE_ARM_NEON_A32V7_ENABLE_NATIVE_ALIASES)
