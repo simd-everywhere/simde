@@ -2726,7 +2726,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
     case SIMDE_CMP_NLT_UQ:
     case SIMDE_CMP_NLT_US:
       #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        t_ = __lsx_vfcmp_cult_d(a_.lsx_f64, b_.lsx_f64);
+        t_ = __lsx_vfcmp_clt_d(a_.lsx_f64, b_.lsx_f64);
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
         a_.i64[0] = !(a_.f64[0] < b_.f64[0]) ? ~INT64_C(0) : INT64_C(0);
@@ -2736,7 +2736,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
     case SIMDE_CMP_NLE_UQ:
     case SIMDE_CMP_NLE_US:
       #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        t_ = __lsx_vfcmp_cule_d(a_.lsx_f64, b_.lsx_f64);
+        t_ = __lsx_vfcmp_cle_d(a_.lsx_f64, b_.lsx_f64);
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
         a_.i64[0] = !(a_.f64[0] <= b_.f64[0]) ? ~INT64_C(0) : INT64_C(0);
@@ -2787,7 +2787,7 @@ simde_mm_cmp_sd (simde__m128d a, simde__m128d b, const int imm8)
     case SIMDE_CMP_GE_OQ:
     case SIMDE_CMP_GE_OS:
       #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        t_ = __lsx_vfcmp_clt_d(a_.lsx_f64, b_.lsx_f64);
+        t_ = __lsx_vfcmp_cult_d(a_.lsx_f64, b_.lsx_f64);
         a_.lsx_i64 = __lsx_vextrins_d(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
         a_.i64[0] = (a_.f64[0] >= b_.f64[0]) ? ~INT64_C(0) : INT64_C(0);
@@ -2891,7 +2891,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
     case SIMDE_CMP_NLT_UQ:
     case SIMDE_CMP_NLT_US:
       #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        t_ = __lsx_vfcmp_cult_s(a_.lsx_f32, b_.lsx_f32);
+        t_ = __lsx_vfcmp_clt_s(a_.lsx_f32, b_.lsx_f32);
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
         a_.i32[0] = !(a_.f32[0] < b_.f32[0]) ? ~INT32_C(0) : INT32_C(0);
@@ -2901,7 +2901,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
     case SIMDE_CMP_NLE_UQ:
     case SIMDE_CMP_NLE_US:
       #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        t_ = __lsx_vfcmp_cule_s(a_.lsx_f32, b_.lsx_f32);
+        t_ = __lsx_vfcmp_cle_s(a_.lsx_f32, b_.lsx_f32);
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
         a_.i32[0] = !(a_.f32[0] <= b_.f32[0]) ? ~INT32_C(0) : INT32_C(0);
@@ -2946,8 +2946,8 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_FALSE_OQ:
     case SIMDE_CMP_FALSE_OS:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-        a_.lsx_i32[0] = INT32_C(0);
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+        a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vreplgr2vr_w(INT32_C(0)), 0x00);
       #else
         a_.i32[0] = INT32_C(0);
       #endif
@@ -2956,7 +2956,7 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
     case SIMDE_CMP_GE_OQ:
     case SIMDE_CMP_GE_OS:
       #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
-        t_ = __lsx_vfcmp_clt_s(a_.lsx_f32, b_.lsx_f32);
+        t_ = __lsx_vfcmp_cult_s(a_.lsx_f32, b_.lsx_f32);
         a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vnor_v(t_, t_), 0x00);
       #else
         a_.i32[0] = (a_.f32[0] >= b_.f32[0]) ? ~INT32_C(0) : INT32_C(0);
@@ -2974,8 +2974,8 @@ simde_mm_cmp_ss (simde__m128 a, simde__m128 b, const int imm8)
 
     case SIMDE_CMP_TRUE_UQ:
     case SIMDE_CMP_TRUE_US:
-      #if defined(SIMDE_LOONGARCH_LASX_NATIVE)
-        a_.lsx_i32[0] = ~INT32_C(0);
+      #if defined(SIMDE_LOONGARCH_LSX_NATIVE)
+        a_.lsx_i64 = __lsx_vextrins_w(a_.lsx_i64, __lsx_vreplgr2vr_w(~INT32_C(0)), 0x00);
       #else
         a_.i32[0] = ~INT32_C(0);
       #endif
