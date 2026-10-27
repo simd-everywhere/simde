@@ -8658,20 +8658,17 @@ simde_wasm_u32x4_trunc_sat_f32x4 (simde_v128_t a) {
       #if defined(SIMDE_X86_AVX512VL_NATIVE)
         r_.sse_m128i = _mm_cvttps_epu32(a_.sse_m128);
       #else
-        __m128 first_oob_high = _mm_set1_ps(SIMDE_FLOAT32_C(4294967296.0));
-        __m128 neg_zero_if_too_high =
-          _mm_castsi128_ps(
-            _mm_slli_epi32(
-              _mm_castps_si128(_mm_cmple_ps(first_oob_high, a_.sse_m128)),
-              31
-            )
-          );
+        /* Signed conversion covers [0, 2^31). For the upper unsigned
+         * half, subtract 2^31 using the full comparison mask, then restore
+         * bit 31 in the integer result. Saturation and NaNs are handled below. */
+        __m128 upper_half = _mm_set1_ps(SIMDE_FLOAT32_C(2147483648.0));
+        __m128 upper_half_mask = _mm_cmpge_ps(a_.sse_m128, upper_half);
         r_.sse_m128i =
           _mm_xor_si128(
             _mm_cvttps_epi32(
-              _mm_sub_ps(a_.sse_m128, _mm_and_ps(neg_zero_if_too_high, first_oob_high))
+              _mm_sub_ps(a_.sse_m128, _mm_and_ps(upper_half_mask, upper_half))
             ),
-            _mm_castps_si128(neg_zero_if_too_high)
+            _mm_and_si128(_mm_castps_si128(upper_half_mask), _mm_set1_epi32(INT32_MIN))
           );
       #endif
 
