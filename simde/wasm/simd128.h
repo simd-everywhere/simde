@@ -3608,7 +3608,7 @@ simde_wasm_i32x4_abs (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = (a_.i32[i] < INT32_C(0)) ? -a_.i32[i] : a_.i32[i];
+        r_.u32[i] = (a_.i32[i] < INT32_C(0)) ? UINT32_C(0) - a_.u32[i] : a_.u32[i];
       }
     #endif
 
@@ -3642,7 +3642,7 @@ simde_wasm_i64x2_abs (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-        r_.i64[i] = (a_.i64[i] < INT64_C(0)) ? -a_.i64[i] : a_.i64[i];
+        r_.u64[i] = (a_.i64[i] < INT64_C(0)) ? UINT64_C(0) - a_.u64[i] : a_.u64[i];
       }
     #endif
 
@@ -3800,7 +3800,7 @@ simde_wasm_i32x4_neg (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = -a_.i32[i];
+        r_.u32[i] = UINT32_C(0) - a_.u32[i];
       }
     #endif
 
@@ -3832,7 +3832,7 @@ simde_wasm_i64x2_neg (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-        r_.i64[i] = -a_.i64[i];
+        r_.u64[i] = UINT64_C(0) - a_.u64[i];
       }
     #endif
 
@@ -4121,7 +4121,7 @@ simde_wasm_i8x16_shl (simde_v128_t a, uint32_t count) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-        r_.i8[i] = HEDLEY_STATIC_CAST(int8_t, a_.i8[i] << (count & 7));
+        r_.u8[i] = HEDLEY_STATIC_CAST(uint8_t, HEDLEY_STATIC_CAST(uint32_t, a_.u8[i]) << (count & 7));
       }
     #endif
 
@@ -4153,7 +4153,7 @@ simde_wasm_i16x8_shl (simde_v128_t a, uint32_t count) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-        r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, a_.i16[i] << (count & 15));
+        r_.u16[i] = HEDLEY_STATIC_CAST(uint16_t, HEDLEY_STATIC_CAST(uint32_t, a_.u16[i]) << (count & 15));
       }
     #endif
 
@@ -4185,7 +4185,7 @@ simde_wasm_i32x4_shl (simde_v128_t a, uint32_t count) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.i32[i] << (count & 31));
+        r_.u32[i] = HEDLEY_STATIC_CAST(uint32_t, a_.u32[i] << (count & 31));
       }
     #endif
 
@@ -4220,7 +4220,7 @@ simde_wasm_i64x2_shl (simde_v128_t a, uint32_t count) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-        r_.i64[i] = HEDLEY_STATIC_CAST(int64_t, a_.i64[i] << (count & 63));
+        r_.u64[i] = HEDLEY_STATIC_CAST(uint64_t, a_.u64[i] << (count & 63));
       }
     #endif
 
@@ -4569,7 +4569,7 @@ simde_wasm_i32x4_add (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = a_.i32[i] + b_.i32[i];
+        r_.u32[i] = a_.u32[i] + b_.u32[i];
       }
     #endif
 
@@ -4598,7 +4598,7 @@ simde_wasm_i64x2_add (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-        r_.i64[i] = a_.i64[i] + b_.i64[i];
+        r_.u64[i] = a_.u64[i] + b_.u64[i];
       }
     #endif
 
@@ -4745,7 +4745,7 @@ simde_wasm_i32x4_sub (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = a_.i32[i] - b_.i32[i];
+        r_.u32[i] = a_.u32[i] - b_.u32[i];
       }
     #endif
 
@@ -4774,7 +4774,7 @@ simde_wasm_i64x2_sub (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-        r_.i64[i] = a_.i64[i] - b_.i64[i];
+        r_.u64[i] = a_.u64[i] - b_.u64[i];
       }
     #endif
 
@@ -4894,7 +4894,7 @@ simde_wasm_i32x4_mul (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = a_.i32[i] * b_.i32[i];
+        r_.u32[i] = a_.u32[i] * b_.u32[i];
       }
     #endif
 
@@ -4923,7 +4923,7 @@ simde_wasm_i64x2_mul (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i64) / sizeof(r_.i64[0])) ; i++) {
-        r_.i64[i] = a_.i64[i] * b_.i64[i];
+        r_.u64[i] = a_.u64[i] * b_.u64[i];
       }
     #endif
 
@@ -6706,7 +6706,7 @@ simde_wasm_f32x4_demote_f64x2_zero (simde_v128_t a) {
         };
         r_.altivec_f32 = vec_perm(r_.altivec_f32, HEDLEY_REINTERPRET_CAST(SIMDE_POWER_ALTIVEC_VECTOR(float), vec_splat_s32(0)), perm);
       #endif
-    #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
       float __attribute__((__vector_size__(8))) z = { 0.0f, 0.0f };
       r_.f32 = __builtin_shufflevector(__builtin_convertvector(a_.f64, __typeof__(z)), z, 0, 1, 2, 3);
     #else
@@ -6985,7 +6985,7 @@ simde_wasm_f64x2_promote_low_f32x4 (simde_v128_t a) {
       r_.neon_f64 = vcvt_f64_f32(vget_low_f32(a_.neon_f32));
     #elif defined(SIMDE_POWER_ALTIVEC_P7_NATIVE)
       r_.altivec_f64 = vec_unpackh(a_.altivec_f32);
-    #elif !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
+    #elif defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
       r_.f64 = __builtin_convertvector(__builtin_shufflevector(a_.f32, a_.f32, 0, 1), __typeof__(r_.f64));
     #else
       r_.f64[0] = HEDLEY_STATIC_CAST(simde_float64, a_.f32[0]);
@@ -8527,7 +8527,7 @@ simde_wasm_f64x2_convert_low_i32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
       r_.f64 = __builtin_convertvector(__builtin_shufflevector(a_.i32, a_.i32, 0, 1), __typeof__(r_.f64));
     #else
       SIMDE_VECTORIZE
@@ -8553,7 +8553,7 @@ simde_wasm_f64x2_convert_low_u32x4 (simde_v128_t a) {
       a_ = simde_v128_to_private(a),
       r_;
 
-    #if !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
+    #if defined(SIMDE_VECTOR_SUBSCRIPT) && !defined(SIMDE_NO_SHUFFLE_VECTOR) && HEDLEY_HAS_BUILTIN(__builtin_shufflevector) && HEDLEY_HAS_BUILTIN(__builtin_convertvector)
       r_.f64 = __builtin_convertvector(__builtin_shufflevector(a_.u32, a_.u32, 0, 1), __typeof__(r_.f64));
     #else
       SIMDE_VECTORIZE
@@ -8627,7 +8627,7 @@ simde_wasm_i32x4_trunc_sat_f32x4 (simde_v128_t a) {
           r_.i32[i] = INT32_C(0);
         } else if (a_.f32[i] < HEDLEY_STATIC_CAST(simde_float32, INT32_MIN)) {
           r_.i32[i] = INT32_MIN;
-        } else if (a_.f32[i] > HEDLEY_STATIC_CAST(simde_float32, INT32_MAX)) {
+        } else if (a_.f32[i] >= HEDLEY_STATIC_CAST(simde_float32, INT32_MAX)) {
           r_.i32[i] = INT32_MAX;
         } else {
           r_.i32[i] = HEDLEY_STATIC_CAST(int32_t, a_.f32[i]);
@@ -8696,7 +8696,7 @@ simde_wasm_u32x4_trunc_sat_f32x4 (simde_v128_t a) {
         if (simde_math_isnan(a_.f32[i]) ||
             a_.f32[i] < SIMDE_FLOAT32_C(0.0)) {
           r_.u32[i] = UINT32_C(0);
-        } else if (a_.f32[i] > HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX)) {
+        } else if (a_.f32[i] >= HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX)) {
           r_.u32[i] = UINT32_MAX;
         } else {
           r_.u32[i] = HEDLEY_STATIC_CAST(uint32_t, a_.f32[i]);
@@ -8787,7 +8787,7 @@ simde_wasm_u32x4_trunc_sat_f64x2_zero (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(a_.f64) / sizeof(a_.f64[0])) ; i++) {
-        if (simde_math_isnanf(a_.f64[i]) ||
+        if (simde_math_isnan(a_.f64[i]) ||
             a_.f64[i] < SIMDE_FLOAT64_C(0.0)) {
           r_.u32[i] = UINT32_C(0);
         } else if (a_.f64[i] > HEDLEY_STATIC_CAST(simde_float64, UINT32_MAX)) {
@@ -8912,7 +8912,7 @@ simde_wasm_i32x4_dot_i16x8 (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_) / sizeof(r_.i16[0])) ; i += 2) {
-        r_.i32[i / 2] = (a_.i16[i] * b_.i16[i]) + (a_.i16[i + 1] * b_.i16[i + 1]);
+        r_.u32[i / 2] = HEDLEY_STATIC_CAST(uint32_t, a_.i16[i] * b_.i16[i]) + HEDLEY_STATIC_CAST(uint32_t, a_.i16[i + 1] * b_.i16[i + 1]);
       }
     #endif
 

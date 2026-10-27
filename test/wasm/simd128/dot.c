@@ -36,6 +36,9 @@ test_simde_wasm_i32x4_dot_i16x8(SIMDE_MUNIT_TEST_ARGS) {
       int16_t b[sizeof(simde_v128_t) / sizeof(int16_t)];
       int32_t r[sizeof(simde_v128_t) / sizeof(int32_t)];
     } test_vec[] = {
+      { {          INT16_MIN,          INT16_MIN,          INT16_MIN,          INT16_MIN,          INT16_MIN,          INT16_MIN,          INT16_MIN,          INT16_MIN },
+        {          INT16_MIN,          INT16_MIN,          INT16_MIN,          INT16_MIN,          INT16_MIN,          INT16_MIN,          INT16_MIN,          INT16_MIN },
+        {              INT32_MIN,              INT32_MIN,              INT32_MIN,              INT32_MIN } },
       { {  INT16_C( 23410),  INT16_C( 13252), -INT16_C(  8673), -INT16_C( 10531),  INT16_C( 12591), -INT16_C( 20710), -INT16_C(  3546), -INT16_C(  6181) },
         { -INT16_C( 15539), -INT16_C( 27063),  INT16_C( 32058), -INT16_C( 23735),  INT16_C( 22888), -INT16_C( 13917), -INT16_C( 13656),  INT16_C(  7160) },
         { -INT32_C(   722406866), -INT32_C(    28085749),  INT32_C(   576403878),  INT32_C(     4168216) } },

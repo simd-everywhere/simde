@@ -63,6 +63,14 @@ simde_test_wasm_simd128_tests = [
   'xor',
 ]
 
+# Exercise the scalar fallbacks separately from compiler vector extensions.
+simde_test_wasm_simd128_scalar_tests = [
+  'abs', 'add', 'convert', 'demote', 'dot', 'mul', 'neg', 'promote',
+  'shl', 'sub', 'trunc_sat',
+]
+simde_test_wasm_simd128_scalar_c_args = cc.get_supported_arguments('-Werror=float-conversion')
+simde_test_wasm_simd128_scalar_cpp_args = cxx.get_supported_arguments('-Werror=float-conversion')
+
 simde_test_wasm_simd128_sources = []
 simde_test_wasm_simd128_libs = []
 foreach name : simde_test_wasm_simd128_tests
@@ -73,10 +81,22 @@ foreach name : simde_test_wasm_simd128_tests
     endif
     simde_test_wasm_simd128_sources += source_file
 
-    foreach emul : ['emul', 'native']
+    foreach emul : ['emul', 'native', 'scalar']
+      if emul == 'scalar' and name not in simde_test_wasm_simd128_scalar_tests
+        continue
+      endif
+
       extra_flags = ['-DSIMDE_TEST_BARE']
-      if emul == 'emul'
+      if emul != 'native'
         extra_flags += '-DSIMDE_NO_NATIVE'
+      endif
+      if emul == 'scalar'
+        extra_flags += '-DSIMDE_NO_VECTOR'
+        if lang == 'c'
+          extra_flags += simde_test_wasm_simd128_scalar_c_args
+        else
+          extra_flags += simde_test_wasm_simd128_scalar_cpp_args
+        endif
       endif
 
       x = executable(name + '-' + emul +  '-' + lang, source_file,
