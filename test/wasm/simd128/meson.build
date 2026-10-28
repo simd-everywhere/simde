@@ -65,8 +65,8 @@ simde_test_wasm_simd128_tests = [
 
 # Exercise the scalar fallbacks separately from compiler vector extensions.
 simde_test_wasm_simd128_scalar_tests = [
-  'abs', 'add', 'convert', 'demote', 'dot', 'mul', 'neg', 'promote',
-  'shl', 'sub', 'trunc_sat',
+  'abs', 'add', 'convert', 'demote', 'dot', 'extend_high', 'extend_low',
+  'ge', 'le', 'lt', 'mul', 'neg', 'promote', 'shl', 'sub', 'trunc_sat',
 ]
 simde_test_wasm_simd128_scalar_c_args = cc.get_supported_arguments('-Werror=float-conversion')
 simde_test_wasm_simd128_scalar_cpp_args = cxx.get_supported_arguments('-Werror=float-conversion')

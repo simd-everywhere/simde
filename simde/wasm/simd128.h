@@ -2255,7 +2255,7 @@ simde_wasm_u8x16_lt (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-        r_.u8[i] = (a_.u8[i] < b_.u8[i]) ? ~UINT8_C(0) : UINT8_C(0);
+        r_.u8[i] = (a_.u8[i] < b_.u8[i]) ? UINT8_MAX : UINT8_C(0);
       }
     #endif
 
@@ -2289,7 +2289,7 @@ simde_wasm_u16x8_lt (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-        r_.u16[i] = (a_.u16[i] < b_.u16[i]) ? ~UINT16_C(0) : UINT16_C(0);
+        r_.u16[i] = (a_.u16[i] < b_.u16[i]) ? UINT16_MAX : UINT16_C(0);
       }
     #endif
 
@@ -2706,7 +2706,7 @@ simde_wasm_u8x16_le (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-        r_.u8[i] = (a_.u8[i] <= b_.u8[i]) ? ~UINT8_C(0) : UINT8_C(0);
+        r_.u8[i] = (a_.u8[i] <= b_.u8[i]) ? UINT8_MAX : UINT8_C(0);
       }
     #endif
 
@@ -2735,7 +2735,7 @@ simde_wasm_u16x8_le (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-        r_.u16[i] = (a_.u16[i] <= b_.u16[i]) ? ~UINT16_C(0) : UINT16_C(0);
+        r_.u16[i] = (a_.u16[i] <= b_.u16[i]) ? UINT16_MAX : UINT16_C(0);
       }
     #endif
 
@@ -2983,7 +2983,7 @@ simde_wasm_u8x16_ge (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u8) / sizeof(r_.u8[0])) ; i++) {
-        r_.u8[i] = (a_.u8[i] >= b_.u8[i]) ? ~UINT8_C(0) : UINT8_C(0);
+        r_.u8[i] = (a_.u8[i] >= b_.u8[i]) ? UINT8_MAX : UINT8_C(0);
       }
     #endif
 
@@ -3014,7 +3014,7 @@ simde_wasm_u16x8_ge (simde_v128_t a, simde_v128_t b) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
-        r_.u16[i] = (a_.u16[i] >= b_.u16[i]) ? ~UINT16_C(0) : UINT16_C(0);
+        r_.u16[i] = (a_.u16[i] >= b_.u16[i]) ? UINT16_MAX : UINT16_C(0);
       }
     #endif
 
@@ -3544,7 +3544,7 @@ simde_wasm_i8x16_abs (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-        r_.i8[i] = (a_.i8[i] < INT8_C(0)) ? -a_.i8[i] : a_.i8[i];
+        r_.i8[i] = (a_.i8[i] < INT8_C(0)) ? HEDLEY_STATIC_CAST(int8_t, -a_.i8[i]) : a_.i8[i];
       }
     #endif
 
@@ -3736,7 +3736,7 @@ simde_wasm_i8x16_neg (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i8) / sizeof(r_.i8[0])) ; i++) {
-        r_.i8[i] = -a_.i8[i];
+        r_.i8[i] = HEDLEY_STATIC_CAST(int8_t, -a_.i8[i]);
       }
     #endif
 
@@ -3768,7 +3768,7 @@ simde_wasm_i16x8_neg (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-        r_.i16[i] = -a_.i16[i];
+        r_.i16[i] = HEDLEY_STATIC_CAST(int16_t, -a_.i16[i]);
       }
     #endif
 
@@ -6956,7 +6956,7 @@ simde_wasm_u64x2_extend_low_u32x4 (simde_v128_t a) {
     #else
       SIMDE_VECTORIZE
       for (size_t i = 0 ; i < (sizeof(r_.u64) / sizeof(r_.u64[0])) ; i++) {
-        r_.u64[i] = HEDLEY_STATIC_CAST(int64_t, a_.u32[i]);
+        r_.u64[i] = HEDLEY_STATIC_CAST(uint64_t, a_.u32[i]);
       }
     #endif
 
@@ -7157,8 +7157,8 @@ simde_wasm_u16x8_extend_high_u8x16 (simde_v128_t a) {
       SIMDE_CONVERT_VECTOR_(r_.u16, v);
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.i16) / sizeof(r_.i16[0])) ; i++) {
-        r_.i16[i] = HEDLEY_STATIC_CAST(uint16_t, a_.u8[i + 8]);
+      for (size_t i = 0 ; i < (sizeof(r_.u16) / sizeof(r_.u16[0])) ; i++) {
+        r_.u16[i] = HEDLEY_STATIC_CAST(uint16_t, a_.u8[i + 8]);
       }
     #endif
 
@@ -7193,8 +7193,8 @@ simde_wasm_u32x4_extend_high_u16x8 (simde_v128_t a) {
       SIMDE_CONVERT_VECTOR_(r_.u32, v);
     #else
       SIMDE_VECTORIZE
-      for (size_t i = 0 ; i < (sizeof(r_.i32) / sizeof(r_.i32[0])) ; i++) {
-        r_.i32[i] = HEDLEY_STATIC_CAST(uint32_t, a_.u16[i + 4]);
+      for (size_t i = 0 ; i < (sizeof(r_.u32) / sizeof(r_.u32[0])) ; i++) {
+        r_.u32[i] = HEDLEY_STATIC_CAST(uint32_t, a_.u16[i + 4]);
       }
     #endif
 
