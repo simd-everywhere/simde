@@ -816,7 +816,10 @@ SIMDE_TEST_CODEGEN_WRITE_SCALAR_FUNC_(simde_bfloat16, bf16)
 
 static simde_float16
 simde_test_f16_precision_to_slop(int precision) {
-  return HEDLEY_UNLIKELY(precision == INT_MAX) ? SIMDE_FLOAT16_VALUE(0.0) : simde_float16_from_float32(simde_math_powf(SIMDE_FLOAT32_C(10.0), -HEDLEY_STATIC_CAST(float, precision)));
+  if (HEDLEY_UNLIKELY(precision == INT_MAX)) {
+    return SIMDE_FLOAT16_VALUE(0.0);
+  }
+  return simde_float16_from_float32(simde_math_powf(SIMDE_FLOAT32_C(10.0), -HEDLEY_STATIC_CAST(float, precision)));
 }
 
 static float
