@@ -762,6 +762,8 @@ test_simde_vcvts_u32_f32 (SIMDE_MUNIT_TEST_ARGS) {
                   UINT32_MAX },
       { SIMDE_FLOAT32_C(-1000.0),
         UINT32_C(         0) },
+      { SIMDE_FLOAT32_C(4294967296.0),
+                  UINT32_MAX },
     #endif
     { SIMDE_FLOAT32_C(   738.60),
       UINT32_C(       738) },
