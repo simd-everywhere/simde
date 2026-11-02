@@ -11,6 +11,7 @@ project(
 
 # Options
 option(SIMDE_TEST_CMAKE_PACKAGING "Test cmake packaging" ${PROJECT_IS_TOP_LEVEL})
+option(SIMDE_INSTALL "Install headers and CMake package files" ${PROJECT_IS_TOP_LEVEL})
 
 # The main simde library
 add_library(simde INTERFACE)
@@ -31,48 +32,50 @@ if(SIMDE_TEST_CMAKE_PACKAGING)
     add_subdirectory(test/cmake-packaging)
 endif()
 
-include(GNUInstallDirs)
+if(SIMDE_INSTALL)
+    include(GNUInstallDirs)
 
-# Install headers
-install(DIRECTORY simde DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+    # Install headers
+    install(DIRECTORY simde DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-# Export targets
-install(TARGETS simde EXPORT simde-targets)
+    # Export targets
+    install(TARGETS simde EXPORT simde-targets)
 
-# Package Configuration
-include(CMakePackageConfigHelpers)
+    # Package Configuration
+    include(CMakePackageConfigHelpers)
 
-write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/simde-config-version.cmake
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion
-)
-
-file(
-    WRITE
-    ${CMAKE_CURRENT_BINARY_DIR}/simde-config.cmake.in
-    "@PACKAGE_INIT@\n"
-    "include(\"\${CMAKE_CURRENT_LIST_DIR}/simde-config-targets.cmake\")\n"
-)
-
-configure_package_config_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/simde-config.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/simde-config.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/simde
-    NO_SET_AND_CHECK_MACRO
-    NO_CHECK_REQUIRED_COMPONENTS_MACRO
-)
-
-install(
-    FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/simde-config.cmake
+    write_basic_package_version_file(
         ${CMAKE_CURRENT_BINARY_DIR}/simde-config-version.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/simde
-)
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion
+    )
 
-install(
-    EXPORT simde-targets
-    FILE simde-config-targets.cmake
-    NAMESPACE simde::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/simde
-)
+    file(
+        WRITE
+        ${CMAKE_CURRENT_BINARY_DIR}/simde-config.cmake.in
+        "@PACKAGE_INIT@\n"
+        "include(\"\${CMAKE_CURRENT_LIST_DIR}/simde-config-targets.cmake\")\n"
+    )
+
+    configure_package_config_file(
+        ${CMAKE_CURRENT_BINARY_DIR}/simde-config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/simde-config.cmake
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/simde
+        NO_SET_AND_CHECK_MACRO
+        NO_CHECK_REQUIRED_COMPONENTS_MACRO
+    )
+
+    install(
+        FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/simde-config.cmake
+            ${CMAKE_CURRENT_BINARY_DIR}/simde-config-version.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/simde
+    )
+
+    install(
+        EXPORT simde-targets
+        FILE simde-config-targets.cmake
+        NAMESPACE simde::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/simde
+    )
+endif()
