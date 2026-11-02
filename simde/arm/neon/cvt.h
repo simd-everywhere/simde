@@ -316,9 +316,9 @@ simde_vcvts_u32_f32(simde_float32 a) {
   #elif defined(SIMDE_FAST_CONVERSION_RANGE)
     return HEDLEY_STATIC_CAST(uint32_t, a);
   #else
-    if (HEDLEY_UNLIKELY(a < SIMDE_FLOAT32_C(0.0))) {
+    if (HEDLEY_UNLIKELY(a <= SIMDE_FLOAT32_C(0.0))) {
       return 0;
-    } else if (HEDLEY_UNLIKELY(a > HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX))) {
+    } else if (HEDLEY_UNLIKELY(a >= HEDLEY_STATIC_CAST(simde_float32, UINT32_MAX))) {
       return UINT32_MAX;
     } else if (simde_math_isnanf(a)) {
       return 0;
