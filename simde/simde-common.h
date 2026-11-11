@@ -1190,7 +1190,7 @@ HEDLEY_DIAGNOSTIC_POP
 #    elif defined(SIMDE_ARM_NEON_A32V7_NATIVE)
 #      define SIMDE_BUG_MSVC_11148617
 #    endif
-#    if defined(SIMDE_ARM_NEON_A64V8_NATIVE)
+#    if defined(SIMDE_ARM_NEON_A64V8_NATIVE) && !HEDLEY_MSVC_VERSION_CHECK(19,52,37025)  // Visual Studio 18.12.0
 #      define SIMDE_BUG_MSVC_11148967
 #    endif
 #  elif defined(HEDLEY_INTEL_VERSION)
