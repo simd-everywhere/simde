@@ -160,6 +160,16 @@ void
 simde_vst4_s16(int16_t *ptr, simde_int16x4x4_t val) {
   #if defined(SIMDE_ARM_NEON_A32V7_NATIVE)
     vst4_s16(ptr, val);
+  #elif defined(SIMDE_WASM_SIMD128_NATIVE)
+    simde_int16x8_private ab_ = simde_int16x8_to_private(simde_vcombine_s16(val.val[0], val.val[1]));
+    simde_int16x8_private cd_ = simde_int16x8_to_private(simde_vcombine_s16(val.val[2], val.val[3]));
+
+    // Transpose with two rounds of 16-bit interleaves, which lower to native zip/unpack instructions
+    v128_t ac = wasm_i16x8_shuffle(ab_.v128, cd_.v128, 0, 8, 1, 9, 2, 10, 3, 11);
+    v128_t bd = wasm_i16x8_shuffle(ab_.v128, cd_.v128, 4, 12, 5, 13, 6, 14, 7, 15);
+
+    wasm_v128_store(ptr, wasm_i16x8_shuffle(ac, bd, 0, 8, 1, 9, 2, 10, 3, 11));
+    wasm_v128_store(ptr + 8, wasm_i16x8_shuffle(ac, bd, 4, 12, 5, 13, 6, 14, 7, 15));
   #else
     simde_int16x4_private a_[4] = { simde_int16x4_to_private(val.val[0]), simde_int16x4_to_private(val.val[1]),
                                     simde_int16x4_to_private(val.val[2]), simde_int16x4_to_private(val.val[3]) };
